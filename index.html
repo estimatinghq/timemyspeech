@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time My Speech</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, #f8fbff 100%);
+      color: #111827;
+    }
+
+    .wrapper {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 18px 20px 24px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 10px 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin: 0 0 8px;
+    }
+
+    .hero p {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 15px;
+      color: #555;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-top: 14px;
+      padding: 0;
+    }
+
+    .tool {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: start;
+    }
+
+    .left,
+    .middle,
+    .right {
+      padding: 18px;
+    }
+
+    .left,
+    .middle {
+      border-right: 1px solid #eef2ff;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      border: 1px solid #d6d6d6;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 15px;
+      resize: vertical;
+      outline: none;
+      font-family: Arial, sans-serif;
+      background: #fff;
+    }
+
+    textarea:focus,
+    select:focus,
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .word-count {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      border: 1px solid #d1d5db;
+      background: #f8f8f8;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      color: #222;
+    }
+
+    .preset-btn.active {
+      background: #eef4ff;
+      border-color: #2563eb;
+      color: #2563eb;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      font-size: 15px;
+      background: #fff;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    button {
+      border: none;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .primary-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .secondary-btn {
+      background: #f8f8f8;
+      border: 1px solid #d1d5db;
+      color: #222;
+    }
+
+    .purple-btn {
+      background: linear-gradient(90deg, #7c3aed, #9333ea);
+      color: white;
+    }
+
+    .full-btn {
+      grid-column: 1 / -1;
+    }
+
+    .tips {
+      font-size: 13px;
+      color: #666;
+      margin-top: 0;
+    }
+
+    .result-box {
+      margin-top: 14px;
+      background: #eef2f7;
+      padding: 14px 14px 12px;
+      width: 250px;
+      border-radius: 0;
+    }
+
+    .result-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #6b7280;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .time-result {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #c81e1e;
+      line-height: 1.1;
+    }
+
+    .status {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #c81e1e;
+      line-height: 1.3;
+    }
+
+    .advice {
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 1100px) {
+      .tool {
+        grid-template-columns: 1fr;
+      }
+
+      .left,
+      .middle {
+        border-right: none;
+        border-bottom: 1px solid #eef2ff;
+      }
+
+      .result-box {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="tool">
+        <div class="left">
+          <div class="section-title">Original speech</div>
+
+          <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
+
+          <div class="word-count">Word count: <span id="wordCount">0</span></div>
+
+          <div class="result-box" id="results">
+            <div class="result-label">Estimated Time</div>
+            <div class="time-result">Your result will appear here</div>
+            <div class="status"></div>
+            <div class="advice"></div>
+          </div>
+        </div>
+
+        <div class="middle">
+          <div class="section-title">Check your timing</div>
+
+          <div class="controls">
+            <div class="control-group">
+              <label>Quick target</label>
+              <div class="preset-row">
+                <button class="preset-btn" data-minutes="1">1 min</button>
+                <button class="preset-btn active" data-minutes="2">2 min</button>
+                <button class="preset-btn" data-minutes="3">3 min</button>
+                <button class="preset-btn" data-minutes="4">4 min</button>
+                <button class="preset-btn" data-minutes="5">5 min</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="speed">Speaking speed</label>
+              <select id="speed">
+                <option value="110">Slow</option>
+                <option value="130" selected>Normal</option>
+                <option value="150">Fast</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="targetMinutes">Target minutes</label>
+              <input type="number" id="targetMinutes" value="2" min="1" step="0.5" />
+            </div>
+
+            <div class="button-row">
+              <button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
+              <button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
+              <button class="purple-btn full-btn" onclick="rewriteWithAI()">Refine with AI</button>
+              <button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
+              <button class="secondary-btn" onclick="clearSpeech()">Clear</button>
+            </div>
+
+            <div class="tips">
+              Trim removes filler words. AI refine requires backend later.
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="section-title">Refined speech</div>
+
+          <textarea id="refinedText" placeholder="Refined speech will appear here..."></textarea>
+
+          <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const speechText = document.getElementById("speechText");
+    const refinedText = document.getElementById("refinedText");
+    const wordCountDisplay = document.getElementById("wordCount");
+    const refinedWordCountDisplay = document.getElementById("refinedWordCount");
+    const targetMinutesInput = document.getElementById("targetMinutes");
+    const presetButtons = document.querySelectorAll(".preset-btn");
+
+    function countWords(text) {
+      const cleaned = text.trim();
+      return cleaned === "" ? 0 : cleaned.split(/\s+/).length;
+    }
+
+    function updateOriginalWordCount() {
+      wordCountDisplay.textContent = countWords(speechText.value);
+    }
+
+    function updateRefinedWordCount() {
+      refinedWordCountDisplay.textContent = countWords(refinedText.value);
+    }
+
+    function formatResult(timeText, statusText = "", adviceText = "") {
+      document.querySelector(".time-result").textContent = timeText;
+      document.querySelector(".status").textContent = statusText;
+      document.querySelector(".advice").textContent = adviceText;
+    }
+
+    function calculateTime() {
+      const text = speechText.value.trim();
+
+      if (!text) {
+        formatResult("Paste your speech first", "", "");
+        return;
+      }
+
+      const words = countWords(text);
+      const speed = parseInt(document.getElementById("speed").value, 10);
+      const targetMinutes = parseFloat(document.getElementById("targetMinutes").value) || 2;
+
+      const totalSeconds = Math.round((words / speed) * 60);
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+
+      const targetSeconds = Math.round(targetMinutes * 60);
+      const difference = totalSeconds - targetSeconds;
+
+      let statusText = "";
+      let adviceText = "";
+
+      if (Math.abs(difference) <= 10) {
+        statusText = "Very close to target.";
+        adviceText = "No major changes needed.";
+      } else if (difference > 0) {
+        const wordsToRemove = Math.round((difference / 60) * speed);
+        statusText = `Too long by ${difference} seconds.`;
+        adviceText = `Remove about ${wordsToRemove} words.`;
+      } else {
+        const wordsToAdd = Math.round((Math.abs(difference) / 60) * speed);
+        statusText = `Too short by ${Math.abs(difference)} seconds.`;
+        adviceText = `Add about ${wordsToAdd} words.`;
+      }
+
+      formatResult(`${mins} min ${secs} sec`, statusText, adviceText);
+    }
+
+    function trimToTarget() {
+      const text = speechText.value.trim();
+      if (!text) return;
+
+      const speed = parseInt(document.getElementById("speed").value, 10);
+      const targetMinutes = parseFloat(document.getElementById("targetMinutes").value) || 2;
+      const targetWords = Math.round(speed * targetMinutes);
+
+      let words = text.split(/\s+/).filter(Boolean);
+
+      const fillerWords = new Set([
+        "really", "very", "just", "quite", "actually", "basically", "literally",
+        "maybe", "perhaps", "somewhat", "that", "so"
+      ]);
+
+      words = words.filter(word => {
+        const cleaned = word.toLowerCase().replace(/[^\w]/g, "");
+        return !fillerWords.has(cleaned);
+      });
+
+      if (words.length > targetWords) {
+        words = words.slice(0, targetWords);
+      }
+
+      refinedText.value = words.join(" ");
+      updateRefinedWordCount();
+    }
+
+    function rewriteWithAI() {
+      alert("AI rewrite requires backend connection later.");
+    }
+
+    function useRefinedText() {
+      if (!refinedText.value.trim()) return;
+      speechText.value = refinedText.value.trim();
+      updateOriginalWordCount();
+      calculateTime();
+    }
+
+    function clearSpeech() {
+      speechText.value = "";
+      refinedText.value = "";
+      updateOriginalWordCount();
+      updateRefinedWordCount();
+      formatResult("Your result will appear here", "", "");
+    }
+
+    speechText.addEventListener("input", updateOriginalWordCount);
+    refinedText.addEventListener("input", updateRefinedWordCount);
+
+    presetButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        presetButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        targetMinutesInput.value = button.dataset.minutes;
+      });
+    });
+
+    targetMinutesInput.addEventListener("input", () => {
+      presetButtons.forEach(btn => {
+        btn.classList.remove("active");
+        if (btn.dataset.minutes === targetMinutesInput.value) {
+          btn.classList.add("active");
+        }
+      });
+    });
+
+    updateOriginalWordCount();
+    updateRefinedWordCount();
+  </script>
+</body>
+</html>
