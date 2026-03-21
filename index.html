@@ -556,15 +556,21 @@
       border-radius: 16px;
       padding: 10px 12px;
       font-size: 13px;
-      line-height: 1.35;
+      line-height: 1.45;
       color: #374151;
       min-height: 56px;
       display: flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .speed-result strong {
       color: #111827;
+    }
+
+    .speed-result-line {
+      display: block;
     }
 
     .speed-buttons {
@@ -748,7 +754,7 @@
 
             <div class="button-row">
               <button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
-              <button class="secondary-btn" onclick="trimSpeech()">Trim Speech</button>
+              <button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
               <button class="purple-btn full-btn" onclick="rewriteWithAI()">Refine with AI</button>
               <button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
               <button class="secondary-btn" onclick="clearSpeech()">Clear</button>
@@ -912,6 +918,15 @@
       if (wpm <= 145) return `Your speaking speed is ${wpm} WPM. This is a slow presentation speed.`;
       if (wpm <= 172) return `Your speaking speed is ${wpm} WPM. This is a normal presentation speed.`;
       return `Your speaking speed is ${wpm} WPM. This is a fast presentation speed.`;
+    }
+
+    function renderSpeedResult(wpm) {
+      return `
+        <div>
+          <span class="speed-result-line"><strong>${getSpeedSentence(wpm)}</strong></span>
+          <span class="speed-result-line">This will now be used for your speech time estimates.</span>
+        </div>
+      `;
     }
 
     function getDifficultyLabel(avgSentenceLength) {
@@ -1177,8 +1192,7 @@
 
       calibratedWPM = parseInt(savedSpeed, 10);
       if (!Number.isNaN(calibratedWPM)) {
-        document.getElementById("calibratedSpeedDisplay").innerHTML =
-          `<strong>${getSpeedSentence(calibratedWPM)}</strong><br>This will now be used for your speech time estimates.`;
+        document.getElementById("calibratedSpeedDisplay").innerHTML = renderSpeedResult(calibratedWPM);
       }
     }
 
@@ -1195,7 +1209,7 @@
       }
     }
 
-    function playBeep() {
+    function playShortBeep() {
       try {
         ensureAudioContext();
         if (!audioContext) return;
@@ -1215,6 +1229,31 @@
 
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.2);
+      } catch (error) {
+      }
+    }
+
+    function playGoBeep() {
+      try {
+        ensureAudioContext();
+        if (!audioContext) return;
+
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(700, audioContext.currentTime);
+        oscillator.frequency.linearRampToValueAtTime(1200, audioContext.currentTime + 0.45);
+
+        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.16, audioContext.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.55);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.58);
       } catch (error) {
       }
     }
@@ -1239,16 +1278,17 @@
 
       let count = 3;
       countdownDisplay.textContent = count;
-      playBeep();
+      playShortBeep();
 
       countdownInterval = setInterval(() => {
         count--;
 
         if (count > 0) {
           countdownDisplay.textContent = count;
-          playBeep();
+          playShortBeep();
         } else if (count === 0) {
           countdownDisplay.textContent = "GO";
+          playGoBeep();
         } else {
           clearInterval(countdownInterval);
 
@@ -1283,8 +1323,7 @@
       document.getElementById("startSpeedTestBtn").disabled = false;
       document.getElementById("speed").value = "custom";
 
-      document.getElementById("calibratedSpeedDisplay").innerHTML =
-        `<strong>${getSpeedSentence(calibratedWPM)}</strong><br>This will now be used for your speech time estimates.`;
+      document.getElementById("calibratedSpeedDisplay").innerHTML = renderSpeedResult(calibratedWPM);
 
       calculateTime();
     }
