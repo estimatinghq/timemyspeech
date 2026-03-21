@@ -1163,9 +1163,50 @@
       setRefinedPreview(result.html, result.plainText);
     }
 
-    function rewriteWithAI() {
-      alert("AI rewrite requires backend connection later.");
+    async function rewriteWithAI() {
+  const speech = speechText.value.trim();
+
+  if (!speech) {
+    alert("Paste your speech first.");
+    return;
+  }
+
+  const button = document.querySelector(".purple-btn");
+  const originalText = button.textContent;
+
+  try {
+    button.disabled = true;
+    button.textContent = "Refining...";
+
+    const response = await fetch("/api/refine", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        speech,
+        targetMinutes: parseFloat(document.getElementById("targetMinutes").value) || 2,
+        speakingSpeed: getCurrentSpeed()
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI refine failed.");
     }
+
+    setRefinedPreview(
+      data.refinedText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+      data.refinedText
+    );
+  } catch (error) {
+    alert(error.message || "AI refine failed.");
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
 
     function useRefinedText() {
       if (!currentRefinedPlainText) return;
