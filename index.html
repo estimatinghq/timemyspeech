@@ -1327,33 +1327,33 @@ function speak(text) {
       stopBtn.disabled = true;
       startBtn.disabled = true;
 
-      let count = 3;
-      countdownDisplay.textContent = count;
-      speak(count);
+let count = 3;
+countdownDisplay.textContent = count;
+speak(String(count));
 
-      countdownInterval = setInterval(() => {
-        count--;
+countdownInterval = setInterval(() => {
+  count--;
 
-        if (count > 0) {
-          countdownDisplay.textContent = count;
-          playShortBeep();
-        } else if (count === 0) {
-          countdownDisplay.textContent = "GO";
-          speak("Go");
-        } else {
-          clearInterval(countdownInterval);
+  if (count > 0) {
+    countdownDisplay.textContent = count;
+    speak(String(count));
+  } else if (count === 0) {
+    countdownDisplay.textContent = "GO";
+    speak("Go");
+  } else {
+    clearInterval(countdownInterval);
 
-          speedTestRunning = true;
-          speedTestStart = Date.now();
-          stopBtn.disabled = false;
+    speedTestRunning = true;
+    speedTestStart = Date.now();
+    stopBtn.disabled = false;
 
-          speedTestTimer = setInterval(() => {
-            if (!speedTestRunning) return;
-            const elapsed = (Date.now() - speedTestStart) / 1000;
-            timerDisplay.textContent = elapsed.toFixed(1) + "s";
-          }, 100);
-        }
-      }, 1000);
+    speedTestTimer = setInterval(() => {
+      if (!speedTestRunning) return;
+      const elapsed = (Date.now() - speedTestStart) / 1000;
+      timerDisplay.textContent = elapsed.toFixed(1) + "s";
+    }, 100);
+  }
+}, 1000);
     }
 
     function stopSpeedTest() {
