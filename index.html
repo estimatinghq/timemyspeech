@@ -497,7 +497,7 @@
       min-height: 86px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
     }
 
     .sentence-label {
@@ -511,8 +511,8 @@
     }
 
     .sentence-text {
-      font-size: 20px;
-      line-height: 1.45;
+      font-size: 16px;
+      line-height: 1.35;
       font-weight: 600;
       color: #111827;
     }
@@ -755,7 +755,7 @@
 
             <div class="button-row">
               <button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
-              <button class="secondary-btn" onclick="trimSpeech()">Trim Speech</button>
+              <button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
               <button class="purple-btn full-btn" onclick="rewriteWithAI()">Refine with AI</button>
               <button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
               <button class="secondary-btn" onclick="clearSpeech()">Clear</button>
@@ -808,9 +808,9 @@
 
           <div class="speed-test-grid">
             <div class="sentence-box">
-              <div class="sentence-label">Click Start and Read this sentence aloud</div>
+              <div class="sentence-label">Read this sentence aloud</div>
               <div class="sentence-text" id="calibrationSentence">
-                Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary. Hope you enjoy the speech. 
+                Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary.
               </div>
             </div>
 
@@ -1118,7 +1118,7 @@
         if (part === "") continue;
 
         if (/^\s+$/.test(part)) {
-          html += part.replace(/ /g, " ");
+          html += part;
           plainText += part;
           continue;
         }
@@ -1164,49 +1164,49 @@
     }
 
     async function rewriteWithAI() {
-  const speech = speechText.value.trim();
+      const speech = speechText.value.trim();
 
-  if (!speech) {
-    alert("Paste your speech first.");
-    return;
-  }
+      if (!speech) {
+        alert("Paste your speech first.");
+        return;
+      }
 
-  const button = document.querySelector(".purple-btn");
-  const originalText = button.textContent;
+      const button = document.querySelector(".purple-btn");
+      const originalText = button.textContent;
 
-  try {
-    button.disabled = true;
-    button.textContent = "Refining...";
+      try {
+        button.disabled = true;
+        button.textContent = "Refining...";
 
-    const response = await fetch("/api/refine", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        speech,
-        targetMinutes: parseFloat(document.getElementById("targetMinutes").value) || 2,
-        speakingSpeed: getCurrentSpeed()
-      })
-    });
+        const response = await fetch("/api/refine", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            speech,
+            targetMinutes: parseFloat(document.getElementById("targetMinutes").value) || 2,
+            speakingSpeed: getCurrentSpeed()
+          })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.error || "AI refine failed.");
+        if (!response.ok) {
+          throw new Error(data.error || "AI refine failed.");
+        }
+
+        setRefinedPreview(
+          data.refinedText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+          data.refinedText
+        );
+      } catch (error) {
+        alert(error.message || "AI refine failed.");
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
     }
-
-    setRefinedPreview(
-      data.refinedText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
-      data.refinedText
-    );
-  } catch (error) {
-    alert(error.message || "AI refine failed.");
-  } finally {
-    button.disabled = false;
-    button.textContent = originalText;
-  }
-}
 
     function useRefinedText() {
       if (!currentRefinedPlainText) return;
