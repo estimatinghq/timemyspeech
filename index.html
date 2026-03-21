@@ -865,11 +865,22 @@
     let audioContext = null;
     let currentRefinedPlainText = "";
 function speak(text) {
-  window.speechSynthesis.cancel();   // clear previous speech
+  window.speechSynthesis.cancel();
+
   const speech = new SpeechSynthesisUtterance(text);
-  speech.rate = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+
+  const niceVoice =
+    voices.find(v => v.name.includes("Google")) ||
+    voices.find(v => v.name.includes("Samantha")) ||
+    voices.find(v => v.name.includes("Aria")) ||
+    voices[0];
+
+  speech.voice = niceVoice;
+  speech.rate = 0.9;
   speech.pitch = 1;
-  speech.lang = "en-US";
+
   window.speechSynthesis.speak(speech);
 }
     function countWords(text) {
