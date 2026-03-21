@@ -865,6 +865,7 @@
     let audioContext = null;
     let currentRefinedPlainText = "";
 function speak(text) {
+  window.speechSynthesis.cancel();   // clear previous speech
   const speech = new SpeechSynthesisUtterance(text);
   speech.rate = 1;
   speech.pitch = 1;
