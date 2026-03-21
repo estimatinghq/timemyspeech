@@ -1,957 +1,609 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Speech Timer | Time My Speech</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #f6f8fc;
-      --card: #ffffff;
-      --border: #e5e7eb;
-      --soft-border: #e9edf5;
-      --text: #111827;
-      --muted: #6b7280;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --purple: #7c3aed;
-      --result-bg: #eef2f7;
-      --danger: #c81e1e;
-      --success: #166534;
-      --success-bg: #ecfdf3;
-      --warning: #92400e;
-      --warning-bg: #fff7ed;
-      --info-bg: #f8fafc;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
-      color: var(--text);
-    }
-
-    .page {
-      max-width: 1460px;
-      margin: 0 auto;
-      padding: 24px 20px 18px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: 52px;
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: -1.6px;
-    }
-
-    .hero p {
-      margin: 12px auto 0;
-      font-size: 18px;
-      line-height: 1.5;
-      color: var(--muted);
-      max-width: 760px;
-    }
-
-    .app {
-      background: var(--card);
-      border: 1px solid var(--soft-border);
-      border-radius: 24px;
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
-      overflow: hidden;
-    }
-
-    .tool {
-      display: grid;
-      grid-template-columns: 1.06fr 0.95fr 1fr;
-      align-items: start;
-    }
-
-    .left,
-    .middle,
-    .right {
-      padding: 18px;
-    }
-
-    .left,
-    .middle {
-      border-right: 1px solid var(--soft-border);
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 320px;
-      border: 1px solid #d5dae3;
-      border-radius: 18px;
-      padding: 14px 15px;
-      font-size: 15px;
-      line-height: 1.6;
-      resize: none;
-      outline: none;
-      font-family: Arial, sans-serif;
-      color: var(--text);
-      background: #fff;
-    }
-
-    textarea:focus,
-    select:focus,
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    .word-count {
-      margin-top: 10px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .controls {
-      display: grid;
-      gap: 12px;
-    }
-
-    .control-group label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 8px;
-      color: #374151;
-    }
-
-    .preset-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .preset-btn {
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      color: #1f2937;
-      transition: 0.15s ease;
-    }
-
-    .preset-btn:hover {
-      border-color: #bfd2ff;
-      background: #f4f8ff;
-    }
-
-    .preset-btn.active {
-      background: #eff6ff;
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    select,
-    input {
-      width: 100%;
-      padding: 11px 13px;
-      border-radius: 14px;
-      border: 1px solid #d1d5db;
-      font-size: 15px;
-      background: #fff;
-      color: var(--text);
-      outline: none;
-    }
-
-    .mini-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .button-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 2px;
-    }
-
-    button {
-      border: none;
-      padding: 12px 14px;
-      border-radius: 16px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    .primary-btn {
-      background: var(--primary);
-      color: white;
-    }
-
-    .primary-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    .secondary-btn {
-      background: #f9fafb;
-      border: 1px solid #d1d5db;
-      color: #1f2937;
-    }
-
-    .purple-btn {
-      background: linear-gradient(90deg, #7c3aed, #9333ea);
-      color: white;
-    }
-
-    .full-btn {
-      grid-column: 1 / -1;
-    }
-
-    .tips {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-
-    .result-box {
-      margin-top: 14px;
-      background: var(--result-bg);
-      padding: 18px;
-      width: 100%;
-      border-radius: 18px;
-    }
-
-    .result-label {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.8px;
-      color: #6b7280;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .time-result {
-      font-size: 34px;
-      font-weight: 800;
-      line-height: 1.08;
-      color: var(--danger);
-      margin-bottom: 8px;
-      letter-spacing: -0.7px;
-    }
-
-    .status {
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.3;
-      color: var(--danger);
-      margin-bottom: 6px;
-    }
-
-    .advice {
-      font-size: 15px;
-      color: #4b5563;
-      line-height: 1.45;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .stat-card {
-      background: #fff;
-      border: 1px solid #dbe3f0;
-      border-radius: 16px;
-      padding: 12px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.4px;
-    }
-
-    .panel {
-      background: var(--info-bg);
-      border: 1px solid #e5ebf3;
-      border-radius: 18px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .panel-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .calibration-note,
-    .assistant-note {
-      font-size: 13px;
-      line-height: 1.45;
-      color: var(--muted);
-    }
-
-    .speed-display {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #1f2937;
-      font-weight: 700;
-    }
-
-    .analysis-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .analysis-item {
-      border: 1px solid #e6ebf3;
-      border-radius: 16px;
-      padding: 12px;
-      background: #fff;
-    }
-
-    .analysis-item.good {
-      background: var(--success-bg);
-      border-color: #ccefdc;
-    }
-
-    .analysis-item.warn {
-      background: var(--warning-bg);
-      border-color: #fde2c2;
-    }
-
-    .analysis-heading {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .analysis-text {
-      font-size: 14px;
-      line-height: 1.45;
-      color: #374151;
-    }
-
-    .helper-text {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    .refined-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 1200px) {
-      .hero h1 {
-        font-size: 44px;
-      }
-
-      textarea {
-        height: 290px;
-      }
-    }
-
-    @media (max-width: 1080px) {
-      .tool {
-        grid-template-columns: 1fr;
-      }
-
-      .left,
-      .middle {
-        border-right: none;
-        border-bottom: 1px solid var(--soft-border);
-      }
-
-      textarea {
-        height: 240px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .page {
-        padding: 18px 12px 14px;
-      }
-
-      .hero h1 {
-        font-size: 36px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .left,
-      .middle,
-      .right {
-        padding: 14px;
-      }
-
-      .button-row,
-      .mini-grid,
-      .refined-actions,
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .preset-row {
-        gap: 6px;
-      }
-
-      .preset-btn {
-        padding: 8px 12px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speech Timer | Time My Speech</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+:root{
+--bg:#f6f8fc;
+--card:#ffffff;
+--border:#e5e7eb;
+--soft-border:#e9edf5;
+--text:#111827;
+--muted:#6b7280;
+--primary:#2563eb;
+--primary-dark:#1d4ed8;
+--purple:#7c3aed;
+--result-bg:#eef2f7;
+--danger:#c81e1e;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#f4f7fc 0%,#f8fbff 100%);
+color:var(--text);
+}
+
+.page{
+max-width:1460px;
+margin:0 auto;
+padding:28px 20px 18px;
+}
+
+.hero{
+text-align:center;
+margin-bottom:22px;
+}
+
+.hero h1{
+margin:0;
+font-size:52px;
+font-weight:800;
+letter-spacing:-1.6px;
+}
+
+.hero p{
+margin-top:10px;
+font-size:18px;
+color:var(--muted);
+max-width:720px;
+margin-left:auto;
+margin-right:auto;
+}
+
+.app{
+background:var(--card);
+border:1px solid var(--soft-border);
+border-radius:24px;
+box-shadow:0 18px 50px rgba(15,23,42,0.06);
+overflow:hidden;
+}
+
+.tool{
+display:grid;
+grid-template-columns:1fr 0.92fr 1fr;
+}
+
+.left,.middle,.right{
+padding:18px;
+}
+
+.left,.middle{
+border-right:1px solid var(--soft-border);
+}
+
+.section-title{
+font-size:16px;
+font-weight:700;
+margin-bottom:12px;
+}
+
+textarea{
+width:100%;
+height:340px;
+border:1px solid #d5dae3;
+border-radius:18px;
+padding:14px 15px;
+font-size:15px;
+line-height:1.5;
+resize:none;
+outline:none;
+font-family:Arial,sans-serif;
+}
+
+.word-count{
+margin-top:10px;
+font-size:14px;
+color:var(--muted);
+}
+
+.controls{
+display:grid;
+gap:12px;
+}
+
+.control-group label{
+display:block;
+font-size:14px;
+margin-bottom:8px;
+}
+
+.preset-row{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.preset-btn{
+border:1px solid #d1d5db;
+background:#f9fafb;
+padding:8px 14px;
+border-radius:999px;
+font-weight:700;
+font-size:14px;
+cursor:pointer;
+}
+
+.preset-btn.active{
+background:#eff6ff;
+border-color:var(--primary);
+color:var(--primary);
+}
+
+select,input{
+width:100%;
+padding:11px 13px;
+border-radius:14px;
+border:1px solid #d1d5db;
+font-size:15px;
+}
+
+.button-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+button{
+border:none;
+padding:12px 14px;
+border-radius:16px;
+font-weight:700;
+font-size:15px;
+cursor:pointer;
+}
+
+.primary-btn{
+background:var(--primary);
+color:white;
+}
+
+.secondary-btn{
+background:#f9fafb;
+border:1px solid #d1d5db;
+}
+
+.purple-btn{
+background:linear-gradient(90deg,#7c3aed,#9333ea);
+color:white;
+}
+
+.full-btn{
+grid-column:1/-1;
+}
+
+.result-box{
+margin-top:14px;
+background:var(--result-bg);
+padding:18px;
+border-radius:18px;
+}
+
+.result-label{
+font-size:12px;
+font-weight:700;
+letter-spacing:1.8px;
+color:#6b7280;
+text-transform:uppercase;
+margin-bottom:10px;
+}
+
+.time-result{
+font-size:34px;
+font-weight:800;
+color:var(--danger);
+margin-bottom:6px;
+}
+
+.status{
+font-size:18px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.panel{
+background:#f8fafc;
+border:1px solid #e5ebf3;
+border-radius:18px;
+padding:14px;
+margin-top:12px;
+}
+
+.panel-title{
+font-size:14px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.stat-card{
+background:white;
+border:1px solid #e5ebf3;
+border-radius:14px;
+padding:10px;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.stat-label{
+font-size:12px;
+color:var(--muted);
+}
+
+.stat-value{
+font-size:20px;
+font-weight:800;
+}
+
+.analysis-item{
+border:1px solid #e6ebf3;
+border-radius:16px;
+padding:12px;
+background:white;
+margin-bottom:8px;
+}
+
+.analysis-heading{
+font-size:13px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.analysis-text{
+font-size:14px;
+line-height:1.4;
+}
+
+@media(max-width:1080px){
+
+.tool{
+grid-template-columns:1fr;
+}
+
+.left,.middle{
+border-right:none;
+border-bottom:1px solid var(--soft-border);
+}
+
+}
+
+</style>
 </head>
+
 <body>
-  <div class="page">
-    <section class="hero">
-      <h1>Speech Timer</h1>
-      <p>Paste your speech and instantly see how long it should take, then calibrate it to your real speaking pace for much more accurate timing.</p>
-    </section>
-
-    <div class="app">
-      <div class="tool">
-        <div class="left">
-          <div class="section-title">Original speech</div>
-
-          <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
-
-          <div class="word-count">Word count: <span id="wordCount">0</span></div>
-
-          <div class="result-box">
-            <div class="result-label">Estimated Time</div>
-            <div class="time-result" id="timeResult">Your result will appear here</div>
-            <div class="status" id="statusText"></div>
-            <div class="advice" id="adviceText"></div>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-label">Using speed</div>
-                <div class="stat-value" id="speedUsed">150 wpm</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label">Target words</div>
-                <div class="stat-value" id="targetWordsStat">300</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label">Difference</div>
-                <div class="stat-value" id="differenceStat">0 sec</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label">Reading level</div>
-                <div class="stat-value" id="paceLabel">Normal</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="middle">
-          <div class="section-title">Check your timing</div>
-
-          <div class="controls">
-            <div class="control-group">
-              <label>Quick target</label>
-              <div class="preset-row">
-                <button class="preset-btn" data-minutes="1">1 min</button>
-                <button class="preset-btn active" data-minutes="2">2 min</button>
-                <button class="preset-btn" data-minutes="3">3 min</button>
-                <button class="preset-btn" data-minutes="4">4 min</button>
-                <button class="preset-btn" data-minutes="5">5 min</button>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label for="speed">Speaking speed</label>
-              <select id="speed">
-                <option value="130">Slow and deliberate</option>
-                <option value="150" selected>Normal presentation pace</option>
-                <option value="170">Fast and confident</option>
-                <option value="custom">Use my calibrated speed</option>
-              </select>
-              <div class="helper-text">Default estimates are only a guide. Calibrate below for better accuracy.</div>
-            </div>
-
-            <div class="control-group">
-              <label for="targetMinutes">Target minutes</label>
-              <input type="number" id="targetMinutes" value="2" min="0.5" step="0.5" />
-            </div>
-
-            <div class="panel">
-              <div class="panel-title">Calibrate to your real speech</div>
-              <div class="mini-grid">
-                <div>
-                  <label for="actualMinutes">Actual minutes</label>
-                  <input type="number" id="actualMinutes" value="1" min="0" step="1" />
-                </div>
-                <div>
-                  <label for="actualSeconds">Actual seconds</label>
-                  <input type="number" id="actualSeconds" value="50" min="0" max="59" step="1" />
-                </div>
-              </div>
-              <div class="button-row" style="margin-top: 10px;">
-                <button class="primary-btn" onclick="calibrateSpeed()">Calibrate Speed</button>
-                <button class="secondary-btn" onclick="resetCalibration()">Reset</button>
-              </div>
-              <div class="speed-display" id="calibratedSpeedDisplay">No personal speed saved yet</div>
-              <div class="calibration-note">
-                Example: if this exact speech takes you 1 min 50 sec in real life, the app will calculate your actual words per minute and use that instead of guessing.
-              </div>
-            </div>
-
-            <div class="button-row">
-              <button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
-              <button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
-              <button class="purple-btn full-btn" onclick="refineSpeech()">Refine Speech</button>
-              <button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
-              <button class="secondary-btn" onclick="clearSpeech()">Clear</button>
-            </div>
-
-            <div class="tips">
-              Refine Speech works locally for now. Later you can connect backend AI for deeper rewriting.
-            </div>
-          </div>
-        </div>
-
-        <div class="right">
-          <div class="section-title">Speech Assistant</div>
-
-          <div class="panel">
-            <div class="panel-title">Refined version</div>
-            <textarea id="refinedText" placeholder="Your improved speech will appear here..."></textarea>
-            <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-title">Live feedback</div>
-            <div class="analysis-list" id="analysisList">
-              <div class="analysis-item">
-                <div class="analysis-heading">Ready</div>
-                <div class="analysis-text">Paste your speech and click Check Speech Time or Refine Speech.</div>
-              </div>
-            </div>
-            <div class="assistant-note">
-              This side panel now gives instant structure feedback, filler detection, sentence length checks, and suggested cuts.
-            </div>
-          </div>
-
-          <div class="refined-actions">
-            <button class="secondary-btn" onclick="copyRefinedText()">Copy Refined</button>
-            <button class="secondary-btn" onclick="analyzeSpeech()">Refresh Feedback</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const speechText = document.getElementById("speechText");
-    const refinedText = document.getElementById("refinedText");
-    const wordCount = document.getElementById("wordCount");
-    const refinedWordCount = document.getElementById("refinedWordCount");
-    const targetMinutesInput = document.getElementById("targetMinutes");
-    const presetButtons = document.querySelectorAll(".preset-btn");
-    const speedSelect = document.getElementById("speed");
-
-    let calibratedWPM = null;
-
-    function countWords(text) {
-      const cleaned = text
-        .replace(/\u2019/g, "'")
-        .replace(/[^\S\r\n]+/g, " ")
-        .trim();
-
-      if (!cleaned) return 0;
-
-      const matches = cleaned.match(/\b[\w']+\b/g);
-      return matches ? matches.length : 0;
-    }
-
-    function formatTime(totalSeconds) {
-      const mins = Math.floor(totalSeconds / 60);
-      const secs = totalSeconds % 60;
-      return `${mins} min ${secs} sec`;
-    }
-
-    function getCurrentSpeed() {
-      const selected = speedSelect.value;
-
-      if (selected === "custom") {
-        if (calibratedWPM) return calibratedWPM;
-        return 150;
-      }
-
-      return parseInt(selected, 10);
-    }
-
-    function getPaceLabel(wpm) {
-      if (wpm <= 135) return "Slow";
-      if (wpm <= 160) return "Normal";
-      return "Fast";
-    }
-
-    function updateCounts() {
-      wordCount.textContent = countWords(speechText.value);
-      refinedWordCount.textContent = countWords(refinedText.value);
-    }
-
-    function setPresetActive(value) {
-      presetButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.minutes === String(value));
-      });
-    }
-
-    presetButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const mins = btn.dataset.minutes;
-        targetMinutesInput.value = mins;
-        setPresetActive(mins);
-        calculateTime();
-      });
-    });
-
-    targetMinutesInput.addEventListener("input", () => {
-      calculateTime();
-    });
-
-    speechText.addEventListener("input", () => {
-      updateCounts();
-      analyzeSpeech();
-    });
-
-    refinedText.addEventListener("input", () => {
-      updateCounts();
-    });
-
-    speedSelect.addEventListener("change", () => {
-      calculateTime();
-    });
-
-    function calculateTime() {
-      const words = countWords(speechText.value);
-      const timeResult = document.getElementById("timeResult");
-      const statusText = document.getElementById("statusText");
-      const adviceText = document.getElementById("adviceText");
-      const speedUsed = document.getElementById("speedUsed");
-      const targetWordsStat = document.getElementById("targetWordsStat");
-      const differenceStat = document.getElementById("differenceStat");
-      const paceLabel = document.getElementById("paceLabel");
-
-      if (!words) {
-        timeResult.textContent = "Paste your speech first";
-        statusText.textContent = "";
-        adviceText.textContent = "";
-        speedUsed.textContent = `${getCurrentSpeed()} wpm`;
-        targetWordsStat.textContent = "0";
-        differenceStat.textContent = "0 sec";
-        paceLabel.textContent = getPaceLabel(getCurrentSpeed());
-        return;
-      }
-
-      const speed = getCurrentSpeed();
-      const targetMinutes = parseFloat(targetMinutesInput.value) || 2;
-
-      const seconds = Math.round((words / speed) * 60);
-      const targetSeconds = Math.round(targetMinutes * 60);
-      const diff = seconds - targetSeconds;
-      const targetWords = Math.round(speed * targetMinutes);
-
-      let status = "";
-      let advice = "";
-
-      if (Math.abs(diff) <= 7) {
-        status = "Very close to target";
-        advice = "This is right in the sweet spot.";
-      } else if (diff > 0) {
-        const wordsToCut = Math.max(1, Math.round((diff / 60) * speed));
-        status = `Too long by ${diff} sec`;
-        advice = `Cut about ${wordsToCut} words to land near your target.`;
-      } else {
-        const wordsToAdd = Math.max(1, Math.round((Math.abs(diff) / 60) * speed));
-        status = `Too short by ${Math.abs(diff)} sec`;
-        advice = `Add about ${wordsToAdd} words to fill the time naturally.`;
-      }
-
-      timeResult.textContent = formatTime(seconds);
-      statusText.textContent = status;
-      adviceText.textContent = advice;
-      speedUsed.textContent = `${speed} wpm`;
-      targetWordsStat.textContent = targetWords;
-      differenceStat.textContent = `${diff > 0 ? "+" : ""}${diff} sec`;
-      paceLabel.textContent = getPaceLabel(speed);
-
-      analyzeSpeech();
-    }
-
-    function calibrateSpeed() {
-      const words = countWords(speechText.value);
-      const mins = parseInt(document.getElementById("actualMinutes").value || "0", 10);
-      const secs = parseInt(document.getElementById("actualSeconds").value || "0", 10);
-      const totalSeconds = mins * 60 + secs;
-
-      if (!words) {
-        alert("Paste the speech first so calibration can work.");
-        return;
-      }
-
-      if (totalSeconds <= 0) {
-        alert("Enter your real speaking time first.");
-        return;
-      }
-
-      calibratedWPM = Math.round((words / totalSeconds) * 60);
-
-      document.getElementById("calibratedSpeedDisplay").textContent =
-        `Personal speed saved: ${calibratedWPM} wpm`;
-
-      speedSelect.value = "custom";
-      calculateTime();
-    }
-
-    function resetCalibration() {
-      calibratedWPM = null;
-      document.getElementById("calibratedSpeedDisplay").textContent =
-        "No personal speed saved yet";
-      if (speedSelect.value === "custom") {
-        speedSelect.value = "150";
-      }
-      calculateTime();
-    }
-
-    function splitIntoSentences(text) {
-      return text
-        .replace(/\s+/g, " ")
-        .trim()
-        .split(/(?<=[.!?])\s+/)
-        .filter(Boolean);
-    }
-
-    function analyzeSpeech() {
-      const text = speechText.value.trim();
-      const analysisList = document.getElementById("analysisList");
-
-      if (!text) {
-        analysisList.innerHTML = `
-          <div class="analysis-item">
-            <div class="analysis-heading">Ready</div>
-            <div class="analysis-text">Paste your speech and click Check Speech Time or Refine Speech.</div>
-          </div>
-        `;
-        return;
-      }
-
-      const words = countWords(text);
-      const sentences = splitIntoSentences(text);
-      const avgSentenceLength = sentences.length ? Math.round(words / sentences.length) : 0;
-      const speed = getCurrentSpeed();
-      const targetMinutes = parseFloat(targetMinutesInput.value) || 2;
-      const targetWords = Math.round(speed * targetMinutes);
-
-      const fillerWords = [
-        "really", "very", "just", "quite", "actually", "basically",
-        "literally", "maybe", "perhaps", "somewhat", "sort of", "kind of", "like"
-      ];
-
-      const lowerText = text.toLowerCase();
-      let fillerCount = 0;
-      fillerWords.forEach(word => {
-        const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const matches = lowerText.match(new RegExp(`\\b${escaped}\\b`, "g"));
-        fillerCount += matches ? matches.length : 0;
-      });
-
-      const longSentences = sentences.filter(sentence => countWords(sentence) > 28).length;
-      const openingWords = countWords(sentences[0] || "");
-      const diffWords = words - targetWords;
-
-      const items = [];
-
-      if (Math.abs(diffWords) <= 15) {
-        items.push({
-          type: "good",
-          title: "Timing looks strong",
-          text: `You are very close to your target word range. Current words: ${words}. Ideal words: about ${targetWords}.`
-        });
-      } else if (diffWords > 0) {
-        items.push({
-          type: "warn",
-          title: "Likely too long",
-          text: `Your speech is about ${diffWords} words over target. You will probably need to cut a little to stay on time.`
-        });
-      } else {
-        items.push({
-          type: "warn",
-          title: "Likely too short",
-          text: `Your speech is about ${Math.abs(diffWords)} words under target. You may finish early unless you add examples or stronger transitions.`
-        });
-      }
-
-      if (fillerCount === 0) {
-        items.push({
-          type: "good",
-          title: "Low filler count",
-          text: "This draft is fairly clean and direct."
-        });
-      } else {
-        items.push({
-          type: "warn",
-          title: "Filler words found",
-          text: `I found about ${fillerCount} filler words that could be trimmed for a tighter delivery.`
-        });
-      }
-
-      if (avgSentenceLength <= 18) {
-        items.push({
-          type: "good",
-          title: "Easy to speak aloud",
-          text: `Average sentence length is about ${avgSentenceLength} words, which is good for live delivery.`
-        });
-      } else {
-        items.push({
-          type: "warn",
-          title: "Some sentences may be too long",
-          text: `Average sentence length is about ${avgSentenceLength} words, and ${longSentences} sentence${longSentences === 1 ? "" : "s"} look long enough to cause stumbles.`
-        });
-      }
-
-      if (openingWords < 8) {
-        items.push({
-          type: "warn",
-          title: "Opening may feel abrupt",
-          text: "Your first sentence is very short. A slightly stronger opener could sound more confident."
-        });
-      } else {
-        items.push({
-          type: "good",
-          title: "Opening has substance",
-          text: "Your first line gives you enough room to start with control."
-        });
-      }
-
-      analysisList.innerHTML = items.map(item => `
-        <div class="analysis-item ${item.type}">
-          <div class="analysis-heading">${item.title}</div>
-          <div class="analysis-text">${item.text}</div>
-        </div>
-      `).join("");
-    }
-
-    function trimToTarget() {
-      const raw = speechText.value.trim();
-      if (!raw) return;
-
-      const speed = getCurrentSpeed();
-      const target = parseFloat(targetMinutesInput.value) || 2;
-      const targetWords = Math.round(speed * target);
-
-      let text = raw;
-
-      text = text.replace(/\b(really|very|just|quite|actually|basically|literally|maybe|perhaps|somewhat)\b/gi, "");
-      text = text.replace(/\s{2,}/g, " ").trim();
-
-      let words = text.split(/\s+/).filter(Boolean);
-
-      if (words.length > targetWords) {
-        words = words.slice(0, targetWords);
-      }
-
-      refinedText.value = words.join(" ");
-      updateCounts();
-    }
-
-    function refineSpeech() {
-      const raw = speechText.value.trim();
-      if (!raw) return;
-
-      let text = raw;
-
-      text = text.replace(/\b(really|very|just|quite|actually|basically|literally|maybe|perhaps|somewhat)\b/gi, "");
-      text = text.replace(/\s{2,}/g, " ").trim();
-
-      const sentences = splitIntoSentences(text);
-
-      const tightened = sentences.map(sentence => {
-        let s = sentence.trim();
-
-        s = s.replace(/\bIn conclusion\b[:,]?\s*/i, "In conclusion, ");
-        s = s.replace(/\bTo conclude\b[:,]?\s*/i, "In conclusion, ");
-        s = s.replace(/\bI think that\b/gi, "I believe");
-        s = s.replace(/\bI would like to say\b/gi, "I want to say");
-        s = s.replace(/\bit is important to note that\b/gi, "importantly");
-        s = s.replace(/\s{2,}/g, " ").trim();
-
-        return s;
-      });
-
-      refinedText.value = tightened.join(" ");
-      updateCounts();
-      analyzeSpeech();
-    }
-
-    function useRefinedText() {
-      speechText.value = refinedText.value;
-      updateCounts();
-      calculateTime();
-    }
-
-    function copyRefinedText() {
-      if (!refinedText.value.trim()) return;
-      refinedText.select();
-      refinedText.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-    }
-
-    function clearSpeech() {
-      speechText.value = "";
-      refinedText.value = "";
-      updateCounts();
-
-      document.getElementById("timeResult").textContent = "Your result will appear here";
-      document.getElementById("statusText").textContent = "";
-      document.getElementById("adviceText").textContent = "";
-      document.getElementById("speedUsed").textContent = `${getCurrentSpeed()} wpm`;
-      document.getElementById("targetWordsStat").textContent = "0";
-      document.getElementById("differenceStat").textContent = "0 sec";
-      document.getElementById("paceLabel").textContent = getPaceLabel(getCurrentSpeed());
-
-      analyzeSpeech();
-    }
-
-    updateCounts();
-    calculateTime();
-    analyzeSpeech();
-  </script>
+
+<div class="page">
+
+<section class="hero">
+<h1>Speech Timer</h1>
+<p>Paste your speech and instantly see how long it will take to present.</p>
+</section>
+
+<div class="app">
+
+<div class="tool">
+
+<div class="left">
+
+<div class="section-title">Original speech</div>
+
+<textarea id="speechText" placeholder="Paste your speech here..."></textarea>
+
+<div class="word-count">
+Word count: <span id="wordCount">0</span>
+</div>
+
+<div class="result-box">
+
+<div class="result-label">Estimated Time</div>
+
+<div class="time-result" id="timeResult">
+Your result will appear here
+</div>
+
+<div class="status" id="statusText"></div>
+<div class="advice" id="adviceText"></div>
+
+</div>
+
+</div>
+
+<div class="middle">
+
+<div class="section-title">Check your timing</div>
+
+<div class="controls">
+
+<div class="control-group">
+
+<label>Quick target</label>
+
+<div class="preset-row">
+
+<button class="preset-btn active" data-minutes="2">2 min</button>
+<button class="preset-btn" data-minutes="3">3 min</button>
+<button class="preset-btn" data-minutes="4">4 min</button>
+<button class="preset-btn" data-minutes="5">5 min</button>
+
+</div>
+
+</div>
+
+<div class="control-group">
+
+<label>Speaking speed</label>
+
+<select id="speed">
+
+<option value="140">Slow</option>
+<option value="165" selected>Normal</option>
+<option value="180">Fast</option>
+<option value="custom">My calibrated speed</option>
+
+</select>
+
+</div>
+
+<div class="control-group">
+
+<label>Target minutes</label>
+
+<input type="number" id="targetMinutes" value="2">
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">Calibrate speaking speed</div>
+
+<div class="analysis-item">
+
+<div class="analysis-heading">Read this sentence aloud</div>
+
+<div class="analysis-text" id="calibrationSentence">
+
+Good morning everyone. Today I will explain a simple idea clearly, give a short example, and finish with a quick summary.
+
+</div>
+
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<div class="stat-label">Countdown</div>
+<div class="stat-value" id="countdownDisplay">Ready</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-label">Timer</div>
+<div class="stat-value" id="timerDisplay">0.0s</div>
+</div>
+
+</div>
+
+<div class="button-row">
+
+<button class="primary-btn" onclick="startCalibration()">Calibrate</button>
+<button class="secondary-btn" onclick="stopCalibration()" id="stopBtn" disabled>Stop</button>
+
+</div>
+
+<div id="calibratedSpeedDisplay">
+No personal speed saved yet
+</div>
+
+</div>
+
+<div class="button-row">
+
+<button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
+<button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="section-title">Refined speech</div>
+
+<textarea id="refinedText"></textarea>
+
+<div class="word-count">
+Word count: <span id="refinedWordCount">0</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const speechText=document.getElementById("speechText")
+const wordCount=document.getElementById("wordCount")
+
+let calibratedWPM=null
+
+function countWords(text){
+
+const words=text.trim().match(/\b[\w']+\b/g)
+
+return words?words.length:0
+
+}
+
+speechText.addEventListener("input",()=>{
+
+wordCount.textContent=countWords(speechText.value)
+
+})
+
+function getSpeed(){
+
+const speedSelect=document.getElementById("speed").value
+
+if(speedSelect==="custom" && calibratedWPM){
+
+return calibratedWPM
+
+}
+
+return parseInt(speedSelect)
+
+}
+
+function calculateTime(){
+
+const words=countWords(speechText.value)
+
+if(!words){
+
+document.getElementById("timeResult").textContent="Paste speech first"
+
+return
+
+}
+
+const speed=getSpeed()
+
+const seconds=Math.round((words/speed)*60)
+
+const mins=Math.floor(seconds/60)
+
+const secs=seconds%60
+
+document.getElementById("timeResult").textContent=
+
+mins+" min "+secs+" sec"
+
+}
+
+const calibrationSentence=
+document.getElementById("calibrationSentence").textContent
+
+let calibrationStart
+let calibrationTimer
+let running=false
+
+function startCalibration(){
+
+let count=3
+
+document.getElementById("countdownDisplay").textContent=count
+
+const interval=setInterval(()=>{
+
+count--
+
+if(count>0){
+
+document.getElementById("countdownDisplay").textContent=count
+
+}
+
+else if(count===0){
+
+document.getElementById("countdownDisplay").textContent="GO"
+
+}
+
+else{
+
+clearInterval(interval)
+
+running=true
+
+calibrationStart=Date.now()
+
+document.getElementById("stopBtn").disabled=false
+
+calibrationTimer=setInterval(updateTimer,100)
+
+}
+
+},1000)
+
+}
+
+function updateTimer(){
+
+if(!running)return
+
+const elapsed=(Date.now()-calibrationStart)/1000
+
+document.getElementById("timerDisplay").textContent=
+
+elapsed.toFixed(1)+"s"
+
+}
+
+function stopCalibration(){
+
+if(!running)return
+
+running=false
+
+clearInterval(calibrationTimer)
+
+const elapsed=(Date.now()-calibrationStart)/1000
+
+const words=countWords(calibrationSentence)
+
+calibratedWPM=Math.round((words/elapsed)*60)
+
+document.getElementById("calibratedSpeedDisplay").textContent=
+
+"Personal speaking speed: "+calibratedWPM+" WPM"
+
+document.getElementById("stopBtn").disabled=true
+
+document.getElementById("speed").value="custom"
+
+}
+
+function trimToTarget(){
+
+const text=speechText.value.trim()
+
+if(!text)return
+
+const speed=getSpeed()
+
+const target=parseFloat(document.getElementById("targetMinutes").value)||2
+
+const targetWords=Math.round(speed*target)
+
+let words=text.split(/\s+/)
+
+if(words.length>targetWords){
+
+words=words.slice(0,targetWords)
+
+}
+
+document.getElementById("refinedText").value=words.join(" ")
+
+}
+
+</script>
+
 </body>
 </html>
