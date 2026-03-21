@@ -864,7 +864,13 @@
     let countdownInterval = null;
     let audioContext = null;
     let currentRefinedPlainText = "";
-
+function speak(text) {
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.rate = 1;
+  speech.pitch = 1;
+  speech.lang = "en-US";
+  window.speechSynthesis.speak(speech);
+}
     function countWords(text) {
       const cleaned = text.trim();
       if (cleaned === "") return 0;
@@ -1322,7 +1328,7 @@
 
       let count = 3;
       countdownDisplay.textContent = count;
-      playShortBeep();
+      speak(count);
 
       countdownInterval = setInterval(() => {
         count--;
@@ -1332,7 +1338,7 @@
           playShortBeep();
         } else if (count === 0) {
           countdownDisplay.textContent = "GO";
-          playGoBeep();
+          speak("Go");
         } else {
           clearInterval(countdownInterval);
 
