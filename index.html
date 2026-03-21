@@ -12,7 +12,6 @@
     :root {
       --bg: #f6f8fc;
       --card: #ffffff;
-      --border: #e5e7eb;
       --soft-border: #e9edf5;
       --text: #111827;
       --muted: #6b7280;
@@ -23,38 +22,48 @@
       --danger: #c81e1e;
     }
 
+    html,
+    body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
       color: var(--text);
+      overflow: hidden;
     }
 
     .page {
       max-width: 1460px;
       margin: 0 auto;
-      padding: 28px 20px 18px;
+      padding: 12px 18px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .hero {
       text-align: center;
-      margin-bottom: 22px;
+      flex: 0 0 auto;
     }
 
     .hero h1 {
       margin: 0;
-      font-size: 52px;
+      font-size: 34px;
       line-height: 1;
       font-weight: 800;
-      letter-spacing: -1.6px;
+      letter-spacing: -1px;
     }
 
     .hero p {
-      margin: 12px auto 0;
-      font-size: 18px;
-      line-height: 1.5;
+      margin: 6px auto 0;
+      font-size: 14px;
+      line-height: 1.35;
       color: var(--muted);
-      max-width: 760px;
+      max-width: 700px;
     }
 
     .app {
@@ -63,18 +72,27 @@
       border-radius: 24px;
       box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
       overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
     }
 
     .tool {
       display: grid;
       grid-template-columns: 1fr 0.92fr 1fr;
-      align-items: start;
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
     }
 
     .left,
     .middle,
     .right {
-      padding: 18px;
+      padding: 14px 16px;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
     }
 
     .left,
@@ -84,23 +102,25 @@
 
     .bottom-section {
       border-top: 1px solid var(--soft-border);
-      padding: 18px;
+      padding: 10px 16px 12px;
+      flex: 0 0 auto;
     }
 
     .section-title {
       font-size: 16px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     textarea {
       width: 100%;
-      height: 340px;
+      height: 100%;
+      min-height: 0;
       border: 1px solid #d5dae3;
       border-radius: 18px;
-      padding: 14px 15px;
-      font-size: 15px;
-      line-height: 1.5;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.45;
       resize: none;
       outline: none;
       font-family: Arial, sans-serif;
@@ -115,21 +135,29 @@
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
+    .text-area-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
     .word-count {
-      margin-top: 10px;
-      font-size: 14px;
+      margin-top: 8px;
+      font-size: 13px;
       color: var(--muted);
+      flex: 0 0 auto;
     }
 
     .controls {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .control-group label {
       display: block;
       font-size: 14px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: #374151;
     }
 
@@ -165,7 +193,7 @@
     select,
     input {
       width: 100%;
-      padding: 11px 13px;
+      padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid #d1d5db;
       font-size: 15px;
@@ -183,7 +211,7 @@
 
     button {
       border: none;
-      padding: 12px 14px;
+      padding: 11px 14px;
       border-radius: 16px;
       font-weight: 700;
       font-size: 15px;
@@ -193,6 +221,12 @@
 
     button:hover {
       transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .primary-btn {
@@ -220,136 +254,139 @@
     }
 
     .tips {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
-      line-height: 1.45;
+      line-height: 1.35;
     }
 
     .result-box {
-      margin-top: 14px;
+      margin-top: 10px;
       background: var(--result-bg);
-      padding: 18px;
+      padding: 14px 16px;
       width: 100%;
-      max-width: 420px;
       border-radius: 18px;
+      flex: 0 0 auto;
     }
 
     .result-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1.8px;
+      letter-spacing: 1.6px;
       color: #6b7280;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .time-result {
-      font-size: 34px;
+      font-size: 30px;
       font-weight: 800;
-      line-height: 1.08;
+      line-height: 1.05;
       color: var(--danger);
       margin-bottom: 8px;
       letter-spacing: -0.7px;
     }
 
     .status {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
-      line-height: 1.3;
+      line-height: 1.25;
       color: var(--danger);
       margin-bottom: 6px;
     }
 
     .advice {
-      font-size: 15px;
+      font-size: 14px;
       color: #4b5563;
-      line-height: 1.35;
+      line-height: 1.3;
     }
 
     .speed-test-wrap {
       background: #f8fafc;
       border: 1px solid #e5ebf3;
       border-radius: 22px;
-      padding: 18px;
+      padding: 14px 16px;
     }
 
     .speed-test-header {
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .speed-test-header h3 {
-      margin: 0 0 6px;
-      font-size: 22px;
+      margin: 0 0 4px;
+      font-size: 20px;
       letter-spacing: -0.4px;
     }
 
     .speed-test-header p {
       margin: 0;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
     .speed-test-grid {
       display: grid;
-      grid-template-columns: 1.4fr 0.8fr;
-      gap: 16px;
-      align-items: start;
+      grid-template-columns: 1.45fr 0.85fr;
+      gap: 14px;
+      align-items: stretch;
     }
 
     .sentence-box {
       background: #fff;
       border: 1px solid #e6ebf3;
       border-radius: 18px;
-      padding: 16px;
-      min-height: 140px;
+      padding: 14px 16px;
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .sentence-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
       color: #6b7280;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .sentence-text {
-      font-size: 22px;
-      line-height: 1.55;
+      font-size: 18px;
+      line-height: 1.45;
       font-weight: 600;
       color: #111827;
     }
 
     .speed-side {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .mini-stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .stat-card {
       background: #fff;
       border: 1px solid #e6ebf3;
       border-radius: 18px;
-      padding: 14px;
+      padding: 12px;
     }
 
     .stat-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.9px;
       font-weight: 700;
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
       letter-spacing: -0.5px;
       line-height: 1;
@@ -359,10 +396,13 @@
       background: #fff;
       border: 1px solid #e6ebf3;
       border-radius: 18px;
-      padding: 14px;
-      font-size: 15px;
-      line-height: 1.5;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.4;
       color: #374151;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
     }
 
     .speed-result strong {
@@ -376,22 +416,21 @@
     }
 
     .helper-text {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
-      line-height: 1.45;
-    }
-
-    @media (max-width: 1200px) {
-      .hero h1 {
-        font-size: 44px;
-      }
-
-      textarea {
-        height: 300px;
-      }
+      line-height: 1.35;
     }
 
     @media (max-width: 1080px) {
+      body {
+        overflow: auto;
+      }
+
+      .page {
+        height: auto;
+        min-height: 100vh;
+      }
+
       .tool {
         grid-template-columns: 1fr;
       }
@@ -402,12 +441,14 @@
         border-bottom: 1px solid var(--soft-border);
       }
 
-      .result-box {
-        max-width: 100%;
+      .left,
+      .middle,
+      .right {
+        min-height: auto;
       }
 
-      textarea {
-        height: 240px;
+      .text-area-wrap {
+        min-height: 220px;
       }
 
       .speed-test-grid {
@@ -417,22 +458,22 @@
 
     @media (max-width: 640px) {
       .page {
-        padding: 18px 12px 14px;
+        padding: 10px 10px 12px;
       }
 
       .hero h1 {
-        font-size: 36px;
+        font-size: 28px;
       }
 
       .hero p {
-        font-size: 16px;
+        font-size: 13px;
       }
 
       .left,
       .middle,
       .right,
       .bottom-section {
-        padding: 14px;
+        padding: 12px;
       }
 
       .button-row,
@@ -450,7 +491,11 @@
       }
 
       .sentence-text {
-        font-size: 18px;
+        font-size: 16px;
+      }
+
+      .time-result {
+        font-size: 26px;
       }
     }
   </style>
@@ -459,7 +504,7 @@
   <div class="page">
     <section class="hero">
       <h1>Speech Timer</h1>
-      <p>Paste your speech and instantly see how long it will take to present, plus test your real speaking speed for more accurate timing.</p>
+      <p>Paste your speech and instantly see how long it will take, then test your real speaking speed for better timing.</p>
     </section>
 
     <div class="app">
@@ -467,7 +512,9 @@
         <div class="left">
           <div class="section-title">Original speech</div>
 
-          <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
+          <div class="text-area-wrap">
+            <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
+          </div>
 
           <div class="word-count">Word count: <span id="wordCount">0</span></div>
 
@@ -526,7 +573,9 @@
         <div class="right">
           <div class="section-title">Refined speech</div>
 
-          <textarea id="refinedText" placeholder="Refined speech will appear here..."></textarea>
+          <div class="text-area-wrap">
+            <textarea id="refinedText" placeholder="Refined speech will appear here..."></textarea>
+          </div>
 
           <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
         </div>
@@ -536,7 +585,7 @@
         <div class="speed-test-wrap">
           <div class="speed-test-header">
             <h3>Find Your Speaking Speed</h3>
-            <p>Read the sentence out loud after the countdown, then press stop when you finish. This helps make your speech timing more accurate.</p>
+            <p>Read the sentence out loud after the countdown, then press stop when you finish.</p>
           </div>
 
           <div class="speed-test-grid">
@@ -614,13 +663,13 @@
       return `${mins} min ${secs} sec`;
     }
 
-    speechText.addEventListener("input", () => {
+    function updateCounts() {
       wordCount.textContent = countWords(speechText.value);
-    });
-
-    refinedText.addEventListener("input", () => {
       refinedWordCount.textContent = countWords(refinedText.value);
-    });
+    }
+
+    speechText.addEventListener("input", updateCounts);
+    refinedText.addEventListener("input", updateCounts);
 
     presetButtons.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -630,6 +679,9 @@
         calculateTime();
       });
     });
+
+    targetMinutesInput.addEventListener("input", calculateTime);
+    document.getElementById("speed").addEventListener("change", calculateTime);
 
     function calculateTime() {
       const words = countWords(speechText.value);
@@ -692,7 +744,7 @@
       }
 
       refinedText.value = words.join(" ");
-      refinedWordCount.textContent = countWords(refinedText.value);
+      updateCounts();
     }
 
     function rewriteWithAI() {
@@ -701,15 +753,14 @@
 
     function useRefinedText() {
       speechText.value = refinedText.value;
-      wordCount.textContent = countWords(speechText.value);
+      updateCounts();
       calculateTime();
     }
 
     function clearSpeech() {
       speechText.value = "";
       refinedText.value = "";
-      wordCount.textContent = 0;
-      refinedWordCount.textContent = 0;
+      updateCounts();
       document.getElementById("timeResult").textContent = "Your result will appear here";
       document.getElementById("statusText").textContent = "";
       document.getElementById("adviceText").textContent = "";
@@ -780,6 +831,7 @@
       calculateTime();
     }
 
+    updateCounts();
     calculateTime();
   </script>
 </body>
