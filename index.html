@@ -1,449 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Speech Timer | Time My Speech</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speech Timer | Time My Speech</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --soft-border: #e9edf5;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --purple: #7c3aed;
+      --result-bg: #eef2f7;
+      --danger: #c81e1e;
+    }
 
-*{box-sizing:border-box;}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
+      color: var(--text);
+    }
 
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:linear-gradient(180deg,#eef4ff 0%,#f8fbff 100%);
-color:#111827;
-}
+    .page {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 28px 20px 18px;
+    }
 
-/* HEADER */
+    .hero {
+      text-align: center;
+      margin-bottom: 22px;
+    }
 
-.top-header{
-background:white;
-border-bottom:1px solid #e5e7eb;
-padding:18px 24px;
-}
+    .hero h1 {
+      margin: 0;
+      font-size: 52px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -1.6px;
+    }
 
-.header-inner{
-max-width:1450px;
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:space-between;
-}
+    .hero p {
+      margin: 12px auto 0;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 760px;
+    }
 
-.logo{
-font-size:20px;
-font-weight:800;
-}
+    .app {
+      background: var(--card);
+      border: 1px solid var(--soft-border);
+      border-radius: 24px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
 
-.tagline{
-font-size:14px;
-color:#6b7280;
-}
+    .tool {
+      display: grid;
+      grid-template-columns: 1fr 0.92fr 1fr;
+      align-items: start;
+    }
 
-/* HERO TITLE */
+    .left,
+    .middle,
+    .right {
+      padding: 18px;
+    }
 
-.hero{
-text-align:center;
-padding:40px 20px 30px 20px;
-}
+    .left,
+    .middle {
+      border-right: 1px solid var(--soft-border);
+    }
 
-.hero h1{
-margin:0;
-font-size:40px;
-font-weight:800;
-}
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
 
-.hero p{
-margin-top:10px;
-font-size:18px;
-color:#6b7280;
-}
+    textarea {
+      width: 100%;
+      height: 340px;
+      border: 1px solid #d5dae3;
+      border-radius: 18px;
+      padding: 14px 15px;
+      font-size: 15px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: #fff;
+    }
 
-/* MAIN TOOL */
+    textarea:focus,
+    select:focus,
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
 
-.wrapper{
-max-width:1450px;
-margin:auto;
-}
+    .word-count {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
 
-.card{
-background:white;
-overflow:hidden;
-min-height:92vh;
-}
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
 
-.tool{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-align-items:start;
-min-height:92vh;
-}
+    .control-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #374151;
+    }
 
-.left,.middle,.right{
-padding:18px;
-min-height:92vh;
-}
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-.left,.middle{
-border-right:1px solid #dfe5ef;
-}
+    .preset-btn {
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      color: #1f2937;
+      transition: 0.15s ease;
+    }
 
-.section-title{
-font-size:16px;
-font-weight:700;
-margin-bottom:14px;
-}
+    .preset-btn:hover {
+      border-color: #bfd2ff;
+      background: #f4f8ff;
+    }
 
-textarea{
-width:100%;
-min-height:410px;
-border:1px solid #cfcfcf;
-border-radius:18px;
-padding:14px;
-font-size:15px;
-resize:vertical;
-outline:none;
-font-family:Arial;
-}
+    .preset-btn.active {
+      background: #eff6ff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
 
-.word-count{
-margin-top:10px;
-font-size:14px;
-color:#666;
-}
+    select,
+    input {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      font-size: 15px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
 
-/* CONTROLS */
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
 
-.controls{
-display:grid;
-gap:12px;
-}
+    button {
+      border: none;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
 
-.control-group label{
-display:block;
-font-size:14px;
-margin-bottom:8px;
-}
+    button:hover {
+      transform: translateY(-1px);
+    }
 
-.preset-row{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
+    .primary-btn {
+      background: var(--primary);
+      color: white;
+    }
 
-.preset-btn{
-border:1px solid #d1d5db;
-background:#f8f8f8;
-padding:8px 16px;
-border-radius:14px;
-font-weight:700;
-cursor:pointer;
-}
+    .primary-btn:hover {
+      background: var(--primary-dark);
+    }
 
-.preset-btn.active{
-background:#eef4ff;
-border-color:#2563eb;
-color:#2563eb;
-}
+    .secondary-btn {
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      color: #1f2937;
+    }
 
-select,input{
-width:100%;
-padding:10px 14px;
-border-radius:14px;
-border:1px solid #d1d5db;
-font-size:15px;
-}
+    .purple-btn {
+      background: linear-gradient(90deg, #7c3aed, #9333ea);
+      color: white;
+    }
 
-/* BUTTONS */
+    .full-btn {
+      grid-column: 1 / -1;
+    }
 
-.button-row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
+    .tips {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
 
-button{
-border:none;
-padding:12px;
-border-radius:16px;
-font-weight:700;
-cursor:pointer;
-}
+    .result-box {
+      margin-top: 14px;
+      background: var(--result-bg);
+      padding: 18px;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 18px;
+    }
 
-.primary-btn{
-background:#2563eb;
-color:white;
-}
+    .result-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
 
-.secondary-btn{
-background:#f8f8f8;
-border:1px solid #d1d5db;
-}
+    .time-result {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.08;
+      color: var(--danger);
+      margin-bottom: 8px;
+      letter-spacing: -0.7px;
+    }
 
-.purple-btn{
-background:linear-gradient(90deg,#7c3aed,#9333ea);
-color:white;
-}
+    .status {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--danger);
+      margin-bottom: 6px;
+    }
 
-.full-btn{
-grid-column:1/-1;
-}
+    .advice {
+      font-size: 15px;
+      color: #4b5563;
+      line-height: 1.35;
+    }
 
-/* RESULT BOX */
+    @media (max-width: 1200px) {
+      .hero h1 {
+        font-size: 44px;
+      }
 
-.result-box{
-margin-top:14px;
-background:#eef2f7;
-padding:18px;
-width:430px;
-max-width:100%;
-}
+      textarea {
+        height: 300px;
+      }
+    }
 
-.result-label{
-font-size:12px;
-font-weight:700;
-letter-spacing:2px;
-color:#6b7280;
-text-transform:uppercase;
-}
+    @media (max-width: 1080px) {
+      .tool {
+        grid-template-columns: 1fr;
+      }
 
-.time-result{
-font-size:34px;
-font-weight:800;
-margin-top:6px;
-color:#c81e1e;
-}
+      .left,
+      .middle {
+        border-right: none;
+        border-bottom: 1px solid var(--soft-border);
+      }
 
-.status{
-font-size:18px;
-font-weight:700;
-margin-top:8px;
-color:#c81e1e;
-}
+      .result-box {
+        max-width: 100%;
+      }
 
-.advice{
-font-size:16px;
-margin-top:6px;
-color:#4b5563;
-}
+      textarea {
+        height: 240px;
+      }
+    }
 
-@media(max-width:1100px){
+    @media (max-width: 640px) {
+      .page {
+        padding: 18px 12px 14px;
+      }
 
-.tool{
-grid-template-columns:1fr;
-}
+      .hero h1 {
+        font-size: 36px;
+      }
 
-.left,.middle{
-border-right:none;
-border-bottom:1px solid #dfe5ef;
-}
+      .hero p {
+        font-size: 16px;
+      }
 
-textarea{
-min-height:260px;
-}
+      .left,
+      .middle,
+      .right {
+        padding: 14px;
+      }
 
-}
+      .button-row {
+        grid-template-columns: 1fr;
+      }
 
-</style>
+      .preset-row {
+        gap: 6px;
+      }
+
+      .preset-btn {
+        padding: 8px 12px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<header class="top-header">
-<div class="header-inner">
-<div class="logo">TimeMySpeech</div>
-<div class="tagline">Speech timer and word count tool</div>
-</div>
-</header>
-
-<section class="hero">
-<h1>Speech Timer</h1>
-<p>Paste your speech and check your speaking time instantly</p>
-</section>
-
-<div class="wrapper">
-<div class="card">
-<div class="tool">
-
-<div class="left">
-
-<div class="section-title">Original speech</div>
-
-<textarea id="speechText"></textarea>
-
-<div class="word-count">Word count: <span id="wordCount">0</span></div>
-
-<div class="result-box">
-<div class="result-label">Estimated Time</div>
-<div class="time-result">Your result will appear here</div>
-<div class="status"></div>
-<div class="advice"></div>
-</div>
-
-</div>
-
-<div class="middle">
-
-<div class="section-title">Check your timing</div>
-
-<div class="controls">
-
-<div class="control-group">
-<label>Quick target</label>
-<div class="preset-row">
-<button class="preset-btn" data-minutes="1">1 min</button>
-<button class="preset-btn active" data-minutes="2">2 min</button>
-<button class="preset-btn" data-minutes="3">3 min</button>
-<button class="preset-btn" data-minutes="4">4 min</button>
-<button class="preset-btn" data-minutes="5">5 min</button>
-</div>
-</div>
-
-<div class="control-group">
-<label>Speaking speed</label>
-<select id="speed">
-<option value="110">Slow</option>
-<option value="130" selected>Normal</option>
-<option value="150">Fast</option>
-</select>
-</div>
-
-<div class="control-group">
-<label>Target minutes</label>
-<input type="number" id="targetMinutes" value="2">
-</div>
-
-<div class="button-row">
-<button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
-<button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
-<button class="purple-btn full-btn">Refine with AI</button>
-<button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
-<button class="secondary-btn" onclick="clearSpeech()">Clear</button>
-</div>
-
-</div>
-
-</div>
-
-<div class="right">
-
-<div class="section-title">Refined speech</div>
-
-<textarea id="refinedText"></textarea>
-
-<div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
-
-</div>
-
-</div>
-</div>
-</div>
-
-<script>
-
-const speechText=document.getElementById("speechText")
-const refinedText=document.getElementById("refinedText")
-const wordCount=document.getElementById("wordCount")
-const refinedWordCount=document.getElementById("refinedWordCount")
-
-function countWords(text){
-const cleaned=text.trim()
-return cleaned===""?0:cleaned.split(/\s+/).length
-}
-
-speechText.addEventListener("input",()=>{
-
-wordCount.textContent=countWords(speechText.value)
-
-})
-
-refinedText.addEventListener("input",()=>{
-
-refinedWordCount.textContent=countWords(refinedText.value)
-
-})
-
-function calculateTime(){
-
-const words=countWords(speechText.value)
-
-if(!words)return
-
-const speed=parseInt(document.getElementById("speed").value)
-
-const targetMinutes=parseFloat(document.getElementById("targetMinutes").value)
-
-const seconds=Math.round(words/speed*60)
-
-const mins=Math.floor(seconds/60)
-
-const secs=seconds%60
-
-const targetSeconds=targetMinutes*60
-
-const diff=seconds-targetSeconds
-
-let status=""
-let advice=""
-
-if(Math.abs(diff)<=10){
-
-status="Very close to target"
-
-}else if(diff>0){
-
-status=`Too long by ${diff} seconds`
-advice=`Remove about ${Math.round(diff/60*speed)} words`
-
-}else{
-
-status=`Too short by ${Math.abs(diff)} seconds`
-advice=`Add about ${Math.round(Math.abs(diff)/60*speed)} words`
-
-}
-
-document.querySelector(".time-result").textContent=`${mins} min ${secs} sec`
-document.querySelector(".status").textContent=status
-document.querySelector(".advice").textContent=advice
-
-}
-
-function trimToTarget(){
-
-const words=speechText.value.split(/\s+/)
-
-const speed=parseInt(document.getElementById("speed").value)
-
-const target=parseFloat(document.getElementById("targetMinutes").value)
-
-const targetWords=Math.round(speed*target)
-
-refinedText.value=words.slice(0,targetWords).join(" ")
-
-refinedWordCount.textContent=countWords(refinedText.value)
-
-}
-
-function useRefinedText(){
-
-speechText.value=refinedText.value
-
-wordCount.textContent=countWords(speechText.value)
-
-}
-
-function clearSpeech(){
-
-speechText.value=""
-refinedText.value=""
-wordCount.textContent=0
-refinedWordCount.textContent=0
-
-}
-
-</script>
-
+  <div class="page">
+    <section class="hero">
+      <h1>Speech Timer</h1>
+      <p>Paste your speech and instantly see how long it will take to present, plus how many words to add or remove to hit your target.</p>
+    </section>
+
+    <div class="app">
+      <div class="tool">
+        <div class="left">
+          <div class="section-title">Original speech</div>
+
+          <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
+
+          <div class="word-count">Word count: <span id="wordCount">0</span></div>
+
+          <div class="result-box">
+            <div class="result-label">Estimated Time</div>
+            <div class="time-result">Your result will appear here</div>
+            <div class="status"></div>
+            <div class="advice"></div>
+          </div>
+        </div>
+
+        <div class="middle">
+          <div class="section-title">Check your timing</div>
+
+          <div class="controls">
+            <div class="control-group">
+              <label>Quick target</label>
+              <div class="preset-row">
+                <button class="preset-btn" data-minutes="1">1 min</button>
+                <button class="preset-btn active" data-minutes="2">2 min</button>
+                <button class="preset-btn" data-minutes="3">3 min</button>
+                <button class="preset-btn" data-minutes="4">4 min</button>
+                <button class="preset-btn" data-minutes="5">5 min</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="speed">Speaking speed</label>
+              <select id="speed">
+                <option value="110">Slow</option>
+                <option value="130" selected>Normal</option>
+                <option value="150">Fast</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="targetMinutes">Target minutes</label>
+              <input type="number" id="targetMinutes" value="2" min="1" step="0.5" />
+            </div>
+
+            <div class="button-row">
+              <button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
+              <button class="secondary-btn" onclick="trimToTarget()">Trim to Target</button>
+              <button class="purple-btn full-btn" onclick="rewriteWithAI()">Refine with AI</button>
+              <button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
+              <button class="secondary-btn" onclick="clearSpeech()">Clear</button>
+            </div>
+
+            <div class="tips">
+              Trim removes filler words. AI refine requires backend later.
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="section-title">Refined speech</div>
+
+          <textarea id="refinedText" placeholder="Refined speech will appear here..."></textarea>
+
+          <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const speechText = document.getElementById("speechText");
+    const refinedText = document.getElementById("refinedText");
+    const wordCount = document.getElementById("wordCount");
+    const refinedWordCount = document.getElementById("refinedWordCount");
+    const targetMinutesInput = document.getElementById("targetMinutes");
+    const presetButtons = document.querySelectorAll(".preset-btn");
+
+    function countWords(text) {
+      const cleaned = text.trim();
+      return cleaned === "" ? 0 : cleaned.split(/\s+/).length;
+    }
+
+    speechText.addEventListener("input", () => {
+      wordCount.textContent = countWords(speechText.value);
+    });
+
+    refinedText.addEventListener("input", () => {
+      refinedWordCount.textContent = countWords(refinedText.value);
+    });
+
+    function calculateTime() {
+      const words = countWords(speechText.value);
+
+      if (!words) {
+        document.querySelector(".time-result").textContent = "Paste your speech first";
+        document.querySelector(".status").textContent = "";
+        document.querySelector(".advice").textContent = "";
+        return;
+      }
+
+      const speed = parseInt(document.getElementById("speed").value, 10);
+      const targetMinutes = parseFloat(document.getElementById("targetMinutes").value) || 2;
+
+      const seconds = Math.round((words / speed) * 60);
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+
+      const targetSeconds = Math.round(targetMinutes * 60);
+      const diff = seconds - targetSeconds;
+
+      let status = "";
+      let advice = "";
+
+      if (Math.abs(diff) <= 10) {
+        status = "Very close to target";
+        advice = "No major changes needed";
+      } else if (diff > 0) {
+        status = `Too long by ${diff} seconds`;
+        advice = `Remove about ${Math.round((diff / 60) * speed)} words`;
+      } else {
+        status = `Too short by ${Math.abs(diff)} seconds`;
+        advice = `Add about ${Math.round((Math.abs(diff) / 60) * speed)} words`;
+      }
+
+      document.querySelector(".time-result").textContent = `${mins} min ${secs} sec`;
+      document.querySelector(".status").textContent = status;
+      document.querySelector(".advice").textContent = advice;
+    }
+
+    function trimToTarget() {
+      const raw = speechText.value.trim();
+      if (!raw) return;
+
+      const speed = parseInt(document.getElementById("speed").value, 10);
+      const target = parseFloat(document.getElementById("targetMinutes").value) || 2;
+      const targetWords = Math.round(speed * target);
+
+      let words = raw.split(/\s+/).filter(Boolean);
+
+      const fillerWords = new Set([
+        "really", "very", "just", "quite", "actually", "basically", "literally",
+        "maybe", "perhaps", "somewhat", "that", "so"
+      ]);
+
+      words = words.filter(word => {
+        const cleaned = word.toLowerCase().replace(/[^\w]/g, "");
+        return !fillerWords.has(cleaned);
+      });
+
+      if (words.length > targetWords) {
+        words = words.slice(0, targetWords);
+      }
+
+      refinedText.value = words.join(" ");
+      refinedWordCount.textContent = countWords(refinedText.value);
+    }
+
+    function rewriteWithAI() {
+      alert("AI rewrite requires backend connection later.");
+    }
+
+    function useRefinedText() {
+      speechText.value = refinedText.value;
+      wordCount.textContent = countWords(speechText.value);
+    }
+
+    function clearSpeech() {
+      speechText.value = "";
+      refinedText.value = "";
+      wordCount.textContent = 0;
+      refinedWordCount.textContent = 0;
+      document.querySelector(".time-result").textContent = "Your result will appear here";
+      document.querySelector(".status").textContent = "";
+      document.querySelector(".advice").textContent = "";
+    }
+  </script>
 </body>
 </html>
