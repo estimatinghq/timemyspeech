@@ -18,7 +18,6 @@
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
       --purple: #7c3aed;
-      --result-bg: #eef2f7;
       --danger: #c81e1e;
       --warning: #b45309;
       --success: #15803d;
@@ -126,7 +125,8 @@
       flex-direction: column;
     }
 
-    textarea {
+    textarea,
+    .refined-preview {
       width: 100%;
       height: 100%;
       min-height: 0;
@@ -142,11 +142,29 @@
       background: #fff;
     }
 
-    textarea:focus,
-    select:focus,
-    input:focus {
+    textarea:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .refined-preview {
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
+    }
+
+    .refined-preview.empty::before {
+      content: attr(data-placeholder);
+      color: #9ca3af;
+    }
+
+    .removed-word {
+      background: #fee2e2;
+      color: #b91c1c;
+      text-decoration: line-through;
+      padding: 1px 3px;
+      border-radius: 6px;
     }
 
     .word-count {
@@ -207,6 +225,12 @@
       background: #fff;
       color: var(--text);
       outline: none;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
     .button-row {
@@ -740,7 +764,11 @@
           <div class="section-title">Refined speech</div>
 
           <div class="text-area-wrap">
-            <textarea id="refinedText" placeholder="Refined speech will appear here..."></textarea>
+            <div
+              id="refinedPreview"
+              class="refined-preview empty"
+              data-placeholder="Refined speech will appear here..."
+            ></div>
           </div>
 
           <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
@@ -813,7 +841,7 @@
 
   <script>
     const speechText = document.getElementById("speechText");
-    const refinedText = document.getElementById("refinedText");
+    const refinedPreview = document.getElementById("refinedPreview");
     const wordCount = document.getElementById("wordCount");
     const refinedWordCount = document.getElementById("refinedWordCount");
     const targetMinutesInput = document.getElementById("targetMinutes");
@@ -825,6 +853,8 @@
     let speedTestStart = null;
     let speedTestTimer = null;
     let countdownInterval = null;
+    let audioContext = null;
+    let currentRefinedPlainText = "";
 
     function countWords(text) {
       const cleaned = text.trim();
@@ -840,6 +870,22 @@
         .split(/(?<=[.!?])\s+/)
         .map(sentence => sentence.trim())
         .filter(Boolean);
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function setRefinedPreview(html = "", plainText = "") {
+      currentRefinedPlainText = plainText.trim().replace(/\s+/g, " ");
+      refinedPreview.innerHTML = html;
+      refinedPreview.classList.toggle("empty", !plainText.trim());
+      refinedWordCount.textContent = countWords(currentRefinedPlainText);
     }
 
     function getCurrentSpeed() {
@@ -884,7 +930,7 @@
 
     function updateCounts() {
       wordCount.textContent = countWords(speechText.value);
-      refinedWordCount.textContent = countWords(refinedText.value);
+      refinedWordCount.textContent = countWords(currentRefinedPlainText);
     }
 
     function updateSpeedSummary() {
@@ -1041,6 +1087,54 @@
       updateProgress(words, lower, upper);
     }
 
+    function buildTrimResult(rawText, maxWords) {
+      const fillerWords = new Set([
+        "really", "very", "just", "quite", "actually", "basically", "literally",
+        "maybe", "perhaps", "somewhat", "that", "so"
+      ]);
+
+      const parts = rawText.split(/(\s+)/);
+      let keptMeaningfulWords = 0;
+      let plainText = "";
+      let html = "";
+
+      for (const part of parts) {
+        if (part === "") continue;
+
+        if (/^\s+$/.test(part)) {
+          html += part.replace(/ /g, " ");
+          plainText += part;
+          continue;
+        }
+
+        const cleaned = part.toLowerCase().replace(/[^\w']/g, "");
+        const isFiller = cleaned && fillerWords.has(cleaned);
+        const isWord = cleaned.length > 0;
+
+        let removeThis = false;
+
+        if (isWord) {
+          if (isFiller) {
+            removeThis = true;
+          } else if (keptMeaningfulWords >= maxWords) {
+            removeThis = true;
+          } else {
+            keptMeaningfulWords++;
+          }
+        }
+
+        if (removeThis) {
+          html += `<span class="removed-word">${escapeHtml(part)}</span>`;
+        } else {
+          html += escapeHtml(part);
+          plainText += part;
+        }
+      }
+
+      plainText = plainText.replace(/\s+/g, " ").trim();
+      return { html, plainText };
+    }
+
     function trimToTarget() {
       const raw = speechText.value.trim();
       if (!raw) return;
@@ -1049,24 +1143,8 @@
       const target = parseFloat(targetMinutesInput.value) || 2;
       const { upper } = getIdealWordRange(speed, target);
 
-      let words = raw.split(/\s+/).filter(Boolean);
-
-      const fillerWords = new Set([
-        "really", "very", "just", "quite", "actually", "basically", "literally",
-        "maybe", "perhaps", "somewhat", "that", "so"
-      ]);
-
-      words = words.filter(word => {
-        const cleaned = word.toLowerCase().replace(/[^\w]/g, "");
-        return !fillerWords.has(cleaned);
-      });
-
-      if (words.length > upper) {
-        words = words.slice(0, upper);
-      }
-
-      refinedText.value = words.join(" ");
-      updateCounts();
+      const result = buildTrimResult(raw, upper);
+      setRefinedPreview(result.html, result.plainText);
     }
 
     function rewriteWithAI() {
@@ -1074,14 +1152,15 @@
     }
 
     function useRefinedText() {
-      speechText.value = refinedText.value;
+      if (!currentRefinedPlainText) return;
+      speechText.value = currentRefinedPlainText;
       updateCounts();
       calculateTime();
     }
 
     function clearSpeech() {
       speechText.value = "";
-      refinedText.value = "";
+      setRefinedPreview("", "");
       updateCounts();
       calculateTime();
     }
@@ -1103,8 +1182,47 @@
       }
     }
 
+    function ensureAudioContext() {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioContext = new AudioContextClass();
+        }
+      }
+
+      if (audioContext && audioContext.state === "suspended") {
+        audioContext.resume().catch(() => {});
+      }
+    }
+
+    function playBeep() {
+      try {
+        ensureAudioContext();
+        if (!audioContext) return;
+
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+
+        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.12, audioContext.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.18);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.2);
+      } catch (error) {
+      }
+    }
+
     function startSpeedTest() {
       if (speedTestRunning) return;
+
+      ensureAudioContext();
 
       const countdownDisplay = document.getElementById("countdownDisplay");
       const timerDisplay = document.getElementById("timerDisplay");
@@ -1121,12 +1239,14 @@
 
       let count = 3;
       countdownDisplay.textContent = count;
+      playBeep();
 
       countdownInterval = setInterval(() => {
         count--;
 
         if (count > 0) {
           countdownDisplay.textContent = count;
+          playBeep();
         } else if (count === 0) {
           countdownDisplay.textContent = "GO";
         } else {
@@ -1170,7 +1290,6 @@
     }
 
     speechText.addEventListener("input", calculateTime);
-    refinedText.addEventListener("input", updateCounts);
     targetMinutesInput.addEventListener("input", calculateTime);
     speedSelect.addEventListener("change", () => {
       updateSpeedSummary();
@@ -1187,6 +1306,7 @@
     });
 
     loadSavedSpeed();
+    setRefinedPreview("", "");
     updateCounts();
     updateSpeedSummary();
     calculateTime();
