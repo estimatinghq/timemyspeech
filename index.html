@@ -868,16 +868,15 @@ function speak(text) {
   window.speechSynthesis.cancel();
 
   const speech = new SpeechSynthesisUtterance(text);
-
   const voices = window.speechSynthesis.getVoices();
 
-  const niceVoice =
-    voices.find(v => v.name.includes("Google")) ||
-    voices.find(v => v.name.includes("Samantha")) ||
-    voices.find(v => v.name.includes("Aria")) ||
-    voices[0];
+  const englishVoice = voices.find(v => v.lang.startsWith("en"));
 
-  speech.voice = niceVoice;
+  if (englishVoice) {
+    speech.voice = englishVoice;
+  }
+
+  speech.lang = "en-US";
   speech.rate = 0.9;
   speech.pitch = 1;
 
