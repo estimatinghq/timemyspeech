@@ -20,6 +20,13 @@
       --purple: #7c3aed;
       --result-bg: #eef2f7;
       --danger: #c81e1e;
+      --warning: #b45309;
+      --success: #15803d;
+      --neutral: #475569;
+      --danger-bg: #fef2f2;
+      --warning-bg: #fff7ed;
+      --success-bg: #f0fdf4;
+      --neutral-bg: #f8fafc;
     }
 
     html,
@@ -63,7 +70,7 @@
       font-size: 14px;
       line-height: 1.35;
       color: var(--muted);
-      max-width: 700px;
+      max-width: 760px;
     }
 
     .app {
@@ -112,6 +119,13 @@
       margin-bottom: 10px;
     }
 
+    .text-area-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
     textarea {
       width: 100%;
       height: 100%;
@@ -133,13 +147,6 @@
     input:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    .text-area-wrap {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
     }
 
     .word-count {
@@ -266,6 +273,28 @@
       width: 100%;
       border-radius: 18px;
       flex: 0 0 auto;
+      border: 1px solid transparent;
+      transition: 0.15s ease;
+    }
+
+    .result-box.state-neutral {
+      background: var(--neutral-bg);
+      border-color: #e5ebf3;
+    }
+
+    .result-box.state-danger {
+      background: var(--danger-bg);
+      border-color: #fecaca;
+    }
+
+    .result-box.state-warning {
+      background: var(--warning-bg);
+      border-color: #fed7aa;
+    }
+
+    .result-box.state-success {
+      background: var(--success-bg);
+      border-color: #bbf7d0;
     }
 
     .result-label {
@@ -281,23 +310,129 @@
       font-size: 30px;
       font-weight: 800;
       line-height: 1.05;
-      color: var(--danger);
       margin-bottom: 8px;
       letter-spacing: -0.7px;
+      color: var(--neutral);
     }
 
     .status {
       font-size: 16px;
       font-weight: 700;
       line-height: 1.25;
-      color: var(--danger);
       margin-bottom: 6px;
+      color: var(--neutral);
     }
 
     .advice {
       font-size: 14px;
       color: #4b5563;
       line-height: 1.3;
+    }
+
+    .range-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .range-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid #e5ebf3;
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+
+    .range-card.full {
+      grid-column: 1 / -1;
+    }
+
+    .range-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      font-weight: 700;
+    }
+
+    .range-value {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      line-height: 1.1;
+    }
+
+    .progress-wrap {
+      margin-top: 12px;
+    }
+
+    .progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.2s ease;
+      background: var(--neutral);
+    }
+
+    .progress-fill.state-danger {
+      background: var(--danger);
+    }
+
+    .progress-fill.state-warning {
+      background: var(--warning);
+    }
+
+    .progress-fill.state-success {
+      background: var(--success);
+    }
+
+    .speech-badges {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .badge-card {
+      background: #f8fafc;
+      border: 1px solid #e5ebf3;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .badge-title {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      font-weight: 700;
+    }
+
+    .badge-value {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
     }
 
     .speed-test-wrap {
@@ -478,8 +613,13 @@
 
       .button-row,
       .speed-buttons,
-      .mini-stats {
+      .mini-stats,
+      .range-stats {
         grid-template-columns: 1fr;
+      }
+
+      .range-card.full {
+        grid-column: auto;
       }
 
       .preset-row {
@@ -518,11 +658,38 @@
 
           <div class="word-count">Word count: <span id="wordCount">0</span></div>
 
-          <div class="result-box">
+          <div class="result-box state-neutral" id="resultBox">
             <div class="result-label">Estimated Time</div>
             <div class="time-result" id="timeResult">Your result will appear here</div>
             <div class="status" id="statusText"></div>
             <div class="advice" id="adviceText"></div>
+
+            <div class="progress-wrap">
+              <div class="progress-top">
+                <span>Target fit</span>
+                <span id="progressLabel">Waiting for speech</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+
+            <div class="range-stats">
+              <div class="range-card">
+                <div class="range-label">Ideal range</div>
+                <div class="range-value" id="idealRangeText">0 to 0 words</div>
+              </div>
+
+              <div class="range-card">
+                <div class="range-label">Current words</div>
+                <div class="range-value" id="currentWordsText">0 words</div>
+              </div>
+
+              <div class="range-card full">
+                <div class="range-label">What to do</div>
+                <div class="range-value" id="wordsActionText">Paste your speech to begin</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -565,7 +732,7 @@
             </div>
 
             <div class="tips">
-              Trim removes filler words. AI refine requires backend later.
+              Timing updates live as you type. Your speaking speed is saved on this device.
             </div>
           </div>
         </div>
@@ -578,6 +745,23 @@
           </div>
 
           <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
+
+          <div class="speech-badges">
+            <div class="badge-card">
+              <div class="badge-title">Speaking speed</div>
+              <div class="badge-value" id="speedSummaryText">Normal speed</div>
+            </div>
+
+            <div class="badge-card">
+              <div class="badge-title">Speech difficulty</div>
+              <div class="badge-value" id="difficultyText">Waiting for speech</div>
+            </div>
+
+            <div class="badge-card">
+              <div class="badge-title">Sentence flow</div>
+              <div class="badge-value" id="flowText">Waiting for speech</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -634,6 +818,7 @@
     const wordCount = document.getElementById("wordCount");
     const refinedWordCount = document.getElementById("refinedWordCount");
     const targetMinutesInput = document.getElementById("targetMinutes");
+    const speedSelect = document.getElementById("speed");
     const presetButtons = document.querySelectorAll(".preset-btn");
 
     let calibratedWPM = null;
@@ -649,8 +834,17 @@
       return matches ? matches.length : 0;
     }
 
+    function splitSentences(text) {
+      const cleaned = text.trim();
+      if (!cleaned) return [];
+      return cleaned
+        .split(/(?<=[.!?])\s+/)
+        .map(sentence => sentence.trim())
+        .filter(Boolean);
+    }
+
     function getCurrentSpeed() {
-      const speedValue = document.getElementById("speed").value;
+      const speedValue = speedSelect.value;
       if (speedValue === "custom") {
         return calibratedWPM || 165;
       }
@@ -663,60 +857,190 @@
       return `${mins} min ${secs} sec`;
     }
 
+    function getSpeedLabel(wpm) {
+      if (wpm <= 145) return "Slow presentation speed";
+      if (wpm <= 172) return "Normal presentation speed";
+      return "Fast presentation speed";
+    }
+
+    function getSpeedSentence(wpm) {
+      if (wpm <= 145) return `Your speaking speed is ${wpm} WPM. This is a slow presentation speed.`;
+      if (wpm <= 172) return `Your speaking speed is ${wpm} WPM. This is a normal presentation speed.`;
+      return `Your speaking speed is ${wpm} WPM. This is a fast presentation speed.`;
+    }
+
+    function getDifficultyLabel(avgSentenceLength) {
+      if (!avgSentenceLength) return "Waiting for speech";
+      if (avgSentenceLength <= 12) return "Easy to present";
+      if (avgSentenceLength <= 20) return "Normal";
+      return "Complex speech";
+    }
+
+    function getFlowLabel(longSentenceCount, avgSentenceLength) {
+      if (!avgSentenceLength) return "Waiting for speech";
+      if (longSentenceCount === 0) return "Smooth and easy to say";
+      if (longSentenceCount <= 2) return "Mostly smooth";
+      return "Some sentences are long";
+    }
+
     function updateCounts() {
       wordCount.textContent = countWords(speechText.value);
       refinedWordCount.textContent = countWords(refinedText.value);
     }
 
-    speechText.addEventListener("input", updateCounts);
-    refinedText.addEventListener("input", updateCounts);
+    function updateSpeedSummary() {
+      const speed = getCurrentSpeed();
+      document.getElementById("speedSummaryText").textContent = getSpeedLabel(speed);
+    }
 
-    presetButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        presetButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        targetMinutesInput.value = btn.dataset.minutes;
-        calculateTime();
-      });
-    });
+    function updateDifficultyBadges() {
+      const text = speechText.value.trim();
+      const sentences = splitSentences(text);
+      const words = countWords(text);
 
-    targetMinutesInput.addEventListener("input", calculateTime);
-    document.getElementById("speed").addEventListener("change", calculateTime);
+      if (!words || sentences.length === 0) {
+        document.getElementById("difficultyText").textContent = "Waiting for speech";
+        document.getElementById("flowText").textContent = "Waiting for speech";
+        return;
+      }
+
+      const avgSentenceLength = Math.round(words / sentences.length);
+      const longSentenceCount = sentences.filter(sentence => countWords(sentence) > 24).length;
+
+      document.getElementById("difficultyText").textContent = getDifficultyLabel(avgSentenceLength);
+      document.getElementById("flowText").textContent = getFlowLabel(longSentenceCount, avgSentenceLength);
+    }
+
+    function setResultState(state) {
+      const resultBox = document.getElementById("resultBox");
+      const timeResult = document.getElementById("timeResult");
+      const statusText = document.getElementById("statusText");
+      const progressFill = document.getElementById("progressFill");
+
+      resultBox.className = `result-box state-${state}`;
+      progressFill.className = `progress-fill state-${state}`;
+
+      if (state === "danger") {
+        timeResult.style.color = "var(--danger)";
+        statusText.style.color = "var(--danger)";
+      } else if (state === "warning") {
+        timeResult.style.color = "var(--warning)";
+        statusText.style.color = "var(--warning)";
+      } else if (state === "success") {
+        timeResult.style.color = "var(--success)";
+        statusText.style.color = "var(--success)";
+      } else {
+        timeResult.style.color = "var(--neutral)";
+        statusText.style.color = "var(--neutral)";
+      }
+    }
+
+    function getIdealWordRange(speed, targetMinutes) {
+      const targetWords = speed * targetMinutes;
+      const lower = Math.max(1, Math.round(targetWords * 0.92));
+      const upper = Math.max(lower, Math.round(targetWords * 1.08));
+      return { lower, upper, targetWords: Math.round(targetWords) };
+    }
+
+    function updateRangeUI(words, lower, upper) {
+      document.getElementById("idealRangeText").textContent = `${lower} to ${upper} words`;
+      document.getElementById("currentWordsText").textContent = `${words} words`;
+    }
+
+    function updateActionText(words, lower, upper) {
+      const actionEl = document.getElementById("wordsActionText");
+
+      if (words < lower) {
+        actionEl.textContent = `Add about ${lower - words} words`;
+      } else if (words > upper) {
+        actionEl.textContent = `Remove about ${words - upper} words`;
+      } else {
+        actionEl.textContent = "You are in the ideal range";
+      }
+    }
+
+    function updateProgress(words, lower, upper) {
+      const progressFill = document.getElementById("progressFill");
+      const progressLabel = document.getElementById("progressLabel");
+
+      if (words === 0) {
+        progressFill.style.width = "0%";
+        progressLabel.textContent = "Waiting for speech";
+        return;
+      }
+
+      const midpoint = (lower + upper) / 2;
+      const maxVisual = upper * 1.35;
+      const minVisual = Math.max(1, lower * 0.4);
+      let percentage = ((words - minVisual) / (maxVisual - minVisual)) * 100;
+      percentage = Math.max(4, Math.min(100, percentage));
+      progressFill.style.width = `${percentage}%`;
+
+      if (words < lower) {
+        progressLabel.textContent = "Too short";
+      } else if (words > upper) {
+        progressLabel.textContent = "Too long";
+      } else {
+        progressLabel.textContent = "On target";
+      }
+
+      if (words < lower * 0.8 || words > upper * 1.2) {
+        setResultState("danger");
+      } else if (words < lower || words > upper) {
+        setResultState("warning");
+      } else {
+        setResultState("success");
+      }
+    }
 
     function calculateTime() {
       const words = countWords(speechText.value);
+      const speed = getCurrentSpeed();
+      const targetMinutes = parseFloat(targetMinutesInput.value) || 2;
+
+      updateCounts();
+      updateSpeedSummary();
+      updateDifficultyBadges();
 
       if (!words) {
         document.getElementById("timeResult").textContent = "Paste your speech first";
         document.getElementById("statusText").textContent = "";
         document.getElementById("adviceText").textContent = "";
+        document.getElementById("idealRangeText").textContent = "0 to 0 words";
+        document.getElementById("currentWordsText").textContent = "0 words";
+        document.getElementById("wordsActionText").textContent = "Paste your speech to begin";
+        updateProgress(0, 0, 0);
+        setResultState("neutral");
         return;
       }
-
-      const speed = getCurrentSpeed();
-      const targetMinutes = parseFloat(document.getElementById("targetMinutes").value) || 2;
 
       const seconds = Math.round((words / speed) * 60);
       const targetSeconds = Math.round(targetMinutes * 60);
       const diff = seconds - targetSeconds;
 
+      const { lower, upper, targetWords } = getIdealWordRange(speed, targetMinutes);
+
       let status = "";
       let advice = "";
 
-      if (Math.abs(diff) <= 10) {
+      if (Math.abs(diff) <= 8) {
         status = "Very close to target";
-        advice = "No major changes needed";
+        advice = `You are right where you want to be for about ${targetWords} words.`;
       } else if (diff > 0) {
         status = `Too long by ${diff} seconds`;
-        advice = `Remove about ${Math.round((diff / 60) * speed)} words`;
+        advice = `Try removing about ${Math.round((diff / 60) * speed)} words.`;
       } else {
         status = `Too short by ${Math.abs(diff)} seconds`;
-        advice = `Add about ${Math.round((Math.abs(diff) / 60) * speed)} words`;
+        advice = `Try adding about ${Math.round((Math.abs(diff) / 60) * speed)} words.`;
       }
 
       document.getElementById("timeResult").textContent = formatTime(seconds);
       document.getElementById("statusText").textContent = status;
       document.getElementById("adviceText").textContent = advice;
+
+      updateRangeUI(words, lower, upper);
+      updateActionText(words, lower, upper);
+      updateProgress(words, lower, upper);
     }
 
     function trimToTarget() {
@@ -724,8 +1048,8 @@
       if (!raw) return;
 
       const speed = getCurrentSpeed();
-      const target = parseFloat(document.getElementById("targetMinutes").value) || 2;
-      const targetWords = Math.round(speed * target);
+      const target = parseFloat(targetMinutesInput.value) || 2;
+      const { upper } = getIdealWordRange(speed, target);
 
       let words = raw.split(/\s+/).filter(Boolean);
 
@@ -739,8 +1063,8 @@
         return !fillerWords.has(cleaned);
       });
 
-      if (words.length > targetWords) {
-        words = words.slice(0, targetWords);
+      if (words.length > upper) {
+        words = words.slice(0, upper);
       }
 
       refinedText.value = words.join(" ");
@@ -761,9 +1085,24 @@
       speechText.value = "";
       refinedText.value = "";
       updateCounts();
-      document.getElementById("timeResult").textContent = "Your result will appear here";
-      document.getElementById("statusText").textContent = "";
-      document.getElementById("adviceText").textContent = "";
+      calculateTime();
+    }
+
+    function saveSpeedToLocal() {
+      if (calibratedWPM) {
+        localStorage.setItem("timeMySpeechSpeed", String(calibratedWPM));
+      }
+    }
+
+    function loadSavedSpeed() {
+      const savedSpeed = localStorage.getItem("timeMySpeechSpeed");
+      if (!savedSpeed) return;
+
+      calibratedWPM = parseInt(savedSpeed, 10);
+      if (!Number.isNaN(calibratedWPM)) {
+        document.getElementById("calibratedSpeedDisplay").innerHTML =
+          `<strong>${getSpeedSentence(calibratedWPM)}</strong><br>This will now be used for your speech time estimates.`;
+      }
     }
 
     function startSpeedTest() {
@@ -819,6 +1158,7 @@
       clearInterval(speedTestTimer);
 
       calibratedWPM = Math.round((words / elapsed) * 60);
+      saveSpeedToLocal();
 
       document.getElementById("countdownDisplay").textContent = "Done";
       document.getElementById("stopSpeedTestBtn").disabled = true;
@@ -826,12 +1166,31 @@
       document.getElementById("speed").value = "custom";
 
       document.getElementById("calibratedSpeedDisplay").innerHTML =
-        `<strong>Your speaking speed:</strong> ${calibratedWPM} words per minute<br>This will now be used for your speech time estimates.`;
+        `<strong>${getSpeedSentence(calibratedWPM)}</strong><br>This will now be used for your speech time estimates.`;
 
       calculateTime();
     }
 
+    speechText.addEventListener("input", calculateTime);
+    refinedText.addEventListener("input", updateCounts);
+    targetMinutesInput.addEventListener("input", calculateTime);
+    speedSelect.addEventListener("change", () => {
+      updateSpeedSummary();
+      calculateTime();
+    });
+
+    presetButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        presetButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        targetMinutesInput.value = btn.dataset.minutes;
+        calculateTime();
+      });
+    });
+
+    loadSavedSpeed();
     updateCounts();
+    updateSpeedSummary();
     calculateTime();
   </script>
 </body>
