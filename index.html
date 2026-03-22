@@ -1282,6 +1282,10 @@
     setRefinedPreview("", "");
     updateCounts();
     calculateTime();
+    function copyOriginalSpeech() {
+  const text = document.getElementById("speechText").value;
+  navigator.clipboard.writeText(text);
+}
   </script>
 </body>
 </html>
