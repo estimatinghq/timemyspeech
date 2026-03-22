@@ -728,7 +728,7 @@
         <div class="right">
           <div style="display:flex; justify-content:space-between; align-items:center;">
   <div class="section-title">Refined speech</div>
-  <button onclick="copyRefinedSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
+  <button id="copyRefinedBtn" onclick="copyRefinedSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
 </div>
 
           <div class="text-area-wrap">
@@ -1303,9 +1303,23 @@
     btn.style.border = "1px solid #d1d5db";
   }, 1500);
 }
-    function copyRefinedSpeech() {
+   function copyRefinedSpeech() {
   const text = document.getElementById("refinedPreview").innerText;
+  const btn = document.getElementById("copyRefinedBtn");
+
   navigator.clipboard.writeText(text);
+
+  btn.innerText = "Copied";
+  btn.style.background = "#22c55e";
+  btn.style.color = "white";
+  btn.style.border = "none";
+
+  setTimeout(() => {
+    btn.innerText = "Copy";
+    btn.style.background = "#f9fafb";
+    btn.style.color = "#1f2937";
+    btn.style.border = "1px solid #d1d5db";
+  }, 1500);
 }
   </script>
   </script>
