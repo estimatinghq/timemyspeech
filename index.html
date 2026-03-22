@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +47,7 @@
       color: var(--text);
       overflow: hidden;
     }
+
     .page {
       max-width: 1460px;
       margin: 0 auto;
@@ -437,34 +437,6 @@
       background: var(--success);
     }
 
-    .speech-badges {
-      display: grid;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .badge-card {
-      background: #f8fafc;
-      border: 1px solid #e5ebf3;
-      border-radius: 14px;
-      padding: 10px 12px;
-    }
-
-    .badge-title {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: 0.9px;
-      font-weight: 700;
-    }
-
-    .badge-value {
-      font-size: 16px;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-
     .speed-test-wrap {
       background: #f8fafc;
       border: 1px solid #e5ebf3;
@@ -678,12 +650,13 @@
   </style>
 </head>
 <body>
-<h1 style="position:absolute; left:-9999px;">Free Speech Timer</h1>
+  <h1 style="position:absolute; left:-9999px;">Free Speech Timer</h1>
+
   <div class="page">
     <section class="hero">
-  <img src="logo2.png" alt="TimeMySpeech Logo" style="height:70px; margin-bottom:10px;">
-  <p>Paste your speech and instantly see how long it will take, then test your real speaking speed for better timing.</p>
-</section>
+      <img src="logo2.png" alt="TimeMySpeech Logo" style="height:70px; margin-bottom:10px;">
+      <p>Paste your speech and instantly see how long it will take, then test your real speaking speed for better timing.</p>
+    </section>
 
     <div class="app">
       <div class="tool">
@@ -695,40 +668,6 @@
           </div>
 
           <div class="word-count">Word count: <span id="wordCount">0</span></div>
-
-          <div class="result-box state-neutral" id="resultBox">
-            <div class="result-label">Estimated Time</div>
-            <div class="time-result" id="timeResult">Your result will appear here</div>
-            <div class="status" id="statusText"></div>
-            <div class="advice" id="adviceText"></div>
-
-            <div class="progress-wrap">
-              <div class="progress-top">
-                <span>Target fit</span>
-                <span id="progressLabel">Waiting for speech</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-              </div>
-            </div>
-
-            <div class="range-stats">
-              <div class="range-card">
-                <div class="range-label">Ideal range</div>
-                <div class="range-value" id="idealRangeText">0 to 0 words</div>
-              </div>
-
-              <div class="range-card">
-                <div class="range-label">Current words</div>
-                <div class="range-value" id="currentWordsText">0 words</div>
-              </div>
-
-              <div class="range-card full">
-                <div class="range-label">What to do</div>
-                <div class="range-value" id="wordsActionText">Paste your speech to begin</div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="middle">
@@ -788,20 +727,37 @@
 
           <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
 
-          <div class="speech-badges">
-            <div class="badge-card">
-              <div class="badge-title">Speaking speed</div>
-              <div class="badge-value" id="speedSummaryText">Normal speed</div>
+          <div class="result-box state-neutral" id="resultBox">
+            <div class="result-label">Estimated Time</div>
+            <div class="time-result" id="timeResult">Your result will appear here</div>
+            <div class="status" id="statusText"></div>
+            <div class="advice" id="adviceText"></div>
+
+            <div class="progress-wrap">
+              <div class="progress-top">
+                <span>Target fit</span>
+                <span id="progressLabel">Waiting for speech</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
             </div>
 
-            <div class="badge-card">
-              <div class="badge-title">Speech difficulty</div>
-              <div class="badge-value" id="difficultyText">Waiting for speech</div>
-            </div>
+            <div class="range-stats">
+              <div class="range-card">
+                <div class="range-label">Ideal range</div>
+                <div class="range-value" id="idealRangeText">0 to 0 words</div>
+              </div>
 
-            <div class="badge-card">
-              <div class="badge-title">Sentence flow</div>
-              <div class="badge-value" id="flowText">Waiting for speech</div>
+              <div class="range-card">
+                <div class="range-label">Current words</div>
+                <div class="range-value" id="currentWordsText">0 words</div>
+              </div>
+
+              <div class="range-card full">
+                <div class="range-label">What to do</div>
+                <div class="range-value" id="wordsActionText">Paste your speech to begin</div>
+              </div>
             </div>
           </div>
         </div>
@@ -818,7 +774,7 @@
             <div class="sentence-box">
               <div class="sentence-label">Click start and Read this sentence aloud</div>
               <div class="sentence-text" id="calibrationSentence">
-                Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary. Hope you enjoy my speech. 
+                Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary. Hope you enjoy my speech.
               </div>
             </div>
 
@@ -870,24 +826,26 @@
     let countdownInterval = null;
     let audioContext = null;
     let currentRefinedPlainText = "";
-function speak(text) {
-  window.speechSynthesis.cancel();
 
-  const speech = new SpeechSynthesisUtterance(text);
-  const voices = window.speechSynthesis.getVoices();
+    function speak(text) {
+      window.speechSynthesis.cancel();
 
-  const englishVoice = voices.find(v => v.lang.startsWith("en"));
+      const speech = new SpeechSynthesisUtterance(text);
+      const voices = window.speechSynthesis.getVoices();
 
-  if (englishVoice) {
-    speech.voice = englishVoice;
-  }
+      const englishVoice = voices.find(v => v.lang.startsWith("en"));
 
-  speech.lang = "en-US";
-  speech.rate = 0.9;
-  speech.pitch = 1;
+      if (englishVoice) {
+        speech.voice = englishVoice;
+      }
 
-  window.speechSynthesis.speak(speech);
-}
+      speech.lang = "en-US";
+      speech.rate = 0.9;
+      speech.pitch = 1;
+
+      window.speechSynthesis.speak(speech);
+    }
+
     function countWords(text) {
       const cleaned = text.trim();
       if (cleaned === "") return 0;
@@ -955,46 +913,9 @@ function speak(text) {
       `;
     }
 
-    function getDifficultyLabel(avgSentenceLength) {
-      if (!avgSentenceLength) return "Waiting for speech";
-      if (avgSentenceLength <= 12) return "Easy to present";
-      if (avgSentenceLength <= 20) return "Normal";
-      return "Complex speech";
-    }
-
-    function getFlowLabel(longSentenceCount, avgSentenceLength) {
-      if (!avgSentenceLength) return "Waiting for speech";
-      if (longSentenceCount === 0) return "Smooth and easy to say";
-      if (longSentenceCount <= 2) return "Mostly smooth";
-      return "Some sentences are long";
-    }
-
     function updateCounts() {
       wordCount.textContent = countWords(speechText.value);
       refinedWordCount.textContent = countWords(currentRefinedPlainText);
-    }
-
-    function updateSpeedSummary() {
-      const speed = getCurrentSpeed();
-      document.getElementById("speedSummaryText").textContent = getSpeedLabel(speed);
-    }
-
-    function updateDifficultyBadges() {
-      const text = speechText.value.trim();
-      const sentences = splitSentences(text);
-      const words = countWords(text);
-
-      if (!words || sentences.length === 0) {
-        document.getElementById("difficultyText").textContent = "Waiting for speech";
-        document.getElementById("flowText").textContent = "Waiting for speech";
-        return;
-      }
-
-      const avgSentenceLength = Math.round(words / sentences.length);
-      const longSentenceCount = sentences.filter(sentence => countWords(sentence) > 24).length;
-
-      document.getElementById("difficultyText").textContent = getDifficultyLabel(avgSentenceLength);
-      document.getElementById("flowText").textContent = getFlowLabel(longSentenceCount, avgSentenceLength);
     }
 
     function setResultState(state) {
@@ -1084,8 +1005,6 @@ function speak(text) {
       const targetMinutes = parseFloat(targetMinutesInput.value) || 2;
 
       updateCounts();
-      updateSpeedSummary();
-      updateDifficultyBadges();
 
       if (!words) {
         document.getElementById("timeResult").textContent = "Paste your speech first";
@@ -1343,33 +1262,33 @@ function speak(text) {
       stopBtn.disabled = true;
       startBtn.disabled = true;
 
-let count = 3;
-countdownDisplay.textContent = count;
-speak(String(count));
+      let count = 3;
+      countdownDisplay.textContent = count;
+      speak(String(count));
 
-countdownInterval = setInterval(() => {
-  count--;
+      countdownInterval = setInterval(() => {
+        count--;
 
-  if (count > 0) {
-    countdownDisplay.textContent = count;
-    speak(String(count));
-  } else if (count === 0) {
-    countdownDisplay.textContent = "GO";
-    speak("Go");
-  } else {
-    clearInterval(countdownInterval);
+        if (count > 0) {
+          countdownDisplay.textContent = count;
+          speak(String(count));
+        } else if (count === 0) {
+          countdownDisplay.textContent = "GO";
+          speak("Go");
+        } else {
+          clearInterval(countdownInterval);
 
-    speedTestRunning = true;
-    speedTestStart = Date.now();
-    stopBtn.disabled = false;
+          speedTestRunning = true;
+          speedTestStart = Date.now();
+          stopBtn.disabled = false;
 
-    speedTestTimer = setInterval(() => {
-      if (!speedTestRunning) return;
-      const elapsed = (Date.now() - speedTestStart) / 1000;
-      timerDisplay.textContent = elapsed.toFixed(1) + "s";
-    }, 100);
-  }
-}, 1000);
+          speedTestTimer = setInterval(() => {
+            if (!speedTestRunning) return;
+            const elapsed = (Date.now() - speedTestStart) / 1000;
+            timerDisplay.textContent = elapsed.toFixed(1) + "s";
+          }, 100);
+        }
+      }, 1000);
     }
 
     function stopSpeedTest() {
@@ -1398,7 +1317,6 @@ countdownInterval = setInterval(() => {
     speechText.addEventListener("input", calculateTime);
     targetMinutesInput.addEventListener("input", calculateTime);
     speedSelect.addEventListener("change", () => {
-      updateSpeedSummary();
       calculateTime();
     });
 
@@ -1414,7 +1332,6 @@ countdownInterval = setInterval(() => {
     loadSavedSpeed();
     setRefinedPreview("", "");
     updateCounts();
-    updateSpeedSummary();
     calculateTime();
   </script>
 </body>
