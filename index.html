@@ -115,8 +115,15 @@
 
     .bottom-section {
       border-top: 1px solid var(--soft-border);
-      padding: 8px 14px 10px;
+      padding: 12px 14px;
       flex: 0 0 auto;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.8fr;
+      gap: 12px;
+      align-items: stretch;
     }
 
     .section-title {
@@ -298,13 +305,12 @@
     }
 
     .result-box {
-      margin-top: 10px;
       padding: 12px 14px;
       width: 100%;
       border-radius: 18px;
-      flex: 0 0 auto;
       border: 1px solid transparent;
       transition: 0.15s ease;
+      height: 100%;
     }
 
     .result-box.state-neutral {
@@ -442,6 +448,7 @@
       border: 1px solid #e5ebf3;
       border-radius: 20px;
       padding: 12px 14px;
+      height: 100%;
     }
 
     .speed-test-header {
@@ -575,7 +582,8 @@
         min-height: 100vh;
       }
 
-      .tool {
+      .tool,
+      .bottom-grid {
         grid-template-columns: 1fr;
       }
 
@@ -726,7 +734,11 @@
           </div>
 
           <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
+        </div>
+      </div>
 
+      <div class="bottom-section">
+        <div class="bottom-grid">
           <div class="result-box state-neutral" id="resultBox">
             <div class="result-label">Estimated Time</div>
             <div class="time-result" id="timeResult">Your result will appear here</div>
@@ -760,53 +772,52 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="bottom-section">
-        <div class="speed-test-wrap">
-          <div class="speed-test-header">
-            <h3>Test Your Speaking Speed</h3>
-            <p>Read the sentence out loud after the countdown, then press stop when you finish.</p>
-          </div>
-
-          <div class="speed-test-grid">
-            <div class="sentence-box">
-              <div class="sentence-label">Click start and Read this sentence aloud</div>
-              <div class="sentence-text" id="calibrationSentence">
-                Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary. Hope you enjoy my speech.
-              </div>
+          <div class="speed-test-wrap">
+            <div class="speed-test-header">
+              <h3>Test Your Speaking Speed</h3>
+              <p>Read the sentence out loud after the countdown, then press stop when you finish.</p>
             </div>
 
-            <div class="speed-side">
-              <div class="mini-stats">
-                <div class="stat-card">
-                  <div class="stat-label">Countdown</div>
-                  <div class="stat-value" id="countdownDisplay">Ready</div>
-                </div>
-
-                <div class="stat-card">
-                  <div class="stat-label">Timer</div>
-                  <div class="stat-value" id="timerDisplay">0.0s</div>
+            <div class="speed-test-grid">
+              <div class="sentence-box">
+                <div class="sentence-label">Click start and Read this sentence aloud</div>
+                <div class="sentence-text" id="calibrationSentence">
+                  Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary. Hope you enjoy my speech.
                 </div>
               </div>
 
-              <div class="speed-buttons">
-                <button class="primary-btn" id="startSpeedTestBtn" onclick="startSpeedTest()">Start Speed Test</button>
-                <button class="secondary-btn" id="stopSpeedTestBtn" onclick="stopSpeedTest()" disabled>Stop Test</button>
-              </div>
+              <div class="speed-side">
+                <div class="mini-stats">
+                  <div class="stat-card">
+                    <div class="stat-label">Countdown</div>
+                    <div class="stat-value" id="countdownDisplay">Ready</div>
+                  </div>
 
-              <div class="speed-result" id="calibratedSpeedDisplay">
-                No personal speaking speed saved yet.
-              </div>
+                  <div class="stat-card">
+                    <div class="stat-label">Timer</div>
+                    <div class="stat-value" id="timerDisplay">0.0s</div>
+                  </div>
+                </div>
 
-              <div class="helper-text">
-                Tip: read at your normal presentation pace, not extra fast.
+                <div class="speed-buttons">
+                  <button class="primary-btn" id="startSpeedTestBtn" onclick="startSpeedTest()">Start Speed Test</button>
+                  <button class="secondary-btn" id="stopSpeedTestBtn" onclick="stopSpeedTest()" disabled>Stop Test</button>
+                </div>
+
+                <div class="speed-result" id="calibratedSpeedDisplay">
+                  No personal speaking speed saved yet.
+                </div>
+
+                <div class="helper-text">
+                  Tip: read at your normal presentation pace, not extra fast.
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -832,7 +843,6 @@
 
       const speech = new SpeechSynthesisUtterance(text);
       const voices = window.speechSynthesis.getVoices();
-
       const englishVoice = voices.find(v => v.lang.startsWith("en"));
 
       if (englishVoice) {
@@ -851,15 +861,6 @@
       if (cleaned === "") return 0;
       const matches = cleaned.match(/\b[\w']+\b/g);
       return matches ? matches.length : 0;
-    }
-
-    function splitSentences(text) {
-      const cleaned = text.trim();
-      if (!cleaned) return [];
-      return cleaned
-        .split(/(?<=[.!?])\s+/)
-        .map(sentence => sentence.trim())
-        .filter(Boolean);
     }
 
     function escapeHtml(text) {
@@ -890,12 +891,6 @@
       const mins = Math.floor(seconds / 60);
       const secs = seconds % 60;
       return `${mins} min ${secs} sec`;
-    }
-
-    function getSpeedLabel(wpm) {
-      if (wpm <= 145) return "Slow presentation speed";
-      if (wpm <= 172) return "Normal presentation speed";
-      return "Fast presentation speed";
     }
 
     function getSpeedSentence(wpm) {
@@ -1192,55 +1187,6 @@
 
       if (audioContext && audioContext.state === "suspended") {
         audioContext.resume().catch(() => {});
-      }
-    }
-
-    function playShortBeep() {
-      try {
-        ensureAudioContext();
-        if (!audioContext) return;
-
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
-
-        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.12, audioContext.currentTime + 0.01);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.18);
-
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.2);
-      } catch (error) {
-      }
-    }
-
-    function playGoBeep() {
-      try {
-        ensureAudioContext();
-        if (!audioContext) return;
-
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(700, audioContext.currentTime);
-        oscillator.frequency.linearRampToValueAtTime(1200, audioContext.currentTime + 0.45);
-
-        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.16, audioContext.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.55);
-
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.58);
-      } catch (error) {
       }
     }
 
