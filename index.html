@@ -726,7 +726,10 @@
         </div>
 
         <div class="right">
-          <div class="section-title">Refined speech</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+  <div class="section-title">Refined speech</div>
+  <button onclick="copyRefinedSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -4px;">Copy</button>
+</div>
 
           <div class="text-area-wrap">
             <div
@@ -1284,6 +1287,10 @@
     calculateTime();
     function copyOriginalSpeech() {
   const text = document.getElementById("speechText").value;
+  navigator.clipboard.writeText(text);
+}
+    function copyRefinedSpeech() {
+  const text = document.getElementById("refinedPreview").innerText;
   navigator.clipboard.writeText(text);
 }
   </script>
