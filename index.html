@@ -1304,9 +1304,16 @@
     btn.style.border = "1px solid #d1d5db";
   }, 1500);
 }
-   function copyRefinedSpeech() {
-  const text = document.getElementById("refinedPreview").innerText;
+  function copyRefinedSpeech() {
+  const container = document.getElementById("refinedPreview");
   const btn = document.getElementById("copyRefinedBtn");
+
+  const clone = container.cloneNode(true);
+
+  // remove any deleted / struck-through words
+  clone.querySelectorAll("del, s, strike").forEach(el => el.remove());
+
+  const text = clone.innerText;
 
   navigator.clipboard.writeText(text);
 
