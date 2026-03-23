@@ -380,7 +380,9 @@ const copyBtn = document.getElementById("copyBtn");
 
     let currentMinutes = 2;
 
-    let currentWPM = 165;
+   let currentWPM = localStorage.getItem("speechWPM") 
+  ? parseInt(localStorage.getItem("speechWPM")) 
+  : 165;
 
 function updateCalculator(minutes) {
   currentMinutes = minutes;
