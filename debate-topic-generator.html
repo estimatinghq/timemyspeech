@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debate Topic Generator | Time My Speech</title>
+  <meta name="description" content="Generate random debate topics for school, speeches, class activities and public speaking practice." />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #f8fafc, #e2e8f0);
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+      background: white;
+      border-radius: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2563eb;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 38px;
+      line-height: 1.15;
+    }
+
+    .subtext {
+      margin: 0 auto 28px;
+      max-width: 560px;
+      font-size: 17px;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .topic-box {
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 34px 24px;
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .topic-text {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #111827;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .primary-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .secondary-btn {
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .secondary-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .category {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #6b7280;
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 30px;
+      }
+
+      .topic-text {
+        font-size: 23px;
+      }
+
+      .container {
+        padding: 30px 18px;
+      }
+
+      .topic-box {
+        padding: 28px 18px;
+        min-height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Time My Speech</div>
+
+    <h1>Debate Topic Generator</h1>
+    <p class="subtext">
+      Instantly generate random debate topics for school, speeches, class practice and public speaking.
+    </p>
+
+    <div class="topic-box">
+      <div class="topic-text" id="topicText">Click generate to get a debate topic</div>
+    </div>
+
+    <div class="buttons">
+      <button class="primary-btn" onclick="generateTopic()">Generate Topic</button>
+      <button class="secondary-btn" id="copyBtn" onclick="copyTopic()">Copy Topic</button>
+    </div>
+
+    <div class="category" id="categoryText">Category: Ready</div>
+
+    <div class="footer-note">
+      Great for students, teachers and speech practice.
+    </div>
+  </div>
+
+  <script>
+    const debateTopics = [
+      { topic: "Schools should ban homework.", category: "School" },
+      { topic: "School uniforms should be optional.", category: "School" },
+      { topic: "Students should be allowed to use phones in class.", category: "School" },
+      { topic: "Exams are not the best way to measure intelligence.", category: "Education" },
+      { topic: "Students should learn finance instead of some traditional subjects.", category: "Education" },
+      { topic: "Artificial intelligence will do more good than harm.", category: "Technology" },
+      { topic: "Social media should have stricter age limits.", category: "Technology" },
+      { topic: "Online learning is better than classroom learning.", category: "Education" },
+      { topic: "Video games can be good for young people.", category: "Lifestyle" },
+      { topic: "Children under 16 should not use social media.", category: "Technology" },
+      { topic: "Homework should be banned on weekends.", category: "School" },
+      { topic: "Zoos should be banned.", category: "Environment" },
+      { topic: "Fast food advertising to children should be banned.", category: "Health" },
+      { topic: "Every student should do public speaking at school.", category: "School" },
+      { topic: "School days should start later.", category: "School" },
+      { topic: "Books are better than movies.", category: "Fun" },
+      { topic: "Space exploration is worth the money.", category: "Science" },
+      { topic: "The voting age should be lowered to 16.", category: "Society" },
+      { topic: "Celebrities are paid too much.", category: "Society" },
+      { topic: "Animals should not be used for entertainment.", category: "Ethics" },
+      { topic: "Recycling should be compulsory.", category: "Environment" },
+      { topic: "School lunches should be free for all students.", category: "School" },
+      { topic: "Uniforms improve student behaviour.", category: "School" },
+      { topic: "Kids should have less screen time.", category: "Health" },
+      { topic: "Influencers are bad role models.", category: "Society" },
+      { topic: "Homework does more harm than good.", category: "Education" },
+      { topic: "Pets should be allowed in more public places.", category: "Lifestyle" },
+      { topic: "Professional athletes are overpaid.", category: "Sport" },
+      { topic: "School camps should be compulsory.", category: "School" },
+      { topic: "Plastic bags should be completely banned.", category: "Environment" },
+      { topic: "Junk food should not be sold at schools.", category: "Health" },
+      { topic: "Students should choose more of their own subjects.", category: "Education" },
+      { topic: "Reality TV has a negative effect on society.", category: "Media" },
+      { topic: "Everyone should learn first aid at school.", category: "Health" },
+      { topic: "Public transport should be free.", category: "Society" },
+      { topic: "Climate change education should be compulsory.", category: "Environment" },
+      { topic: "Parents should limit children's internet access.", category: "Technology" },
+      { topic: "School sports should be compulsory.", category: "School" },
+      { topic: "There should be a four day school week.", category: "School" },
+      { topic: "Students should be paid for good grades.", category: "Fun" },
+      { topic: "Homework should only be given when truly necessary.", category: "Education" },
+      { topic: "AI should never replace teachers.", category: "Technology" },
+      { topic: "The internet has improved education.", category: "Technology" },
+      { topic: "Printed books will never disappear.", category: "Media" },
+      { topic: "Extreme wealth should be taxed more heavily.", category: "Society" },
+      { topic: "School detentions are ineffective.", category: "School" },
+      { topic: "Children should do chores at home.", category: "Lifestyle" },
+      { topic: "Sports stars should be better role models.", category: "Sport" },
+      { topic: "It is better to live in the city than the country.", category: "Lifestyle" },
+      { topic: "Renewable energy should replace fossil fuels faster.", category: "Environment" }
+    ];
+
+    let lastIndex = -1;
+
+    function generateTopic() {
+      let randomIndex;
+
+      do {
+        randomIndex = Math.floor(Math.random() * debateTopics.length);
+      } while (randomIndex === lastIndex && debateTopics.length > 1);
+
+      lastIndex = randomIndex;
+
+      const selected = debateTopics[randomIndex];
+
+      document.getElementById("topicText").textContent = selected.topic;
+      document.getElementById("categoryText").textContent = "Category: " + selected.category;
+    }
+
+    function copyTopic() {
+      const topic = document.getElementById("topicText").textContent;
+      const btn = document.getElementById("copyBtn");
+
+      if (topic === "Click generate to get a debate topic") {
+        return;
+      }
+
+      navigator.clipboard.writeText(topic);
+
+      btn.textContent = "Copied";
+      btn.style.background = "#22c55e";
+      btn.style.color = "white";
+      btn.style.border = "none";
+
+      setTimeout(() => {
+        btn.textContent = "Copy Topic";
+        btn.style.background = "#f3f4f6";
+        btn.style.color = "#111827";
+        btn.style.border = "1px solid #d1d5db";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
