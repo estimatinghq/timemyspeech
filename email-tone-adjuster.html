@@ -348,15 +348,15 @@ Hi Fiona, just checking in to see whether you might be able to send the contract
 
 </div>
 <script>
-async function adjustTone() {
+
+let selectedTone = "neutral"
+
+async function rewriteEmail(tone, customInstruction="") {
 
 const message = document.querySelector("textarea").value
-const customInstruction = document.querySelector(".custom input").value
 const outputBox = document.querySelector(".output")
-const button = document.querySelector(".primary")
 
 outputBox.innerText = "Rewriting..."
-button.disabled = true
 
 try {
 
@@ -367,7 +367,7 @@ headers:{
 },
 body:JSON.stringify({
 message:message,
-tone:"neutral",
+tone:tone,
 customInstruction:customInstruction
 })
 })
@@ -376,17 +376,36 @@ const data = await res.json()
 
 outputBox.innerText = data.result || data.error
 
-} catch(err) {
+} catch(err){
 
 outputBox.innerText = "Request failed."
 
 }
 
-button.disabled = false
-
 }
 
-document.querySelector(".primary").addEventListener("click",adjustTone)
+/* TONE BUTTONS */
+
+document.querySelectorAll(".tone").forEach(btn=>{
+btn.addEventListener("click",function(){
+
+selectedTone = this.innerText
+
+rewriteEmail(selectedTone)
+
+})
+})
+
+/* CUSTOM AI BUTTON */
+
+document.querySelector(".primary").addEventListener("click",function(){
+
+const customInstruction = document.querySelector(".custom input").value
+
+rewriteEmail(selectedTone, customInstruction)
+
+})
+
 </script>
 </body>
 </html>
