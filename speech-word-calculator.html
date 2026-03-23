@@ -378,19 +378,17 @@
 
     let currentMinutes = 2;
 
-    function updateCalculator(minutes) {
-      currentMinutes = minutes;
+    let currentWPM = 165;
 
-      const slow = minutes * 140;
-      const normal = minutes * 165;
-      const fast = minutes * 180;
+function updateCalculator(minutes) {
+  currentMinutes = minutes;
 
-      slowWords.textContent = slow;
-      normalWords.textContent = normal;
-      fastWords.textContent = fast;
+  const words = Math.round(minutes * currentWPM);
 
-      selectedSummary.textContent = `Estimated word counts for a ${minutes} minute speech`;
-    }
+  recommendedWords.textContent = words;
+
+  selectedSummary.textContent = `Recommended length for a ${minutes} minute speech`;
+}
 
    minuteButtons.forEach(button => {
   button.addEventListener("click", () => {
