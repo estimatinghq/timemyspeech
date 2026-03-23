@@ -347,6 +347,33 @@ Hi Fiona, just checking in to see whether you might be able to send the contract
 </section>
 
 </div>
+<script>
 
+async function adjustTone() {
+
+const message = document.querySelector("textarea").value
+const customInstruction = document.querySelector(".custom input").value
+
+const res = await fetch("/api/rewrite",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:message,
+tone:"neutral",
+customInstruction:customInstruction
+})
+})
+
+const data = await res.json()
+
+document.querySelector(".output").innerText = data.result
+
+}
+
+document.querySelector(".primary").addEventListener("click",adjustTone)
+
+</script>
 </body>
 </html>
