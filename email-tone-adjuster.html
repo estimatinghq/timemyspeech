@@ -36,13 +36,31 @@ body{
 .logo{
   display:flex;
   align-items:center;
+  gap:12px;
+  font-size:30px;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+  display:flex;
+  align-items:center;
   gap:10px;
   font-size:28px;
   font-weight:700;
   letter-spacing:-0.02em;
 }
 
+.logo-link{ text-decoration:none; }
+
 .logo-icon{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:#eef2ff;
+  font-size:22px;
+}
   width:42px;
   height:42px;
   display:flex;
@@ -223,10 +241,12 @@ button{
 <body>
 
 <div class="site-header">
+  <a href="/" class="logo-link">
   <div class="logo">
     <div class="logo-icon">✉️</div>
     <div class="logo-text">FixMy<span class="email-red">Email</span></div>
   </div>
+  </a>
 </div>
 
 <div class="wrap">
