@@ -161,7 +161,10 @@ function stopTest() {
   else message = "Fast speaking pace";
 
   document.getElementById("result").innerHTML =
-    "Your speaking speed: <b>" + wpm + " WPM</b><br>" + message;
+"Your speaking speed: <b>" + wpm + " WPM</b><br>" +
+message +
+"<br><br>This speed has been saved for your calculator.<br>" +
+"<a href='/speech-word-calculator.html' style='display:inline-block;margin-top:10px;padding:10px 16px;background:#2563eb;color:white;text-decoration:none;border-radius:8px;font-weight:700;'>Use This Speed in Word Calculator</a>";
 }
 </script>
 </body>
