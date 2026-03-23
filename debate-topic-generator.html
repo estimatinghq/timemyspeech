@@ -25,11 +25,11 @@
 
     .container {
       width: 100%;
-      max-width: 760px;
+      max-width: 820px;
       background: white;
-      border-radius: 22px;
+      border-radius: 24px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-      padding: 40px 24px;
+      padding: 42px 24px;
       text-align: center;
     }
 
@@ -44,35 +44,114 @@
 
     h1 {
       margin: 0 0 10px;
-      font-size: 38px;
+      font-size: 40px;
       line-height: 1.15;
     }
 
     .subtext {
       margin: 0 auto 28px;
-      max-width: 560px;
+      max-width: 600px;
       font-size: 17px;
       color: #4b5563;
       line-height: 1.5;
     }
 
-    .topic-box {
-      background: #f9fafb;
-      border: 2px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 34px 24px;
-      min-height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .machine-wrap {
+      position: relative;
       margin-bottom: 24px;
     }
 
-    .topic-text {
-      font-size: 28px;
+    .machine-topbar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
       font-weight: 700;
-      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .topic-box {
+      position: relative;
+      background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+      border: 2px solid #e5e7eb;
+      border-radius: 22px;
+      min-height: 220px;
+      padding: 24px 18px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .topic-window {
+      position: relative;
+      height: 150px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topic-reel {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      transition: transform 0.12s linear;
+      will-change: transform;
+    }
+
+    .reel-item {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+    }
+
+    .reel-item span {
+      display: block;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.35;
       color: #111827;
+      max-width: 680px;
+    }
+
+    .fade-top,
+    .fade-bottom {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 38px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .fade-top {
+      top: 0;
+      background: linear-gradient(to bottom, rgba(243,244,246,1), rgba(243,244,246,0));
+    }
+
+    .fade-bottom {
+      bottom: 0;
+      background: linear-gradient(to top, rgba(243,244,246,1), rgba(243,244,246,0));
+    }
+
+    .selector-line {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 150px;
+      border: 2px solid rgba(37, 99, 235, 0.16);
+      border-radius: 18px;
+      pointer-events: none;
+      z-index: 1;
+      box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.04);
     }
 
     .buttons {
@@ -96,10 +175,16 @@
     .primary-btn {
       background: #2563eb;
       color: white;
+      min-width: 150px;
     }
 
     .primary-btn:hover {
       background: #1d4ed8;
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
 
     .secondary-btn {
@@ -118,19 +203,37 @@
       color: #6b7280;
     }
 
+    .category-badge {
+      display: inline-block;
+      margin-top: 8px;
+      background: #eef2ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     .footer-note {
       margin-top: 26px;
       font-size: 14px;
       color: #6b7280;
     }
 
+    .landed {
+      animation: pop 0.28s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.98); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
     @media (max-width: 640px) {
       h1 {
-        font-size: 30px;
-      }
-
-      .topic-text {
-        font-size: 23px;
+        font-size: 31px;
       }
 
       .container {
@@ -138,8 +241,18 @@
       }
 
       .topic-box {
-        padding: 28px 18px;
-        min-height: 140px;
+        min-height: 200px;
+        padding: 20px 14px;
+      }
+
+      .topic-window,
+      .reel-item,
+      .selector-line {
+        height: 130px;
+      }
+
+      .reel-item span {
+        font-size: 23px;
       }
     }
   </style>
@@ -150,19 +263,30 @@
 
     <h1>Debate Topic Generator</h1>
     <p class="subtext">
-      Instantly generate random debate topics for school, speeches, class practice and public speaking.
+      Spin to generate a random debate topic for school, speeches, class practice and public speaking.
     </p>
 
-    <div class="topic-box">
-      <div class="topic-text" id="topicText">Click generate to get a debate topic</div>
+    <div class="machine-wrap">
+      <div class="machine-topbar">Interactive topic spinner</div>
+
+      <div class="topic-box" id="topicBox">
+        <div class="fade-top"></div>
+        <div class="fade-bottom"></div>
+        <div class="selector-line"></div>
+
+        <div class="topic-window">
+          <div class="topic-reel" id="topicReel"></div>
+        </div>
+      </div>
     </div>
 
     <div class="buttons">
-      <button class="primary-btn" onclick="generateTopic()">Generate Topic</button>
+      <button class="primary-btn" id="spinBtn" onclick="spinTopic()">Spin Topic</button>
       <button class="secondary-btn" id="copyBtn" onclick="copyTopic()">Copy Topic</button>
     </div>
 
-    <div class="category" id="categoryText">Category: Ready</div>
+    <div class="category" id="categoryText">Category</div>
+    <div class="category-badge" id="categoryBadge">Ready</div>
 
     <div class="footer-note">
       Great for students, teachers and speech practice.
@@ -223,45 +347,115 @@
       { topic: "Renewable energy should replace fossil fuels faster.", category: "Environment" }
     ];
 
+    const reel = document.getElementById("topicReel");
+    const spinBtn = document.getElementById("spinBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const topicBox = document.getElementById("topicBox");
+    const categoryText = document.getElementById("categoryText");
+    const categoryBadge = document.getElementById("categoryBadge");
+
+    const itemHeight = window.innerWidth <= 640 ? 130 : 150;
+
+    let currentTopic = "";
+    let currentCategory = "Ready";
+    let spinning = false;
     let lastIndex = -1;
 
-    function generateTopic() {
-      let randomIndex;
+    function buildInitialReel() {
+      reel.innerHTML = "";
+      const first = debateTopics[0];
+      const item = document.createElement("div");
+      item.className = "reel-item";
+      item.innerHTML = `<span>${first.topic}</span>`;
+      reel.appendChild(item);
+      currentTopic = first.topic;
+      currentCategory = first.category;
+      categoryText.textContent = "Category";
+      categoryBadge.textContent = "Ready";
+      reel.style.transform = "translateY(0px)";
+    }
 
+    function makeReelItems(sequence) {
+      reel.innerHTML = "";
+      sequence.forEach(entry => {
+        const item = document.createElement("div");
+        item.className = "reel-item";
+        item.innerHTML = `<span>${entry.topic}</span>`;
+        reel.appendChild(item);
+      });
+    }
+
+    function spinTopic() {
+      if (spinning) return;
+
+      spinning = true;
+      spinBtn.disabled = true;
+      spinBtn.textContent = "Spinning...";
+      topicBox.classList.remove("landed");
+
+      let finalIndex;
       do {
-        randomIndex = Math.floor(Math.random() * debateTopics.length);
-      } while (randomIndex === lastIndex && debateTopics.length > 1);
+        finalIndex = Math.floor(Math.random() * debateTopics.length);
+      } while (finalIndex === lastIndex && debateTopics.length > 1);
 
-      lastIndex = randomIndex;
+      lastIndex = finalIndex;
 
-      const selected = debateTopics[randomIndex];
+      const sequence = [];
+      const totalItems = 20;
 
-      document.getElementById("topicText").textContent = selected.topic;
-      document.getElementById("categoryText").textContent = "Category: " + selected.category;
+      for (let i = 0; i < totalItems - 1; i++) {
+        const random = debateTopics[Math.floor(Math.random() * debateTopics.length)];
+        sequence.push(random);
+      }
+
+      const finalTopic = debateTopics[finalIndex];
+      sequence.push(finalTopic);
+
+      makeReelItems(sequence);
+
+      reel.style.transition = "none";
+      reel.style.transform = "translateY(0px)";
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          reel.style.transition = "transform 2.4s cubic-bezier(0.12, 0.82, 0.18, 1)";
+          reel.style.transform = `translateY(-${(sequence.length - 1) * itemHeight}px)`;
+        });
+      });
+
+      setTimeout(() => {
+        currentTopic = finalTopic.topic;
+        currentCategory = finalTopic.category;
+
+        categoryText.textContent = "Category";
+        categoryBadge.textContent = currentCategory;
+
+        topicBox.classList.add("landed");
+        spinBtn.disabled = false;
+        spinBtn.textContent = "Spin Topic";
+        spinning = false;
+      }, 2450);
     }
 
     function copyTopic() {
-      const topic = document.getElementById("topicText").textContent;
-      const btn = document.getElementById("copyBtn");
+      if (!currentTopic || currentCategory === "Ready" || spinning) return;
 
-      if (topic === "Click generate to get a debate topic") {
-        return;
-      }
+      navigator.clipboard.writeText(currentTopic);
 
-      navigator.clipboard.writeText(topic);
-
-      btn.textContent = "Copied";
-      btn.style.background = "#22c55e";
-      btn.style.color = "white";
-      btn.style.border = "none";
+      copyBtn.textContent = "Copied";
+      copyBtn.style.background = "#22c55e";
+      copyBtn.style.color = "white";
+      copyBtn.style.border = "none";
 
       setTimeout(() => {
-        btn.textContent = "Copy Topic";
-        btn.style.background = "#f3f4f6";
-        btn.style.color = "#111827";
-        btn.style.border = "1px solid #d1d5db";
+        copyBtn.textContent = "Copy Topic";
+        copyBtn.style.background = "#f3f4f6";
+        copyBtn.style.color = "#111827";
+        copyBtn.style.border = "1px solid #d1d5db";
       }, 1500);
     }
+
+    buildInitialReel();
   </script>
 </body>
 </html>
