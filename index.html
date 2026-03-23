@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Speech Timer & Word Calculator | TimeMySpeech</title>
   <meta name="description" content="Free online speech timer with countdown, speaking pace calculator and AI speech refinement.">
+
   <style>
     * {
       box-sizing: border-box;
@@ -37,7 +38,7 @@
 
     html,
     body {
-      height: 100%;
+      min-height: 100%;
     }
 
     body {
@@ -45,14 +46,14 @@
       font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
       color: var(--text);
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .page {
       max-width: 1460px;
       margin: 0 auto;
       padding: 14px 20px;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -77,6 +78,31 @@
       line-height: 1.35;
       color: var(--muted);
       max-width: 760px;
+    }
+
+    .top-tool-links {
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-tool-link {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid #bfdbfe;
+      transition: 0.15s ease;
+    }
+
+    .top-tool-link:hover {
+      background: #dbeafe;
     }
 
     .app {
@@ -573,11 +599,67 @@
       line-height: 1.35;
     }
 
-    @media (max-width: 1080px) {
-      body {
-        overflow: auto;
-      }
+    .more-tools-section {
+      max-width: 1100px;
+      margin: 28px auto 50px;
+      padding: 0 20px;
+    }
 
+    .more-tools-card {
+      text-align: center;
+      padding: 34px 22px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.05);
+    }
+
+    .more-tools-card h2 {
+      font-size: 30px;
+      margin: 0 0 10px;
+    }
+
+    .more-tools-card p {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .tool-card-link {
+      display: inline-block;
+      padding: 16px 26px;
+      font-size: 18px;
+      font-weight: 700;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      transition: 0.15s ease;
+    }
+
+    .tool-card-link:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .timing-guide {
+      max-width: 900px;
+      margin: 40px auto 20px auto;
+      font-family: Arial, sans-serif;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+
+    .timing-guide h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1080px) {
       .page {
         height: auto;
         min-height: 100vh;
@@ -655,8 +737,13 @@
       .time-result {
         font-size: 26px;
       }
+
+      .more-tools-card h2 {
+        font-size: 25px;
+      }
     }
   </style>
+
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
@@ -666,15 +753,21 @@
     <section class="hero">
       <img src="logo2.png" alt="TimeMySpeech Logo" style="height:70px; margin-bottom:10px;">
       <p>Paste your speech and instantly see how long it will take, then test your real speaking speed for better timing.</p>
+
+      <div class="top-tool-links">
+        <a class="top-tool-link" href="/">Speech Timer</a>
+        <a class="top-tool-link" href="/debate-topic-generator.html">Debate Topic Generator</a>
+      </div>
     </section>
 
     <div class="app">
       <div class="tool">
         <div class="left">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-  <div class="section-title">Original speech</div>
-  <button id="copyOriginalBtn" onclick="copyOriginalSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
-</div>
+            <div class="section-title">Original speech</div>
+            <button id="copyOriginalBtn" onclick="copyOriginalSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
+          </div>
+
           <div class="text-area-wrap">
             <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
           </div>
@@ -728,9 +821,9 @@
 
         <div class="right">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-  <div class="section-title">Refined speech</div>
-  <button id="copyRefinedBtn" onclick="copyRefinedSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
-</div>
+            <div class="section-title">Refined speech</div>
+            <button id="copyRefinedBtn" onclick="copyRefinedSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
+          </div>
 
           <div class="text-area-wrap">
             <div
@@ -825,6 +918,32 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <div class="timing-guide">
+    <h2>Speech Timing Guide</h2>
+
+    <p>Most speakers talk between <strong>140 and 170 words per minute</strong>. This means the length of your speech depends heavily on your speaking pace.</p>
+
+    <p><strong>Typical speech lengths:</strong></p>
+
+    <ul>
+      <li>1 minute speech ≈ 140 to 170 words</li>
+      <li>2 minute speech ≈ 280 to 340 words</li>
+      <li>3 minute speech ≈ 420 to 510 words</li>
+      <li>5 minute speech ≈ 700 to 850 words</li>
+      <li>10 minute speech ≈ 1400 to 1700 words</li>
+    </ul>
+
+    <p>Use the TimeMySpeech calculator above to instantly estimate how long your speech will take and adjust your content to fit your time limit.</p>
+  </div>
+
+  <div class="more-tools-section">
+    <div class="more-tools-card">
+      <h2>More Speech Tools</h2>
+      <p>Try the new interactive topic spinner for speeches, debates and class practice.</p>
+      <a href="/debate-topic-generator.html" class="tool-card-link">Debate Topic Generator</a>
     </div>
   </div>
 
@@ -1267,6 +1386,44 @@
       calculateTime();
     }
 
+    function copyOriginalSpeech() {
+      const text = document.getElementById("speechText").value;
+      const btn = document.getElementById("copyOriginalBtn");
+
+      navigator.clipboard.writeText(text);
+
+      btn.innerText = "Copied";
+      btn.style.background = "#22c55e";
+      btn.style.color = "white";
+      btn.style.border = "none";
+
+      setTimeout(() => {
+        btn.innerText = "Copy";
+        btn.style.background = "#f9fafb";
+        btn.style.color = "#1f2937";
+        btn.style.border = "1px solid #d1d5db";
+      }, 1500);
+    }
+
+    function copyRefinedSpeech() {
+      const text = currentRefinedPlainText;
+      const btn = document.getElementById("copyRefinedBtn");
+
+      navigator.clipboard.writeText(text);
+
+      btn.innerText = "Copied";
+      btn.style.background = "#22c55e";
+      btn.style.color = "white";
+      btn.style.border = "none";
+
+      setTimeout(() => {
+        btn.innerText = "Copy";
+        btn.style.background = "#f9fafb";
+        btn.style.color = "#1f2937";
+        btn.style.border = "1px solid #d1d5db";
+      }, 1500);
+    }
+
     speechText.addEventListener("input", calculateTime);
     targetMinutesInput.addEventListener("input", calculateTime);
     speedSelect.addEventListener("change", () => {
@@ -1286,88 +1443,6 @@
     setRefinedPreview("", "");
     updateCounts();
     calculateTime();
-    function copyOriginalSpeech() {
-  const text = document.getElementById("speechText").value;
-  const btn = document.getElementById("copyOriginalBtn");
-
-  navigator.clipboard.writeText(text);
-
-  btn.innerText = "Copied";
-  btn.style.background = "#22c55e";
-  btn.style.color = "white";
-  btn.style.border = "none";
-
-  setTimeout(() => {
-    btn.innerText = "Copy";
-    btn.style.background = "#f9fafb";
-    btn.style.color = "#1f2937";
-    btn.style.border = "1px solid #d1d5db";
-  }, 1500);
-}
-  function copyRefinedSpeech() {
-  const container = document.getElementById("refinedPreview");
-  const btn = document.getElementById("copyRefinedBtn");
-
-  const clone = container.cloneNode(true);
-
-  // remove any deleted / struck-through words
-  clone.querySelectorAll("del, s, strike").forEach(el => el.remove());
-
-  const text = clone.innerText;
-
-  navigator.clipboard.writeText(text);
-
-  btn.innerText = "Copied";
-  btn.style.background = "#22c55e";
-  btn.style.color = "white";
-  btn.style.border = "none";
-
-  setTimeout(() => {
-    btn.innerText = "Copy";
-    btn.style.background = "#f9fafb";
-    btn.style.color = "#1f2937";
-    btn.style.border = "1px solid #d1d5db";
-  }, 1500);
-}
   </script>
-  </script>
-
-<div style="max-width:900px;margin:40px auto 20px auto;font-family:Arial,sans-serif;color:#374151;font-size:14px;line-height:1.6;">
-  <h2 style="font-size:20px;margin-bottom:10px;">Speech Timing Guide</h2>
-
-  <p>Most speakers talk between <strong>140 and 170 words per minute</strong>. This means the length of your speech depends heavily on your speaking pace.</p>
-
-  <p><strong>Typical speech lengths:</strong></p>
-
-  <ul>
-    <li>1 minute speech ≈ 140 to 170 words</li>
-    <li>2 minute speech ≈ 280 to 340 words</li>
-    <li>3 minute speech ≈ 420 to 510 words</li>
-    <li>5 minute speech ≈ 700 to 850 words</li>
-    <li>10 minute speech ≈ 1400 to 1700 words</li>
-  </ul>
-
-  <p>Use the TimeMySpeech calculator above to instantly estimate how long your speech will take and adjust your content to fit your time limit.</p>
-</div>
-<div style="text-align:center;margin-top:60px;padding:40px;background:#f8fafc;border-top:1px solid #e5e7eb;">
-  
-  <h2 style="font-size:28px;margin-bottom:20px;">More Speech Tools</h2>
-
-  <a href="/debate-topic-generator.html" 
-  style="
-  display:inline-block;
-  padding:16px 26px;
-  font-size:18px;
-  font-weight:700;
-  background:#2563eb;
-  color:white;
-  text-decoration:none;
-  border-radius:12px;
-  box-shadow:0 4px 14px rgba(0,0,0,0.08);
-  ">
-  Debate Topic Generator
-  </a>
-
-</div>
 </body>
 </html>
