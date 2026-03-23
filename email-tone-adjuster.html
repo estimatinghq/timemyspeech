@@ -348,11 +348,17 @@ Hi Fiona, just checking in to see whether you might be able to send the contract
 
 </div>
 <script>
-
 async function adjustTone() {
 
 const message = document.querySelector("textarea").value
 const customInstruction = document.querySelector(".custom input").value
+const outputBox = document.querySelector(".output")
+const button = document.querySelector(".primary")
+
+outputBox.innerText = "Rewriting..."
+button.disabled = true
+
+try {
 
 const res = await fetch("/api/rewrite",{
 method:"POST",
@@ -368,12 +374,19 @@ customInstruction:customInstruction
 
 const data = await res.json()
 
-document.querySelector(".output").innerText = data.result
+outputBox.innerText = data.result || data.error
+
+} catch(err) {
+
+outputBox.innerText = "Request failed."
+
+}
+
+button.disabled = false
 
 }
 
 document.querySelector(".primary").addEventListener("click",adjustTone)
-
 </script>
 </body>
 </html>
