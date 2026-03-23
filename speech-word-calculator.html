@@ -338,29 +338,24 @@
           Estimated word counts for a 2 minute speech
         </div>
 
-        <div class="results-grid">
-          <div class="result-card slow">
-            <div class="speed-label">Slow pace</div>
-            <div class="wpm">140 words per minute</div>
-            <div class="word-total" id="slowWords">280</div>
-            <div class="word-caption">words</div>
-          </div>
+       <div style="text-align:center;margin-top:18px;margin-bottom:12px;font-weight:600;">
+  Select your speaking pace
+</div>
 
-          <div class="result-card normal">
-            <div class="speed-label">Normal pace</div>
-            <div class="wpm">165 words per minute</div>
-            <div class="word-total" id="normalWords">330</div>
-            <div class="word-caption">words</div>
-          </div>
+<div class="minute-buttons" style="margin-bottom:18px;">
+  <button class="minute-btn pace-btn" data-wpm="140">Slow</button>
+  <button class="minute-btn pace-btn active" data-wpm="165">Normal</button>
+  <button class="minute-btn pace-btn" data-wpm="180">Fast</button>
+</div>
 
-          <div class="result-card fast">
-            <div class="speed-label">Fast pace</div>
-            <div class="wpm">180 words per minute</div>
-            <div class="word-total" id="fastWords">360</div>
-            <div class="word-caption">words</div>
-          </div>
-        </div>
-
+<div class="results-grid" style="grid-template-columns:1fr;">
+  <div class="result-card normal">
+    <div class="speed-label">Recommended word count</div>
+    <div class="wpm" id="selectedPaceText">Normal pace • 165 words per minute</div>
+    <div class="word-total" id="recommendedWords">330</div>
+    <div class="word-caption">words</div>
+  </div>
+</div>
         <div class="copy-row">
           <button class="copy-btn" id="copyBtn" onclick="copyResults()">Copy Results</button>
         </div>
