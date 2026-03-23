@@ -152,6 +152,7 @@ function stopTest() {
   let sentence = document.getElementById("sentence").innerText;
   let words = sentence.trim().split(/\s+/).length;
   let wpm = Math.round((words / elapsed) * 60);
+  localStorage.setItem("speechWPM", wpm);
 
   let message = "";
 
