@@ -397,16 +397,26 @@
       selectedSummary.textContent = `Estimated word counts for a ${minutes} minute speech`;
     }
 
-    minuteButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        minuteButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
+   minuteButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    minuteButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
 
-        const minutes = parseInt(button.dataset.minutes, 10);
-        updateCalculator(minutes);
-      });
-    });
+    const minutes = parseFloat(button.dataset.minutes);
+    minutesInput.value = minutes;
 
+    updateCalculator(minutes);
+  });
+});
+minutesInput.addEventListener("input", () => {
+  const minutes = parseFloat(minutesInput.value);
+
+  if (!minutes || minutes <= 0) return;
+
+  minuteButtons.forEach(btn => btn.classList.remove("active"));
+
+  updateCalculator(minutes);
+});
     function copyResults() {
       const text = `${currentMinutes} minute speech
 
