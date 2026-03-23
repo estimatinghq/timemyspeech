@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Fix My Email Tone | TimeMySpeech</title>
+
 <style>
+
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --primary:#4f46e5;
+}
+
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif;
-  background:#f5f7fb;
-  color:#1f2937;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
-.container{
-  width:95%;
+.wrap{
   max-width:1200px;
+  margin:auto;
+  padding:20px 20px 30px;
+}
+
+.main{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:24px;
+  margin-bottom:22px;
 }
 
 .panel{
-  background:white;
-  border-radius:20px;
+  background:var(--card);
+  border-radius:22px;
   padding:22px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+  border:1px solid var(--border);
+  box-shadow:0 15px 40px rgba(0,0,0,0.06);
   display:flex;
   flex-direction:column;
 }
@@ -38,26 +52,32 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 
-h2{
+.panel-header h2{
   margin:0;
   font-size:22px;
 }
 
-textarea, .output{
-  flex:1;
-  border:1px solid #e5e7eb;
+textarea{
+  width:100%;
+  min-height:220px;
   border-radius:16px;
+  border:1px solid var(--border);
   padding:16px;
   font-size:15px;
   line-height:1.6;
-  resize:none;
+  resize:vertical;
 }
 
 .output{
+  border-radius:16px;
+  border:1px solid var(--border);
+  padding:16px;
   background:#f9fafb;
+  min-height:220px;
+  line-height:1.6;
 }
 
 .tones{
@@ -71,14 +91,12 @@ textarea, .output{
   border-radius:999px;
   padding:8px 12px;
   font-size:14px;
-  border:1px solid #e5e7eb;
+  border:1px solid var(--border);
   background:#f9fafb;
   cursor:pointer;
 }
 
-.tone:hover{
-  background:#eef2ff;
-}
+.tone:hover{background:#eef2ff}
 
 .buttons{
   margin-top:14px;
@@ -94,23 +112,45 @@ button{
   cursor:pointer;
 }
 
-.primary{
-  background:#4f46e5;
-  color:white;
+.primary{background:var(--primary);color:white}
+
+.secondary{background:#f3f4f6}
+
+.copy{background:#10b981;color:white}
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
 
-.secondary{
-  background:#f3f4f6;
+.feature{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
-.copy{
-  background:#10b981;
-  color:white;
+.feature h3{
+  margin:8px 0 6px;
+  font-size:18px;
+}
+
+.feature p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+
+.icon{
+  font-size:24px;
 }
 
 @media(max-width:900px){
-  body{height:auto;padding:20px 0}
-  .container{grid-template-columns:1fr}
+  .main{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
 }
 
 </style>
@@ -118,7 +158,9 @@ button{
 
 <body>
 
-<div class="container">
+<div class="wrap">
+
+<section class="main">
 
 <div class="panel">
 
@@ -159,6 +201,36 @@ Hi Fiona, just checking in to see whether you might be able to send the contract
 </div>
 
 </div>
+
+</section>
+
+<section class="features">
+
+<div class="feature">
+<div class="icon">🎯</div>
+<h3>Clear tone presets</h3>
+<p>Choose tones people actually search for like more polite, firmer, friendlier, or shorter.</p>
+</div>
+
+<div class="feature">
+<div class="icon">⚖️</div>
+<h3>Good for difficult messages</h3>
+<p>Useful for work emails, property negotiations, follow ups, and sensitive conversations.</p>
+</div>
+
+<div class="feature">
+<div class="icon">⚡</div>
+<h3>Fast to use</h3>
+<p>Paste your message, choose a tone, copy the result. No complicated controls.</p>
+</div>
+
+<div class="feature">
+<div class="icon">💬</div>
+<h3>Built for everyday writing</h3>
+<p>Works for emails, texts, DMs and any situation where wording matters.</p>
+</div>
+
+</section>
 
 </div>
 
