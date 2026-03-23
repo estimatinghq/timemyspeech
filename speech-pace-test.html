@@ -124,51 +124,44 @@ Good morning everyone. Today I will explain one clear idea, give a short example
 </div>
 
 <script>
+let startTime = null;
+let timerInterval = null;
+let isRunning = false;
 
-let startTime
-let timerInterval
+function startTest() {
+  if (isRunning) return;
 
-function startTest(){
+  document.getElementById("result").innerHTML = "";
+  startTime = Date.now();
+  isRunning = true;
 
-document.getElementById("result").innerHTML=""
-
-startTime=Date.now()
-
-timerInterval=setInterval(function(){
-
-let elapsed=(Date.now()-startTime)/1000
-
-document.getElementById("timer").innerHTML=elapsed.toFixed(1)+"s"
-
-},100)
-
+  timerInterval = setInterval(function () {
+    let elapsed = (Date.now() - startTime) / 1000;
+    document.getElementById("timer").innerHTML = elapsed.toFixed(1) + "s";
+  }, 100);
 }
 
-function stopTest(){
+function stopTest() {
+  if (!isRunning) return;
 
-clearInterval(timerInterval)
+  clearInterval(timerInterval);
+  timerInterval = null;
+  isRunning = false;
 
-let elapsed=(Date.now()-startTime)/1000
+  let elapsed = (Date.now() - startTime) / 1000;
+  let sentence = document.getElementById("sentence").innerText;
+  let words = sentence.trim().split(/\s+/).length;
+  let wpm = Math.round((words / elapsed) * 60);
 
-let sentence=document.getElementById("sentence").innerText
+  let message = "";
 
-let words=sentence.trim().split(/\s+/).length
+  if (wpm < 140) message = "Slow speaking pace";
+  else if (wpm < 170) message = "Normal speaking pace";
+  else message = "Fast speaking pace";
 
-let wpm=Math.round((words/elapsed)*60)
-
-let message=""
-
-if(wpm<140) message="Slow speaking pace"
-else if(wpm<170) message="Normal speaking pace"
-else message="Fast speaking pace"
-
-document.getElementById("result").innerHTML=
-
-"Your speaking speed: <b>"+wpm+" WPM</b><br>"+message
-
+  document.getElementById("result").innerHTML =
+    "Your speaking speed: <b>" + wpm + " WPM</b><br>" + message;
 }
-
 </script>
-
 </body>
 </html>
