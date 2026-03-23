@@ -335,8 +335,12 @@
   <button class="minute-btn" data-minutes="10">10 min</button>
 </div>
         <div class="selected-summary" id="selectedSummary">
-          Estimated word counts for a 2 minute speech
-        </div>
+  Recommended length for a 2 minute speech
+</div>
+
+<div class="selected-summary" id="wpmInfo" style="margin-top:8px;">
+  Using speaking speed: 165 WPM
+</div>
 
        <div style="text-align:center;margin-top:18px;margin-bottom:12px;font-weight:600;">
   Select your speaking pace
@@ -383,6 +387,8 @@ const copyBtn = document.getElementById("copyBtn");
    let currentWPM = localStorage.getItem("speechWPM") 
   ? parseInt(localStorage.getItem("speechWPM")) 
   : 165;
+
+    document.getElementById("wpmInfo").textContent = "Using speaking speed: " + currentWPM + " WPM";
 
 function updateCalculator(minutes) {
   currentMinutes = minutes;
