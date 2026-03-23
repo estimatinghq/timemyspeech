@@ -1,416 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fix My Email Tone | TimeMySpeech</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix My Email Tone | TimeMySpeech</title>
 
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --border:#e5e7eb;
-      --primary:#4f46e5;
-      --red:#ef4444;
-    }
+<style>
 
-    *{
-      box-sizing:border-box;
-    }
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --primary:#4f46e5;
+  --red:#ef4444;
+}
 
-    html, body{
-      margin:0;
-      padding:0;
-      height:100%;
-      overflow:hidden;
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
+*{box-sizing:border-box}
 
-    body{
-      display:flex;
-      flex-direction:column;
-    }
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+}
 
-    .site-header{
-      position:relative;
-      flex:0 0 auto;
-      padding:18px 28px 10px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
+/* HEADER */
+.site-header{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px 28px 10px;
+  position:relative;
+}
 
-    .logo{
+.logo{
       display:flex;
       align-items:center;
       gap:12px;
-    }
-
-    .logo-icon{
-      width:48px;
-      height:48px;
-      border-radius:12px;
-      background:#eef2ff;
-      display:flex;
-      align-items:center;
       justify-content:center;
-      font-size:24px;
-      flex:0 0 auto;
+      text-align:center;
     }
 
-    .logo-text-wrap{
+.logo-icon{
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:#eef2ff;
+  font-size:24px;
+}
+
+.logo-text-wrap{
       display:flex;
       flex-direction:column;
+      align-items:center;
+      justify-content:center;
       line-height:1.05;
+      text-align:center;
     }
 
-    .logo-text{
-      font-size:36px;
-      font-weight:700;
-      letter-spacing:-0.02em;
-      color:#111827;
-    }
+.logo-text{
+  color:#111827;
+}
 
-    .email-red{
-      color:var(--red);
-    }
+.logo-sub{
+  font-size:13px;
+  color:var(--muted);
+  font-weight:500;
+  margin-top:2px;
+}
 
-    .logo-sub{
-      margin-top:4px;
-      font-size:13px;
-      color:var(--muted);
-      font-weight:500;
-    }
+.email-red{
+  color:var(--red);
+}
 
-    .home-btn{
-      position:absolute;
-      right:28px;
-      top:22px;
-      text-decoration:none;
-      background:#f3f4f6;
-      border:1px solid var(--border);
-      padding:8px 14px;
-      border-radius:10px;
-      font-size:14px;
-      color:#111827;
-      font-weight:600;
-      line-height:1;
-    }
+.home-btn{
+  text-decoration:none;
+  background:#f3f4f6;
+  border:1px solid var(--border);
+  padding:8px 14px;
+  border-radius:10px;
+  font-size:14px;
+  color:#111827;
+  font-weight:600;
+  position:absolute;
+  right:28px;
+  top:20px;
+}
 
-    .home-btn:hover{
-      background:#e5e7eb;
-    }
+.home-btn:hover{
+  background:#e5e7eb;
+}
 
-    .wrap{
-      flex:1 1 auto;
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-      padding:10px 20px 20px;
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-    }
+.home-btn:hover{
+  background:#e5e7eb;
+}
 
-    .main{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:24px;
-      margin-bottom:16px;
-      min-height:0;
-    }
+/* PAGE WRAP */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:10px 20px 30px;
+}
 
-    .panel{
-      background:var(--card);
-      border-radius:22px;
-      padding:22px;
-      border:1px solid var(--border);
-      box-shadow:0 15px 40px rgba(0,0,0,0.06);
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-    }
+/* MAIN TOOL */
+.main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:22px;
+}
 
-    .panel-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:12px;
-      gap:12px;
-    }
+.panel{
+  background:var(--card);
+  border-radius:22px;
+  padding:22px;
+  border:1px solid var(--border);
+  box-shadow:0 15px 40px rgba(0,0,0,0.06);
+  display:flex;
+  flex-direction:column;
+}
 
-    .panel-header h2{
-      margin:0;
-      font-size:22px;
-      font-weight:700;
-    }
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
 
-    .panel-note{
-      font-size:13px;
-      color:var(--muted);
-    }
+.panel-header h2{
+  margin:0;
+  font-size:22px;
+}
 
-    textarea{
-      width:100%;
-      min-height:260px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      padding:18px;
-      font-size:16px;
-      line-height:1.65;
-      resize:none;
-      font-family:inherit;
-      color:var(--text);
-      background:#fff;
-    }
+textarea{
+  width:100%;
+  min-height:320px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  padding:18px;
+  font-size:16px;
+  line-height:1.65;
+  resize:vertical;
+  font-family:inherit;
+}
 
-    .tones{
-      margin-top:14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
+.output{
+  border-radius:16px;
+  border:1px solid var(--border);
+  padding:18px;
+  background:#f9fafb;
+  min-height:320px;
+  line-height:1.65;
+  font-size:16px;
+  font-family:inherit;
+}
 
-    .tone{
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:14px;
-      border:1px solid var(--border);
-      background:#f9fafb;
-      cursor:pointer;
-      white-space:nowrap;
-    }
+/* TONES */
+.tones{
+  margin-top:14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
 
-    .tone:hover{
-      background:#eef2ff;
-    }
+.tone{
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:14px;
+  border:1px solid var(--border);
+  background:#f9fafb;
+  cursor:pointer;
+}
 
-    .custom-prompt{
-      margin-top:14px;
-    }
+.tone:hover{background:#eef2ff}
 
-    .custom-prompt label{
-      display:block;
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
+/* CUSTOM PROMPT */
+.custom-prompt{
+  margin-top:14px;
+}
 
-    .custom-prompt input{
-      width:100%;
-      height:48px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      padding:0 16px;
-      font-size:15px;
-      font-family:inherit;
-      color:var(--text);
-      background:#fff;
-    }
+.custom-prompt label{
+  font-size:13px;
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px;
+}
 
-    .buttons{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-    }
+.custom-prompt input{
+  width:100%;
+  height:52px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  padding:0 16px;
+  font-size:15px;
+}
 
-    button{
-      border:none;
-      border-radius:12px;
-      padding:10px 14px;
-      font-size:14px;
-      font-family:inherit;
-      cursor:pointer;
-    }
+/* BUTTONS */
+.buttons{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+}
 
-    .primary{
-      background:var(--primary);
-      color:#fff;
-    }
+button{
+  border:none;
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:14px;
+  cursor:pointer;
+}
 
-    .secondary{
-      background:#f3f4f6;
-      color:#111827;
-    }
+.primary{background:var(--primary);color:white}
+.secondary{background:#f3f4f6}
+.copy{background:#10b981;color:white}
 
-    .copy{
-      background:#10b981;
-      color:#fff;
-    }
+/* FEATURES */
+.features{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
 
-    .output{
-      border-radius:16px;
-      border:1px solid var(--border);
-      padding:18px;
-      background:#f9fafb;
-      min-height:260px;
-      font-size:16px;
-      line-height:1.65;
-      font-family:inherit;
-      color:var(--text);
-      flex:1;
-    }
+.feature{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
 
-    .features{
-      display:grid;
-      grid-template-columns:repeat(4, 1fr);
-      gap:16px;
-      min-height:0;
-    }
+.feature h3{
+  margin:8px 0 6px;
+  font-size:18px;
+}
 
-    .feature{
-      background:#fff;
-      border-radius:20px;
-      padding:18px;
-      border:1px solid var(--border);
-      box-shadow:0 10px 30px rgba(0,0,0,0.05);
-    }
+.feature p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
 
-    .icon{
-      font-size:22px;
-      margin-bottom:8px;
-    }
+.icon{
+  font-size:24px;
+}
 
-    .feature h3{
-      margin:0 0 6px;
-      font-size:17px;
-    }
+/* MOBILE */
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
+}
 
-    .feature p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.55;
-    }
-
-    @media (max-width: 900px){
-      html, body{
-        height:auto;
-        overflow:auto;
-      }
-
-      .site-header{
-        padding:16px 16px 10px;
-      }
-
-      .home-btn{
-        right:16px;
-        top:18px;
-      }
-
-      .logo-text{
-        font-size:30px;
-      }
-
-      .wrap{
-        padding:10px 16px 20px;
-      }
-
-      .main{
-        grid-template-columns:1fr;
-      }
-
-      .features{
-        grid-template-columns:1fr;
-      }
-
-      textarea,
-      .output{
-        min-height:220px;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <div class="site-header">
-    <div class="logo">
-      <div class="logo-icon">✉️</div>
-      <div class="logo-text-wrap">
-        <div class="logo-text">FixMy<span class="email-red">Email</span></div>
-        <div class="logo-sub">Rewrite emails to sound more polite, firm, or professional</div>
-      </div>
+<div class="site-header">
+
+  <div class="logo">
+    <div class="logo-icon">✉️</div>
+
+    <div class="logo-text-wrap">
+      <div class="logo-text">FixMy<span class="email-red">Email</span></div>
+      <div class="logo-sub">Rewrite emails to sound more polite, firm, or professional</div>
     </div>
 
-    <a href="/" class="home-btn">Home</a>
   </div>
 
-  <div class="wrap">
+  <a href="/" class="home-btn">Home</a>
 
-    <section class="main">
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Your message</h2>
-          <span class="panel-note">Paste email or text</span>
-        </div>
+</div>
+<div class="logo-text-wrap">
+  <div class="logo-text">FixMy<span class="email-red">Email</span></div>
+  <div class="logo-sub">Rewrite emails to sound more polite, firm, or professional</div>
+</div>
+</div>
+<div class="logo-text">FixMy<span class="email-red">Email</span></div>
+</div>
 
-        <textarea placeholder="Paste your message here">Hi Fiona, just checking if you can send the contract today.</textarea>
+<a href="/" class="home-btn">Home</a>
 
-        <div class="tones">
-          <div class="tone">🙏 More polite</div>
-          <div class="tone">💼 Professional</div>
-          <div class="tone">⚡ More direct</div>
-          <div class="tone">🧱 More firm</div>
-          <div class="tone">😊 Friendlier</div>
-          <div class="tone">✂️ Shorter</div>
-          <div class="tone">🔥 Stronger</div>
-          <div class="tone">🕊️ Softer</div>
-        </div>
+</div>
 
-        <div class="custom-prompt">
-          <label>Custom instruction for AI</label>
-          <input type="text" placeholder="Example: Make it harsher, confident, and shorter">
-        </div>
+<div class="wrap">
 
-        <div class="buttons">
-          <button class="primary">Adjust tone</button>
-          <button class="secondary">Clear</button>
-        </div>
-      </div>
+<section class="main">
 
-      <div class="panel">
-        <div class="panel-header">
-          <h2>Adjusted version</h2>
-          <button class="copy">Copy</button>
-        </div>
+<div class="panel">
 
-        <div class="output">
-          Hi Fiona, just checking in to see whether you might be able to send the contract through today when convenient. Thank you.
-        </div>
-      </div>
-    </section>
+<div class="panel-header">
+<h2>Your message</h2>
+<span style="font-size:13px;color:#6b7280">Paste email or text</span>
+</div>
 
-    <section class="features">
-      <div class="feature">
-        <div class="icon">🎯</div>
-        <h3>Clear tone presets</h3>
-        <p>Choose tones people actually search for like more polite, firmer, friendlier, or shorter.</p>
-      </div>
+<textarea placeholder="Paste your message here">Hi Fiona, just checking if you can send the contract today.</textarea>
 
-      <div class="feature">
-        <div class="icon">⚖️</div>
-        <h3>Good for difficult messages</h3>
-        <p>Useful for work emails, property negotiations, follow ups, and sensitive conversations.</p>
-      </div>
+<div class="tones">
+<div class="tone">🙏 More polite</div>
+<div class="tone">💼 Professional</div>
+<div class="tone">⚡ More direct</div>
+<div class="tone">🧱 More firm</div>
+<div class="tone">😊 Friendlier</div>
+<div class="tone">✂️ Shorter</div>
+<div class="tone">🔥 Stronger</div>
+<div class="tone">🕊️ Softer</div>
+</div>
 
-      <div class="feature">
-        <div class="icon">⚡</div>
-        <h3>Fast to use</h3>
-        <p>Paste your message, choose a tone, copy the result. No complicated controls.</p>
-      </div>
+<div class="custom-prompt">
+<label>Custom instruction for AI</label>
+<input type="text" placeholder="Example: Make it harsher, confident, and shorter">
+</div>
 
-      <div class="feature">
-        <div class="icon">💬</div>
-        <h3>Built for everyday writing</h3>
-        <p>Works for emails, texts, DMs and any situation where wording matters.</p>
-      </div>
-    </section>
+<div class="buttons">
+<button class="primary">Adjust tone</button>
+<button class="secondary">Clear</button>
+</div>
 
-  </div>
+</div>
+
+<div class="panel">
+
+<div class="panel-header">
+<h2>Adjusted version</h2>
+<button class="copy">Copy</button>
+</div>
+
+<div class="output">
+Hi Fiona, just checking in to see whether you might be able to send the contract through today when convenient. Thank you.
+</div>
+
+</div>
+
+</section>
+
+<section class="features">
+
+<div class="feature">
+<div class="icon">🎯</div>
+<h3>Clear tone presets</h3>
+<p>Choose tones people actually search for like more polite, firmer, friendlier, or shorter.</p>
+</div>
+
+<div class="feature">
+<div class="icon">⚖️</div>
+<h3>Good for difficult messages</h3>
+<p>Useful for work emails, property negotiations, follow ups, and sensitive conversations.</p>
+</div>
+
+<div class="feature">
+<div class="icon">⚡</div>
+<h3>Fast to use</h3>
+<p>Paste your message, choose a tone, copy the result. No complicated controls.</p>
+</div>
+
+<div class="feature">
+<div class="icon">💬</div>
+<h3>Built for everyday writing</h3>
+<p>Works for emails, texts, DMs and any situation where wording matters.</p>
+</div>
+
+</section>
+
+</div>
 
 </body>
 </html>
