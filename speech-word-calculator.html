@@ -311,14 +311,29 @@
       <div class="picker-card">
         <div class="picker-title">Select your speech length</div>
 
-        <div class="minute-buttons">
-          <button class="minute-btn" data-minutes="1">1 min</button>
-          <button class="minute-btn active" data-minutes="2">2 min</button>
-          <button class="minute-btn" data-minutes="3">3 min</button>
-          <button class="minute-btn" data-minutes="5">5 min</button>
-          <button class="minute-btn" data-minutes="10">10 min</button>
-        </div>
+       <div style="text-align:center;margin-bottom:15px;font-weight:600;">
+  Enter speech length (minutes)
+</div>
 
+<div style="display:flex;justify-content:center;margin-bottom:15px;">
+  <input id="minutesInput" type="number" value="2" min="0.5" step="0.5"
+  style="
+  padding:12px;
+  font-size:16px;
+  border-radius:10px;
+  border:1px solid #d1d5db;
+  width:120px;
+  text-align:center;
+  ">
+</div>
+
+<div class="minute-buttons">
+  <button class="minute-btn" data-minutes="1">1 min</button>
+  <button class="minute-btn active" data-minutes="2">2 min</button>
+  <button class="minute-btn" data-minutes="3">3 min</button>
+  <button class="minute-btn" data-minutes="5">5 min</button>
+  <button class="minute-btn" data-minutes="10">10 min</button>
+</div>
         <div class="selected-summary" id="selectedSummary">
           Estimated word counts for a 2 minute speech
         </div>
@@ -359,6 +374,7 @@
 
   <script>
     const minuteButtons = document.querySelectorAll(".minute-btn");
+    const minutesInput = document.getElementById("minutesInput");
     const selectedSummary = document.getElementById("selectedSummary");
     const slowWords = document.getElementById("slowWords");
     const normalWords = document.getElementById("normalWords");
