@@ -126,49 +126,51 @@ Good morning everyone. Today I will explain one clear idea, give a short example
 <script>
 let startTime = null;
 let timerInterval = null;
+let countdownInterval = null;
 let isRunning = false;
+let isCountingDown = false;
 
-function startTest(){
+function startTest() {
+  if (isRunning || isCountingDown) return;
 
-document.getElementById("result").innerHTML=""
+  document.getElementById("result").innerHTML = "";
 
-let countdown=3
+  isCountingDown = true;
+  let countdown = 3;
+  document.getElementById("timer").innerHTML = countdown;
 
-document.getElementById("timer").innerHTML=countdown
+  countdownInterval = setInterval(function () {
+    countdown--;
 
-let countdownInterval=setInterval(function(){
+    if (countdown > 0) {
+      document.getElementById("timer").innerHTML = countdown;
+    } else if (countdown === 0) {
+      document.getElementById("timer").innerHTML = "GO";
+    } else {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      isCountingDown = false;
 
-countdown--
+      startTime = Date.now();
+      isRunning = true;
 
-if(countdown>0){
-
-document.getElementById("timer").innerHTML=countdown
-
-}else if(countdown===0){
-
-document.getElementById("timer").innerHTML="GO"
-
-}else{
-
-clearInterval(countdownInterval)
-
-startTime=Date.now()
-
-timerInterval=setInterval(function(){
-
-let elapsed=(Date.now()-startTime)/1000
-
-document.getElementById("timer").innerHTML=elapsed.toFixed(1)+"s"
-
-},100)
-
-}
-
-},1000)
-
+      timerInterval = setInterval(function () {
+        let elapsed = (Date.now() - startTime) / 1000;
+        document.getElementById("timer").innerHTML = elapsed.toFixed(1) + "s";
+      }, 100);
+    }
+  }, 1000);
 }
 
 function stopTest() {
+  if (isCountingDown) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+    isCountingDown = false;
+    document.getElementById("timer").innerHTML = "0.0s";
+    return;
+  }
+
   if (!isRunning) return;
 
   clearInterval(timerInterval);
@@ -179,6 +181,7 @@ function stopTest() {
   let sentence = document.getElementById("sentence").innerText;
   let words = sentence.trim().split(/\s+/).length;
   let wpm = Math.round((words / elapsed) * 60);
+
   localStorage.setItem("speechWPM", wpm);
 
   let message = "";
@@ -188,10 +191,10 @@ function stopTest() {
   else message = "Fast speaking pace";
 
   document.getElementById("result").innerHTML =
-"Your speaking speed: <b>" + wpm + " WPM</b><br>" +
-message +
-"<br><br>Your speaking speed has been saved and will now be used to estimate your speech timing.<br><br>" +
-"<a href='/' style='display:inline-block;margin-top:10px;padding:12px 18px;background:#2563eb;color:white;text-decoration:none;border-radius:8px;font-weight:700;'>Paste Your Speech in the Timer</a>";
+    "Your speaking speed: <b>" + wpm + " WPM</b><br>" +
+    message +
+    "<br><br>Your speaking speed has been saved and will now be used to estimate your speech timing.<br><br>" +
+    "<a href='/' style='display:inline-block;margin-top:10px;padding:12px 18px;background:#2563eb;color:white;text-decoration:none;border-radius:8px;font-weight:700;'>Paste Your Speech in the Timer</a>";
 }
 </script>
 </body>
