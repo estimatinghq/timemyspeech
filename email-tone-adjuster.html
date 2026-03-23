@@ -183,7 +183,36 @@ button{
 .icon{
   font-size:24px;
 }
+.site-header{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:18px 20px 8px;
+}
 
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+
+.logo-icon{
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:#eef2ff;
+  font-size:22px;
+}
+
+.logo-text{
+  color:#111827;
+}
 @media(max-width:900px){
   .main{grid-template-columns:1fr}
   .features{grid-template-columns:1fr}
@@ -200,6 +229,15 @@ button{
     <span class="logo-text">FixMyEmail</span>
   </div>
 </header>
+
+<body>
+
+<div class="site-header">
+  <div class="logo">
+    <span class="logo-icon">✉️</span>
+    <span class="logo-text">FixMyEmail</span>
+  </div>
+</div>
 
 <div class="wrap">
 
