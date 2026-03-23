@@ -385,58 +385,58 @@
       });
     }
 
-    function spinTopic() {
-      if (spinning) return;
+ function spinTopic() {
+  if (spinning) return;
 
-      spinning = true;
-      spinBtn.disabled = true;
-      spinBtn.textContent = "Spinning...";
-      topicBox.classList.remove("landed");
+  spinning = true;
+  spinBtn.disabled = true;
+  spinBtn.textContent = "Spinning...";
+  topicBox.classList.remove("landed");
 
-      let finalIndex;
-      do {
-        finalIndex = Math.floor(Math.random() * debateTopics.length);
-      } while (finalIndex === lastIndex && debateTopics.length > 1);
+  let finalIndex;
+  do {
+    finalIndex = Math.floor(Math.random() * debateTopics.length);
+  } while (finalIndex === lastIndex && debateTopics.length > 1);
 
-      lastIndex = finalIndex;
+  lastIndex = finalIndex;
+  const finalTopic = debateTopics[finalIndex];
 
-      const sequence = [];
-      const totalItems = 8;
+  let spins = 0;
+  const maxSpins = 18;
 
-      for (let i = 0; i < totalItems - 1; i++) {
-        const random = debateTopics[Math.floor(Math.random() * debateTopics.length)];
-        sequence.push(random);
-      }
+  const spinInterval = setInterval(() => {
+    const random = debateTopics[Math.floor(Math.random() * debateTopics.length)];
 
-      const finalTopic = debateTopics[finalIndex];
-      sequence.push(finalTopic);
+    reel.innerHTML = `
+      <div class="reel-item">
+        <span>${random.topic}</span>
+      </div>
+    `;
 
-      makeReelItems(sequence);
+    spins++;
 
-      reel.style.transition = "none";
-      reel.style.transform = "translateY(0px)";
+    if (spins >= maxSpins) {
+      clearInterval(spinInterval);
 
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          reel.style.transition = "transform 2.4s cubic-bezier(0.12, 0.82, 0.18, 1)";
-          reel.style.transform = `translateY(-${(sequence.length - 1) * itemHeight}px)`;
-        });
-      });
+      reel.innerHTML = `
+        <div class="reel-item">
+          <span>${finalTopic.topic}</span>
+        </div>
+      `;
 
-      setTimeout(() => {
-        currentTopic = finalTopic.topic;
-        currentCategory = finalTopic.category;
+      currentTopic = finalTopic.topic;
+      currentCategory = finalTopic.category;
 
-        categoryText.textContent = "Category";
-        categoryBadge.textContent = currentCategory;
+      categoryText.textContent = "Category";
+      categoryBadge.textContent = currentCategory;
 
-        topicBox.classList.add("landed");
-        spinBtn.disabled = false;
-        spinBtn.textContent = "Spin Topic";
-        spinning = false;
-      }, 2450);
+      topicBox.classList.add("landed");
+      spinBtn.disabled = false;
+      spinBtn.textContent = "Spin Topic";
+      spinning = false;
     }
-
+  }, 90);
+}
     function copyTopic() {
       if (!currentTopic || currentCategory === "Ready" || spinning) return;
 
