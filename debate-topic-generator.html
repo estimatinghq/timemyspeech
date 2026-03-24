@@ -7,6 +7,8 @@
   <meta name="description" content="Generate random debate topics for school, speeches, class activities and public speaking practice." />
 
   <style>
+
+    
     * {
       box-sizing: border-box;
     }
@@ -254,20 +256,36 @@
       .reel-item span {
         font-size: 23px;
       }
+      @media (max-width: 640px) {
+  .reel-item span {
+    font-size: 23px;
+  }
+}
+
+.home-button{
+  position:absolute;
+  top:20px;
+  right:40px;
+  padding:8px 16px;
+  background:#f3f4f6;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:14px;
+  color:#111827;
+  font-weight:500;
+}
+
+.home-button:hover{
+  background:#e5e7eb;
+}
+
+</style>
     }
   </style>
 </head>
 <body>
-  <div style="position:absolute; top:20px; left:20px;">
-<a href="/index.html" style="
-text-decoration:none;
-font-weight:700;
-color:#2563eb;
-font-size:16px;
-">
-← Home
-</a>
-</div>
+<a href="https://timemyspeech.com/" class="home-button">Home</a>
   <div class="container">
     <div class="logo">Time My Speech</div>
 
