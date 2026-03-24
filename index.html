@@ -18,14 +18,11 @@
 
     html, body {
       width: 100%;
-      overflow-x: hidden;
+      height: 100%;
+      overflow: hidden;
       font-family: Inter, Arial, sans-serif;
-      background: linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
+      background: linear-gradient(180deg, #f8fafc 0%, #f4f6fb 100%);
       color: #1f2937;
-    }
-
-    body {
-      min-height: 100vh;
     }
 
     a {
@@ -34,113 +31,168 @@
     }
 
     .page {
-      max-width: 1280px;
+      max-width: 1420px;
+      height: 100vh;
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 18px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .hero {
       text-align: center;
-      padding: 40px 0 28px;
+      padding: 4px 0 8px;
+      flex-shrink: 0;
     }
 
     .logo {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: #111827;
-      margin-bottom: 26px;
+      margin-bottom: 14px;
     }
 
     .logo-mark {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 12px;
       background: linear-gradient(135deg, #2563eb, #7c3aed);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 20px;
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
+      font-size: 18px;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
     }
 
     .hero h1 {
-      font-size: clamp(42px, 7vw, 72px);
-      line-height: 1.05;
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 1.02;
       font-weight: 800;
-      letter-spacing: -1.6px;
+      letter-spacing: -1.4px;
       color: #111827;
-      margin-bottom: 18px;
+      margin-bottom: 8px;
     }
 
     .hero p {
       max-width: 760px;
       margin: 0 auto;
-      font-size: clamp(18px, 2.5vw, 24px);
-      line-height: 1.5;
+      font-size: clamp(15px, 1.5vw, 20px);
+      line-height: 1.4;
       color: #6b7280;
     }
 
     .tools-section {
-      margin-top: 46px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      min-height: 0;
     }
 
     .tools-grid {
+      width: 100%;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
     .tool-card {
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.92);
       border: 1px solid #e5e7eb;
-      border-radius: 24px;
-      padding: 28px 26px 24px;
-      min-height: 260px;
+      border-radius: 20px;
+      padding: 18px;
+      min-height: 190px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       box-shadow:
-        0 10px 30px rgba(15, 23, 42, 0.04),
+        0 10px 24px rgba(15, 23, 42, 0.04),
         0 2px 8px rgba(15, 23, 42, 0.03);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0));
+      pointer-events: none;
     }
 
     .tool-card:hover {
       transform: translateY(-4px);
-      border-color: #d1d5db;
+      border-color: #d8dee8;
       box-shadow:
-        0 18px 40px rgba(15, 23, 42, 0.08),
+        0 20px 35px rgba(15, 23, 42, 0.08),
+        0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-blue:hover {
+      box-shadow:
+        0 20px 35px rgba(37, 99, 235, 0.12),
+        0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-green:hover {
+      box-shadow:
+        0 20px 35px rgba(47, 143, 70, 0.12),
+        0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-purple:hover {
+      box-shadow:
+        0 20px 35px rgba(124, 58, 237, 0.12),
+        0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-orange:hover {
+      box-shadow:
+        0 20px 35px rgba(249, 115, 22, 0.12),
+        0 6px 16px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-red:hover {
+      box-shadow:
+        0 20px 35px rgba(239, 68, 68, 0.12),
         0 6px 16px rgba(15, 23, 42, 0.05);
     }
 
     .tool-top {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
     }
 
     .tool-icon {
-      width: 82px;
-      height: 82px;
-      border-radius: 22px;
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 34px;
+      font-size: 24px;
       font-weight: 700;
+      flex-shrink: 0;
     }
 
     .icon-blue {
-      background: #e8f0ff;
+      background: #e9f0ff;
       color: #2563eb;
     }
 
     .icon-green {
-      background: #eaf8ef;
+      background: #ebf8ef;
       color: #2f8f46;
     }
 
@@ -160,28 +212,30 @@
     }
 
     .tool-card h3 {
-      font-size: 24px;
+      font-size: 16px;
       line-height: 1.2;
       font-weight: 800;
       color: #1f2937;
-      margin-bottom: 12px;
-      letter-spacing: -0.4px;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
     }
 
     .tool-card p {
-      font-size: 17px;
-      line-height: 1.55;
+      font-size: 13px;
+      line-height: 1.45;
       color: #6b7280;
-      max-width: 95%;
+      max-width: 100%;
     }
 
     .tool-bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 28px;
-      font-size: 17px;
+      margin-top: 14px;
+      font-size: 14px;
       font-weight: 700;
+      position: relative;
+      z-index: 1;
     }
 
     .tool-link.blue {
@@ -205,61 +259,82 @@
     }
 
     .arrow {
-      font-size: 28px;
+      font-size: 22px;
       line-height: 1;
+      transition: transform 0.18s ease;
+    }
+
+    .tool-card:hover .arrow {
+      transform: translateX(3px);
     }
 
     .footer {
       text-align: center;
-      margin-top: 60px;
       color: #9ca3af;
-      font-size: 14px;
+      font-size: 12px;
+      padding-top: 10px;
+      flex-shrink: 0;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1200px) {
+      html, body {
+        height: auto;
+        overflow-y: auto;
+      }
+
+      .page {
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
       .tools-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 640px) {
+      html, body {
+        overflow-y: auto;
+      }
+
       .page {
-        padding: 28px 14px 60px;
+        height: auto;
+        padding: 16px 12px 24px;
       }
 
       .hero {
-        padding: 24px 0 18px;
+        padding: 4px 0 14px;
+      }
+
+      .logo {
+        margin-bottom: 12px;
       }
 
       .hero h1 {
-        margin-bottom: 14px;
+        margin-bottom: 8px;
+      }
+
+      .tools-section {
+        display: block;
       }
 
       .tools-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 12px;
       }
 
       .tool-card {
         min-height: auto;
-        padding: 22px 20px 20px;
-        border-radius: 20px;
       }
 
-      .tool-icon {
-        width: 68px;
-        height: 68px;
-        border-radius: 18px;
-        font-size: 28px;
-      }
-
-      .tool-card h3 {
-        font-size: 22px;
-      }
-
-      .tool-card p {
-        font-size: 16px;
-        max-width: 100%;
+      .footer {
+        margin-top: 16px;
       }
     }
   </style>
@@ -281,14 +356,12 @@
     <section class="tools-section">
       <div class="tools-grid">
 
-        <a href="/speech-timer.html" class="tool-card">
+        <a href="/speech-timer.html" class="tool-card card-blue">
           <div class="tool-top">
             <div class="tool-icon icon-blue">⏱</div>
             <div>
               <h3>Speech Timer</h3>
-              <p>
-                Practise your speech with a clean, easy to use timer and confidence monitor.
-              </p>
+              <p>Practise your speech with a clean, easy to use timer.</p>
             </div>
           </div>
           <div class="tool-bottom">
@@ -297,14 +370,12 @@
           </div>
         </a>
 
-        <a href="/speech-word-calculator.html" class="tool-card">
+        <a href="/speech-word-calculator.html" class="tool-card card-purple">
           <div class="tool-top">
             <div class="tool-icon icon-purple">≡</div>
             <div>
               <h3>Speech Word Calculator</h3>
-              <p>
-                Find out how long your speech will take based on word count and speaking pace.
-              </p>
+              <p>See how long your speech will take based on word count.</p>
             </div>
           </div>
           <div class="tool-bottom">
@@ -313,14 +384,12 @@
           </div>
         </a>
 
-        <a href="/speech-pace-test.html" class="tool-card">
+        <a href="/speech-pace-test.html" class="tool-card card-green">
           <div class="tool-top">
             <div class="tool-icon icon-green">🎤</div>
             <div>
               <h3>Speech Pace Test</h3>
-              <p>
-                Measure your speaking speed in words per minute and improve your pacing.
-              </p>
+              <p>Measure your speaking speed in words per minute.</p>
             </div>
           </div>
           <div class="tool-bottom">
@@ -329,14 +398,12 @@
           </div>
         </a>
 
-        <a href="/refine-speech.html" class="tool-card">
+        <a href="/refine-speech.html" class="tool-card card-orange">
           <div class="tool-top">
             <div class="tool-icon icon-orange">✦</div>
             <div>
               <h3>Refine Speech</h3>
-              <p>
-                Improve clarity, grammar, and flow with AI powered speech refinement.
-              </p>
+              <p>Improve clarity, grammar, and flow with AI powered help.</p>
             </div>
           </div>
           <div class="tool-bottom">
@@ -345,14 +412,12 @@
           </div>
         </a>
 
-        <a href="/fix-my-email.html" class="tool-card">
+        <a href="/fix-my-email.html" class="tool-card card-blue">
           <div class="tool-top">
             <div class="tool-icon icon-blue">✉</div>
             <div>
               <h3>Fix My Email</h3>
-              <p>
-                Rewrite your email to sound clearer, more professional, and more effective.
-              </p>
+              <p>Rewrite emails to sound clearer and more professional.</p>
             </div>
           </div>
           <div class="tool-bottom">
@@ -361,19 +426,45 @@
           </div>
         </a>
 
-        <a href="/random-debate-topic.html" class="tool-card">
+        <a href="/random-debate-topic.html" class="tool-card card-red">
           <div class="tool-top">
             <div class="tool-icon icon-red">⚔</div>
             <div>
               <h3>Debate Topic Generator</h3>
-              <p>
-                Get instant random debate topics for practice, class, or competitions.
-              </p>
+              <p>Get instant random debate topics for practice or class.</p>
             </div>
           </div>
           <div class="tool-bottom">
             <span class="tool-link red">Open Tool</span>
             <span class="tool-link red arrow">→</span>
+          </div>
+        </a>
+
+        <a href="/speech-outline-generator.html" class="tool-card card-purple">
+          <div class="tool-top">
+            <div class="tool-icon icon-purple">▤</div>
+            <div>
+              <h3>Speech Outline</h3>https://github.com/estimatinghq/timemyspeech/blob/main/index.html
+              <p>Turn your ideas into a simple speech structure fast.</p>
+            </div>
+          </div>
+          <div class="tool-bottom">
+            <span class="tool-link purple">Open Tool</span>
+            <span class="tool-link purple arrow">→</span>
+          </div>
+        </a>
+
+        <a href="/speech-filler-checker.html" class="tool-card card-green">
+          <div class="tool-top">
+            <div class="tool-icon icon-green">✓</div>
+            <div>
+              <h3>Filler Checker</h3>
+              <p>Spot weak filler words and tighten up your speech.</p>
+            </div>
+          </div>
+          <div class="tool-bottom">
+            <span class="tool-link green">Open Tool</span>
+            <span class="tool-link green arrow">→</span>
           </div>
         </a>
 
