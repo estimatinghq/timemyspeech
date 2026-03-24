@@ -104,11 +104,13 @@
       background: rgba(255, 255, 255, 0.92);
       border: 1px solid #e5e7eb;
       border-radius: 20px;
-      padding: 18px;
-      min-height: 190px;
+      padding: 20px 16px;
+      min-height: 185px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       box-shadow:
         0 10px 24px rgba(15, 23, 42, 0.04),
         0 2px 8px rgba(15, 23, 42, 0.03);
@@ -166,17 +168,19 @@
         0 6px 16px rgba(15, 23, 42, 0.05);
     }
 
-    .tool-top {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .tool-content {
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
     }
 
     .tool-icon {
-      width: 54px;
-      height: 54px;
+      width: 56px;
+      height: 56px;
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -212,11 +216,11 @@
     }
 
     .tool-card h3 {
-      font-size: 16px;
+      font-size: 17px;
       line-height: 1.2;
       font-weight: 800;
       color: #1f2937;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       letter-spacing: -0.3px;
     }
 
@@ -224,48 +228,8 @@
       font-size: 13px;
       line-height: 1.45;
       color: #6b7280;
-      max-width: 100%;
-    }
-
-    .tool-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 14px;
-      font-size: 14px;
-      font-weight: 700;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tool-link.blue {
-      color: #2563eb;
-    }
-
-    .tool-link.green {
-      color: #2f8f46;
-    }
-
-    .tool-link.purple {
-      color: #7c3aed;
-    }
-
-    .tool-link.orange {
-      color: #f97316;
-    }
-
-    .tool-link.red {
-      color: #ef4444;
-    }
-
-    .arrow {
-      font-size: 22px;
-      line-height: 1;
-      transition: transform 0.18s ease;
-    }
-
-    .tool-card:hover .arrow {
-      transform: translateX(3px);
+      max-width: 220px;
+      margin: 0 auto;
     }
 
     .footer {
@@ -330,7 +294,7 @@
       }
 
       .tool-card {
-        min-height: auto;
+        min-height: 170px;
       }
 
       .footer {
@@ -357,114 +321,82 @@
       <div class="tools-grid">
 
         <a href="/speech-timer.html" class="tool-card card-blue">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-blue">⏱</div>
             <div>
               <h3>Speech Timer</h3>
               <p>Practise your speech with a clean, easy to use timer.</p>
             </div>
           </div>
-          <div class="tool-bottom">
-            <span class="tool-link blue">Open Tool</span>
-            <span class="tool-link blue arrow">→</span>
-          </div>
         </a>
 
         <a href="/speech-word-calculator.html" class="tool-card card-purple">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-purple">≡</div>
             <div>
               <h3>Speech Word Calculator</h3>
               <p>See how long your speech will take based on word count.</p>
             </div>
           </div>
-          <div class="tool-bottom">
-            <span class="tool-link purple">Open Tool</span>
-            <span class="tool-link purple arrow">→</span>
-          </div>
         </a>
 
         <a href="/speech-pace-test.html" class="tool-card card-green">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-green">🎤</div>
             <div>
               <h3>Speech Pace Test</h3>
               <p>Measure your speaking speed in words per minute.</p>
             </div>
           </div>
-          <div class="tool-bottom">
-            <span class="tool-link green">Open Tool</span>
-            <span class="tool-link green arrow">→</span>
-          </div>
         </a>
 
         <a href="/refine-speech.html" class="tool-card card-orange">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-orange">✦</div>
             <div>
               <h3>Refine Speech</h3>
               <p>Improve clarity, grammar, and flow with AI powered help.</p>
             </div>
           </div>
-          <div class="tool-bottom">
-            <span class="tool-link orange">Open Tool</span>
-            <span class="tool-link orange arrow">→</span>
-          </div>
         </a>
 
         <a href="/fix-my-email.html" class="tool-card card-blue">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-blue">✉</div>
             <div>
               <h3>Fix My Email</h3>
               <p>Rewrite emails to sound clearer and more professional.</p>
             </div>
           </div>
-          <div class="tool-bottom">
-            <span class="tool-link blue">Open Tool</span>
-            <span class="tool-link blue arrow">→</span>
-          </div>
         </a>
 
         <a href="/random-debate-topic.html" class="tool-card card-red">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-red">⚔</div>
             <div>
               <h3>Debate Topic Generator</h3>
               <p>Get instant random debate topics for practice or class.</p>
             </div>
           </div>
-          <div class="tool-bottom">
-            <span class="tool-link red">Open Tool</span>
-            <span class="tool-link red arrow">→</span>
-          </div>
         </a>
 
         <a href="/speech-outline-generator.html" class="tool-card card-purple">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-purple">▤</div>
             <div>
-              <h3>Speech Outline</h3>https://github.com/estimatinghq/timemyspeech/blob/main/index.html
+              <h3>Speech Outline</h3>
               <p>Turn your ideas into a simple speech structure fast.</p>
             </div>
-          </div>
-          <div class="tool-bottom">
-            <span class="tool-link purple">Open Tool</span>
-            <span class="tool-link purple arrow">→</span>
           </div>
         </a>
 
         <a href="/speech-filler-checker.html" class="tool-card card-green">
-          <div class="tool-top">
+          <div class="tool-content">
             <div class="tool-icon icon-green">✓</div>
             <div>
               <h3>Filler Checker</h3>
               <p>Spot weak filler words and tighten up your speech.</p>
             </div>
-          </div>
-          <div class="tool-bottom">
-            <span class="tool-link green">Open Tool</span>
-            <span class="tool-link green arrow">→</span>
           </div>
         </a>
 
