@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>List Tools | Time My Speech</title>
+  <meta
+    name="description"
+    content="Sort lists, remove duplicates, count lines and randomly pick from a list instantly."
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --soft-blue: #eff6ff;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      padding: 8px 16px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      color: #111827;
+      font-weight: 500;
+      z-index: 10;
+    }
+
+    .home-button:hover {
+      background: #e5e7eb;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 980px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
+
+    .inner {
+      padding: 26px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--soft-blue);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 40px;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .subtext {
+      margin: 0 auto;
+      max-width: 700px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e5ebf3;
+      border-radius: 22px;
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 320px;
+      border-radius: 16px;
+      border: 1px solid #d1d5db;
+      padding: 16px;
+      font-size: 15px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: white;
+    }
+
+    textarea:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .secondary-btn {
+      background: #f3f4f6;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .secondary-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .output-box {
+      min-height: 320px;
+      border-radius: 16px;
+      border: 1px solid #d1d5db;
+      padding: 16px;
+      background: #ffffff;
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--text);
+    }
+
+    .meta {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      min-height: 20px;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        align-items: flex-start;
+      }
+
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-button {
+        top: 16px;
+        right: 16px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .inner {
+        padding: 16px;
+      }
+
+      .button-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .subtext {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="https://timemyspeech.com/" class="home-button">Home</a>
+
+  <div class="container">
+    <div class="inner">
+      <div class="hero">
+        <div class="logo">Time My Speech</div>
+        <h1>List Tools</h1>
+        <p class="subtext">
+          Sort lists, remove duplicates, count lines and randomly pick from a list instantly.
+        </p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <div class="card-title">Your List</div>
+          <textarea id="inputList" placeholder="Paste your list here, with one item per line..."></textarea>
+
+          <div class="button-grid">
+            <button class="primary-btn" onclick="sortAZ()">Sort A to Z</button>
+            <button class="primary-btn" onclick="sortZA()">Sort Z to A</button>
+            <button class="primary-btn" onclick="removeDuplicates()">Remove Duplicates</button>
+            <button class="primary-btn" onclick="countLines()">Count Lines</button>
+          </div>
+
+          <div class="action-row">
+            <button class="secondary-btn" onclick="randomPick()">Random Pick</button>
+            <button class="secondary-btn" onclick="clearAll()">Clear</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Output</div>
+          <div class="output-box" id="outputBox">Your result will appear here.</div>
+          <div class="meta" id="metaText"></div>
+
+          <div class="action-row">
+            <button class="secondary-btn" id="copyBtn" onclick="copyOutput()">Copy Output</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const inputList = document.getElementById("inputList");
+    const outputBox = document.getElementById("outputBox");
+    const metaText = document.getElementById("metaText");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function getLines() {
+      return inputList.value
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line !== "");
+    }
+
+    function showOutput(text, meta = "") {
+      outputBox.textContent = text || "Your result will appear here.";
+      metaText.textContent = meta;
+    }
+
+    function sortAZ() {
+      const lines = getLines();
+      if (!lines.length) {
+        showOutput("Please enter a list first.");
+        return;
+      }
+
+      const sorted = [...lines].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+      showOutput(sorted.join("\n"), `Sorted ${sorted.length} items A to Z`);
+    }
+
+    function sortZA() {
+      const lines = getLines();
+      if (!lines.length) {
+        showOutput("Please enter a list first.");
+        return;
+      }
+
+      const sorted = [...lines].sort((a, b) => b.localeCompare(a, undefined, { sensitivity: "base" }));
+      showOutput(sorted.join("\n"), `Sorted ${sorted.length} items Z to A`);
+    }
+
+    function removeDuplicates() {
+      const lines = getLines();
+      if (!lines.length) {
+        showOutput("Please enter a list first.");
+        return;
+      }
+
+      const seen = new Set();
+      const unique = lines.filter(line => {
+        const key = line.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+      const removed = lines.length - unique.length;
+      showOutput(unique.join("\n"), `Removed ${removed} duplicate${removed === 1 ? "" : "s"}`);
+    }
+
+    function countLines() {
+      const lines = getLines();
+      if (!lines.length) {
+        showOutput("Please enter a list first.");
+        return;
+      }
+
+      showOutput(`Total items: ${lines.length}`, `Counted ${lines.length} line${lines.length === 1 ? "" : "s"}`);
+    }
+
+    function randomPick() {
+      const lines = getLines();
+      if (!lines.length) {
+        showOutput("Please enter a list first.");
+        return;
+      }
+
+      const randomItem = lines[Math.floor(Math.random() * lines.length)];
+      showOutput(`Selected:\n${randomItem}`, `Picked 1 item from ${lines.length}`);
+    }
+
+    function clearAll() {
+      inputList.value = "";
+      showOutput("Your result will appear here.", "");
+    }
+
+    function copyOutput() {
+      const text = outputBox.textContent;
+      if (!text || text === "Your result will appear here.") return;
+
+      navigator.clipboard.writeText(text);
+
+      copyBtn.textContent = "Copied";
+      copyBtn.style.background = "#22c55e";
+      copyBtn.style.color = "white";
+      copyBtn.style.border = "none";
+
+      setTimeout(() => {
+        copyBtn.textContent = "Copy Output";
+        copyBtn.style.background = "#f3f4f6";
+        copyBtn.style.color = "#111827";
+        copyBtn.style.border = "1px solid #d1d5db";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
