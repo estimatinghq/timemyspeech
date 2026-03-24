@@ -1,1358 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://timemyspeech.com">
-  <meta property="og:description" content="Free online speech timer with countdown and speaking pace calculator.">
-  <meta property="og:title" content="Free Speech Timer Online | TimeMySpeech">
-  <link rel="icon" href="/favicon.ico">
-  <link rel="canonical" href="https://timemyspeech.com/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Speech Timer & Word Calculator | TimeMySpeech</title>
-  <meta name="description" content="Free online speech timer with countdown, speaking pace calculator and AI speech refinement.">
+  <title>TimeMySpeech | Free Speech Tools</title>
+  <meta
+    name="description"
+    content="Free speech tools to help you time, practise, refine, and improve your speeches."
+  />
 
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    :root {
-      --bg: #f6f8fc;
-      --card: #ffffff;
-      --soft-border: #e9edf5;
-      --text: #111827;
-      --muted: #6b7280;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --purple: #7c3aed;
-      --danger: #c81e1e;
-      --warning: #b45309;
-      --success: #15803d;
-      --neutral: #475569;
-      --danger-bg: #fef2f2;
-      --warning-bg: #fff7ed;
-      --success-bg: #f0fdf4;
-      --neutral-bg: #f8fafc;
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, #f5f7fb 100%);
+      color: #1f2937;
     }
 
-    html,
     body {
-      min-height: 100%;
+      min-height: 100vh;
     }
 
-   body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-y: auto;
-}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
     .page {
-  max-width: 1460px;
-  margin: 0 auto;
-  padding: 8px 20px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
 
     .hero {
       text-align: center;
-      flex: 0 0 auto;
+      padding: 40px 0 28px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 26px;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
     }
 
     .hero h1 {
-      margin: 0;
-      font-size: 34px;
-      line-height: 1;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 1.05;
       font-weight: 800;
-      letter-spacing: -1px;
+      letter-spacing: -1.6px;
+      color: #111827;
+      margin-bottom: 18px;
     }
 
     .hero p {
-      margin: 3px auto 0;
-      font-size: 14px;
-      line-height: 1.35;
-      color: var(--muted);
       max-width: 760px;
-    }
-
-    .top-tool-links {
-      margin-top: 12px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .top-tool-link {
-      display: inline-block;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 700;
-      border: 1px solid #bfdbfe;
-      transition: 0.15s ease;
-    }
-
-    .top-tool-link:hover {
-      background: #dbeafe;
-    }
-
-    .app {
-      background: var(--card);
-      border: 1px solid var(--soft-border);
-      border-radius: 24px;
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
-      overflow: hidden;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    .tool {
-      display: grid;
-      grid-template-columns: 1fr 0.92fr 1fr;
-      align-items: stretch;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .left,
-    .middle,
-    .right {
-      padding: 16px 18px;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .left,
-    .middle {
-      border-right: 1px solid var(--soft-border);
-    }
-
-    .bottom-section {
-      border-top: 1px solid var(--soft-border);
-      padding: 12px 14px;
-      flex: 0 0 auto;
-    }
-
-    .bottom-grid {
-      display: grid;
-      grid-template-columns: 0.9fr 1.8fr;
-      gap: 12px;
-      align-items: stretch;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .text-area-wrap {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    textarea,
-    .refined-preview {
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      border: 1px solid #d5dae3;
-      border-radius: 18px;
-      padding: 14px 15px;
-      font-size: 14px;
+      margin: 0 auto;
+      font-size: clamp(18px, 2.5vw, 24px);
       line-height: 1.5;
-      resize: none;
-      outline: none;
-      font-family: Arial, sans-serif;
-      color: var(--text);
-      background: #fff;
-    }
-
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    .refined-preview {
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      position: relative;
-    }
-
-    .refined-preview.empty::before {
-      content: attr(data-placeholder);
-      color: #9ca3af;
-    }
-
-    .removed-word {
-      background: #fee2e2;
-      color: #b91c1c;
-      text-decoration: line-through;
-      padding: 1px 3px;
-      border-radius: 6px;
-    }
-
-    .word-count {
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--muted);
-      flex: 0 0 auto;
-    }
-
-    .controls {
-      display: grid;
-      gap: 10px;
-    }
-
-    .control-group label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: #374151;
-    }
-
-    .preset-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .preset-btn {
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      color: #1f2937;
-      transition: 0.15s ease;
-    }
-
-    .preset-btn:hover {
-      border-color: #bfd2ff;
-      background: #f4f8ff;
-    }
-
-    .preset-btn.active {
-      background: #eff6ff;
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    select,
-    input {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid #d1d5db;
-      font-size: 15px;
-      background: #fff;
-      color: var(--text);
-      outline: none;
-    }
-
-    select:focus,
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    .button-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 2px;
-    }
-
-    button {
-      border: none;
-      padding: 11px 14px;
-      border-radius: 16px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .primary-btn {
-      background: var(--primary);
-      color: white;
-    }
-
-    .primary-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    .secondary-btn {
-      background: #f9fafb;
-      border: 1px solid #d1d5db;
-      color: #1f2937;
-    }
-
-    .purple-btn {
-      background: linear-gradient(90deg, #7c3aed, #9333ea);
-      color: white;
-    }
-
-    .full-btn {
-      grid-column: 1 / -1;
-    }
-
-    .tips {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.35;
-    }
-
-    .result-box {
-      padding: 12px 14px;
-      width: 100%;
-      border-radius: 18px;
-      border: 1px solid transparent;
-      transition: 0.15s ease;
-      height: 100%;
-    }
-
-    .result-box.state-neutral {
-      background: var(--neutral-bg);
-      border-color: #e5ebf3;
-    }
-
-    .result-box.state-danger {
-      background: var(--danger-bg);
-      border-color: #fecaca;
-    }
-
-    .result-box.state-warning {
-      background: var(--warning-bg);
-      border-color: #fed7aa;
-    }
-
-    .result-box.state-success {
-      background: var(--success-bg);
-      border-color: #bbf7d0;
-    }
-
-    .result-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.6px;
       color: #6b7280;
-      text-transform: uppercase;
-      margin-bottom: 8px;
     }
 
-    .time-result {
-      font-size: 30px;
-      font-weight: 800;
-      line-height: 1.05;
-      margin-bottom: 8px;
-      letter-spacing: -0.7px;
-      color: var(--neutral);
+    .tools-section {
+      margin-top: 46px;
     }
 
-    .status {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 6px;
-      color: var(--neutral);
-    }
-
-    .advice {
-      font-size: 14px;
-      color: #4b5563;
-      line-height: 1.3;
-    }
-
-    .range-stats {
+    .tools-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
 
-    .range-card {
-      background: rgba(255,255,255,0.82);
-      border: 1px solid #e5ebf3;
-      border-radius: 14px;
-      padding: 9px 11px;
+    .tool-card {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      padding: 28px 26px 24px;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.04),
+        0 2px 8px rgba(15, 23, 42, 0.03);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
-    .range-card.full {
-      grid-column: 1 / -1;
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: #d1d5db;
+      box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.08),
+        0 6px 16px rgba(15, 23, 42, 0.05);
     }
 
-    .range-label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: 0.9px;
+    .tool-top {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .tool-icon {
+      width: 82px;
+      height: 82px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
       font-weight: 700;
     }
 
-    .range-value {
-      font-size: 19px;
+    .icon-blue {
+      background: #e8f0ff;
+      color: #2563eb;
+    }
+
+    .icon-green {
+      background: #eaf8ef;
+      color: #2f8f46;
+    }
+
+    .icon-purple {
+      background: #f1eaff;
+      color: #7c3aed;
+    }
+
+    .icon-orange {
+      background: #fff1e8;
+      color: #f97316;
+    }
+
+    .icon-red {
+      background: #ffecef;
+      color: #ef4444;
+    }
+
+    .tool-card h3 {
+      font-size: 24px;
+      line-height: 1.2;
       font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 12px;
       letter-spacing: -0.4px;
-      line-height: 1.1;
     }
 
-    .progress-wrap {
-      margin-top: 12px;
+    .tool-card p {
+      font-size: 17px;
+      line-height: 1.55;
+      color: #6b7280;
+      max-width: 95%;
     }
 
-    .progress-top {
+    .tool-bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
+      margin-top: 28px;
+      font-size: 17px;
       font-weight: 700;
     }
 
-    .progress-bar {
-      width: 100%;
-      height: 12px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      transition: width 0.2s ease;
-      background: var(--neutral);
-    }
-
-    .progress-fill.state-danger {
-      background: var(--danger);
-    }
-
-    .progress-fill.state-warning {
-      background: var(--warning);
-    }
-
-    .progress-fill.state-success {
-      background: var(--success);
-    }
-
-    .speed-test-wrap {
-      background: #f8fafc;
-      border: 1px solid #e5ebf3;
-      border-radius: 20px;
-      padding: 12px 14px;
-      height: 100%;
-    }
-
-    .speed-test-header {
-      margin-bottom: 8px;
-    }
-
-    .speed-test-header h3 {
-      margin: 0 0 3px;
-      font-size: 18px;
-      letter-spacing: -0.3px;
-    }
-
-    .speed-test-header p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.3;
-    }
-
-    .speed-test-grid {
-      display: grid;
-      grid-template-columns: 1.35fr 0.9fr;
-      gap: 12px;
-      align-items: stretch;
-    }
-
-    .sentence-box {
-      background: #fff;
-      border: 1px solid #e6ebf3;
-      border-radius: 16px;
-      padding: 12px 14px;
-      min-height: 86px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-
-    .sentence-label {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
+    .tool-link.blue {
       color: #2563eb;
-      margin-bottom: 14px;
-      margin-top: 2px;
     }
 
-    .sentence-text {
-      font-size: 16px;
-      line-height: 1.35;
-      font-weight: 600;
-      color: #111827;
-      margin-top: 18px;
+    .tool-link.green {
+      color: #2f8f46;
     }
 
-    .speed-side {
-      display: grid;
-      gap: 10px;
+    .tool-link.purple {
+      color: #7c3aed;
     }
 
-    .mini-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    .tool-link.orange {
+      color: #f97316;
     }
 
-    .stat-card {
-      background: #fff;
-      border: 1px solid #e6ebf3;
-      border-radius: 16px;
-      padding: 10px 12px;
+    .tool-link.red {
+      color: #ef4444;
     }
 
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.9px;
-      font-weight: 700;
-    }
-
-    .stat-value {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
+    .arrow {
+      font-size: 28px;
       line-height: 1;
     }
 
-    .speed-result {
-      background: #fff;
-      border: 1px solid #e6ebf3;
-      border-radius: 16px;
-      padding: 10px 12px;
-      font-size: 13px;
-      line-height: 1.45;
-      color: #374151;
-      min-height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .footer {
       text-align: center;
+      margin-top: 60px;
+      color: #9ca3af;
+      font-size: 14px;
     }
 
-    .speed-result strong {
-      color: #111827;
+    @media (max-width: 1024px) {
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
-    .speed-result-line {
-      display: block;
-    }
-
-    .speed-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .helper-text {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.35;
-    }
-
-      
-    @media (max-width: 1080px) {
+    @media (max-width: 680px) {
       .page {
-        height: auto;
-        min-height: 100vh;
+        padding: 28px 14px 60px;
       }
 
-      .tool,
-      .bottom-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .left,
-      .middle {
-        border-right: none;
-        border-bottom: 1px solid var(--soft-border);
-      }
-
-      .left,
-      .middle,
-      .right {
-        min-height: auto;
-      }
-
-      .text-area-wrap {
-        min-height: 220px;
-      }
-
-      .speed-test-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .page {
-        padding: 10px 10px 12px;
+      .hero {
+        padding: 24px 0 18px;
       }
 
       .hero h1 {
+        margin-bottom: 14px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .tool-card {
+        min-height: auto;
+        padding: 22px 20px 20px;
+        border-radius: 20px;
+      }
+
+      .tool-icon {
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
         font-size: 28px;
       }
 
-      .hero p {
-        font-size: 13px;
+      .tool-card h3 {
+        font-size: 22px;
       }
 
-      .left,
-      .middle,
-      .right,
-      .bottom-section {
-        padding: 12px;
-      }
-
-      .button-row,
-      .speed-buttons,
-      .mini-stats,
-      .range-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .range-card.full {
-        grid-column: auto;
-      }
-
-      .preset-row {
-        gap: 6px;
-      }
-
-      .preset-btn {
-        padding: 8px 12px;
-      }
-
-      .sentence-text {
+      .tool-card p {
         font-size: 16px;
-      }
-
-      .time-result {
-        font-size: 26px;
-      }
-
-      .more-tools-card h2 {
-        font-size: 25px;
+        max-width: 100%;
       }
     }
   </style>
-
-  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-  <h1 style="position:absolute; left:-9999px;">Free Speech Timer</h1>
-
-  <div class="page">
+  <main class="page">
     <section class="hero">
-      <img src="logo2.png" alt="TimeMySpeech Logo" style="height:70px; margin-bottom:10px;">
-      <p>Paste your speech and instantly see how long it will take, then test your real speaking speed for better timing.</p>
+      <div class="logo">
+        <div class="logo-mark">⏱</div>
+        <span>TimeMySpeech</span>
+      </div>
+
+      <h1>Free Speech Tools</h1>
+      <p>
+        Everything you need to practise, time, and improve your speech in one simple place.
+      </p>
     </section>
 
-    <div class="app">
-      <div class="tool">
-        <div class="left">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="section-title">Original speech</div>
-            <button id="copyOriginalBtn" onclick="copyOriginalSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
-          </div>
+    <section class="tools-section">
+      <div class="tools-grid">
 
-          <div class="text-area-wrap">
-            <textarea id="speechText" placeholder="Paste your speech here..."></textarea>
-          </div>
-
-          <div class="word-count">Word count: <span id="wordCount">0</span></div>
-        </div>
-
-        <div class="middle">
-          <div class="section-title">Check your timing</div>
-
-          <div class="controls">
-            <div class="control-group">
-              <label>Quick target</label>
-              <div class="preset-row">
-                <button class="preset-btn" data-minutes="1">1 min</button>
-                <button class="preset-btn active" data-minutes="2">2 min</button>
-                <button class="preset-btn" data-minutes="3">3 min</button>
-                <button class="preset-btn" data-minutes="4">4 min</button>
-                <button class="preset-btn" data-minutes="5">5 min</button>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label for="speed">Speaking speed</label>
-              <select id="speed">
-                <option value="140">Slow</option>
-                <option value="165" selected>Normal</option>
-                <option value="180">Fast</option>
-                <option value="custom">My speaking speed</option>
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="targetMinutes">Target minutes</label>
-              <input type="number" id="targetMinutes" value="2" min="1" step="0.5" />
-            </div>
-
-            <div class="button-row">
-              <button class="primary-btn" onclick="calculateTime()">Check Speech Time</button>
-              <button class="secondary-btn" onclick="trimToTarget()">Trim Speech</button>
-              <button class="purple-btn full-btn" onclick="rewriteWithAI()">Refine with AI</button>
-              <button class="secondary-btn" onclick="useRefinedText()">Use Refined</button>
-              <button class="secondary-btn" onclick="clearSpeech()">Clear</button>
-            </div>
-
-            <div class="tips">
-              Timing updates live as you type. Your speaking speed is saved on this device.
+        <a href="/speech-timer.html" class="tool-card">
+          <div class="tool-top">
+            <div class="tool-icon icon-blue">⏱</div>
+            <div>
+              <h3>Speech Timer</h3>
+              <p>
+                Practise your speech with a clean, easy to use timer and confidence monitor.
+              </p>
             </div>
           </div>
-        </div>
-
-        <div class="right">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="section-title">Refined speech</div>
-            <button id="copyRefinedBtn" onclick="copyRefinedSpeech()" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#f9fafb; cursor:pointer; position: relative; top: -8px;">Copy</button>
+          <div class="tool-bottom">
+            <span class="tool-link blue">Open Tool</span>
+            <span class="tool-link blue arrow">→</span>
           </div>
+        </a>
 
-          <div class="text-area-wrap">
-            <div
-              id="refinedPreview"
-              class="refined-preview empty"
-              data-placeholder="Refined speech will appear here..."
-            ></div>
+        <a href="/speech-word-calculator.html" class="tool-card">
+          <div class="tool-top">
+            <div class="tool-icon icon-purple">≡</div>
+            <div>
+              <h3>Speech Word Calculator</h3>
+              <p>
+                Find out how long your speech will take based on word count and speaking pace.
+              </p>
+            </div>
           </div>
+          <div class="tool-bottom">
+            <span class="tool-link purple">Open Tool</span>
+            <span class="tool-link purple arrow">→</span>
+          </div>
+        </a>
 
-          <div class="word-count">Word count: <span id="refinedWordCount">0</span></div>
-        </div>
+        <a href="/speech-pace-test.html" class="tool-card">
+          <div class="tool-top">
+            <div class="tool-icon icon-green">🎤</div>
+            <div>
+              <h3>Speech Pace Test</h3>
+              <p>
+                Measure your speaking speed in words per minute and improve your pacing.
+              </p>
+            </div>
+          </div>
+          <div class="tool-bottom">
+            <span class="tool-link green">Open Tool</span>
+            <span class="tool-link green arrow">→</span>
+          </div>
+        </a>
+
+        <a href="/refine-speech.html" class="tool-card">
+          <div class="tool-top">
+            <div class="tool-icon icon-orange">✦</div>
+            <div>
+              <h3>Refine Speech</h3>
+              <p>
+                Improve clarity, grammar, and flow with AI powered speech refinement.
+              </p>
+            </div>
+          </div>
+          <div class="tool-bottom">
+            <span class="tool-link orange">Open Tool</span>
+            <span class="tool-link orange arrow">→</span>
+          </div>
+        </a>
+
+        <a href="/fix-my-email.html" class="tool-card">
+          <div class="tool-top">
+            <div class="tool-icon icon-blue">✉</div>
+            <div>
+              <h3>Fix My Email</h3>
+              <p>
+                Rewrite your email to sound clearer, more professional, and more effective.
+              </p>
+            </div>
+          </div>
+          <div class="tool-bottom">
+            <span class="tool-link blue">Open Tool</span>
+            <span class="tool-link blue arrow">→</span>
+          </div>
+        </a>
+
+        <a href="/random-debate-topic.html" class="tool-card">
+          <div class="tool-top">
+            <div class="tool-icon icon-red">⚔</div>
+            <div>
+              <h3>Debate Topic Generator</h3>
+              <p>
+                Get instant random debate topics for practice, class, or competitions.
+              </p>
+            </div>
+          </div>
+          <div class="tool-bottom">
+            <span class="tool-link red">Open Tool</span>
+            <span class="tool-link red arrow">→</span>
+          </div>
+        </a>
+
       </div>
+    </section>
 
-      <div class="bottom-section">
-        <div class="bottom-grid">
-          <div class="result-box state-neutral" id="resultBox">
-            <div class="result-label">Estimated Time</div>
-            <div class="time-result" id="timeResult">Your result will appear here</div>
-            <div class="status" id="statusText"></div>
-            <div class="advice" id="adviceText"></div>
-
-            <div class="progress-wrap">
-              <div class="progress-top">
-                <span>Target fit</span>
-                <span id="progressLabel">Waiting for speech</span>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-              </div>
-            </div>
-
-            <div class="range-stats">
-              <div class="range-card">
-                <div class="range-label">Ideal range</div>
-                <div class="range-value" id="idealRangeText">0 to 0 words</div>
-              </div>
-
-              <div class="range-card">
-                <div class="range-label">Current words</div>
-                <div class="range-value" id="currentWordsText">0 words</div>
-              </div>
-
-              <div class="range-card full">
-                <div class="range-label">What to do</div>
-                <div class="range-value" id="wordsActionText">Paste your speech to begin</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="speed-test-wrap">
-            <div class="speed-test-header">
-              <h3>Test Your Speaking Speed</h3>
-              <p>Read the sentence out loud after the countdown, then press stop when you finish.</p>
-            </div>
-
-            <div class="speed-test-grid">
-              <div class="sentence-box">
-                <div class="sentence-label">Click start and Read this sentence aloud</div>
-                <div class="sentence-text" id="calibrationSentence">
-                  Good morning everyone. Today I will explain one clear idea, give a short example, and finish with a quick summary. Hope you enjoy my speech.
-                </div>
-              </div>
-
-              <div class="speed-side">
-                <div class="mini-stats">
-                  <div class="stat-card">
-                    <div class="stat-label">Countdown</div>
-                    <div class="stat-value" id="countdownDisplay">Ready</div>
-                  </div>
-
-                  <div class="stat-card">
-                    <div class="stat-label">Timer</div>
-                    <div class="stat-value" id="timerDisplay">0.0s</div>
-                  </div>
-                </div>
-
-                <div class="speed-buttons">
-                  <button class="primary-btn" id="startSpeedTestBtn" onclick="startSpeedTest()">Start Speed Test</button>
-                  <button class="secondary-btn" id="stopSpeedTestBtn" onclick="stopSpeedTest()" disabled>Stop Test</button>
-                </div>
-
-                <div class="speed-result" id="calibratedSpeedDisplay">
-                  No personal speaking speed saved yet.
-                </div>
-
-                <div class="helper-text">
-                  Tip: read at your normal presentation pace, not extra fast.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="footer">
+      © 2026 TimeMySpeech. All rights reserved.
     </div>
-  </div>
-  <script>
-    const speechText = document.getElementById("speechText");
-    const refinedPreview = document.getElementById("refinedPreview");
-    const wordCount = document.getElementById("wordCount");
-    const refinedWordCount = document.getElementById("refinedWordCount");
-    const targetMinutesInput = document.getElementById("targetMinutes");
-    const speedSelect = document.getElementById("speed");
-    const presetButtons = document.querySelectorAll(".preset-btn");
-
-    let calibratedWPM = null;
-    let speedTestRunning = false;
-    let speedTestStart = null;
-    let speedTestTimer = null;
-    let countdownInterval = null;
-    let audioContext = null;
-    let currentRefinedPlainText = "";
-
-    function speak(text) {
-      window.speechSynthesis.cancel();
-
-      const speech = new SpeechSynthesisUtterance(text);
-      const voices = window.speechSynthesis.getVoices();
-      const englishVoice = voices.find(v => v.lang.startsWith("en"));
-
-      if (englishVoice) {
-        speech.voice = englishVoice;
-      }
-
-      speech.lang = "en-US";
-      speech.rate = 0.9;
-      speech.pitch = 1;
-
-      window.speechSynthesis.speak(speech);
-    }
-
-    function countWords(text) {
-      const cleaned = text.trim();
-      if (cleaned === "") return 0;
-      const matches = cleaned.match(/\b[\w']+\b/g);
-      return matches ? matches.length : 0;
-    }
-
-    function escapeHtml(text) {
-      return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
-    }
-
-    function setRefinedPreview(html = "", plainText = "") {
-      currentRefinedPlainText = plainText.trim().replace(/\s+/g, " ");
-      refinedPreview.innerHTML = html;
-      refinedPreview.classList.toggle("empty", !plainText.trim());
-      refinedWordCount.textContent = countWords(currentRefinedPlainText);
-    }
-
-    function getCurrentSpeed() {
-      const speedValue = speedSelect.value;
-      if (speedValue === "custom") {
-        return calibratedWPM || 165;
-      }
-      return parseInt(speedValue, 10);
-    }
-
-    function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = seconds % 60;
-      return `${mins} min ${secs} sec`;
-    }
-
-    function getSpeedSentence(wpm) {
-      if (wpm <= 145) return `Your speaking speed is ${wpm} WPM. This is a slow presentation speed.`;
-      if (wpm <= 172) return `Your speaking speed is ${wpm} WPM. This is a normal presentation speed.`;
-      return `Your speaking speed is ${wpm} WPM. This is a fast presentation speed.`;
-    }
-
-    function renderSpeedResult(wpm) {
-      return `
-        <div>
-          <span class="speed-result-line"><strong>${getSpeedSentence(wpm)}</strong></span>
-          <span class="speed-result-line">This will now be used for your speech time estimates.</span>
-        </div>
-      `;
-    }
-
-    function updateCounts() {
-      wordCount.textContent = countWords(speechText.value);
-      refinedWordCount.textContent = countWords(currentRefinedPlainText);
-    }
-
-    function setResultState(state) {
-      const resultBox = document.getElementById("resultBox");
-      const timeResult = document.getElementById("timeResult");
-      const statusText = document.getElementById("statusText");
-      const progressFill = document.getElementById("progressFill");
-
-      resultBox.className = `result-box state-${state}`;
-      progressFill.className = `progress-fill state-${state}`;
-
-      if (state === "danger") {
-        timeResult.style.color = "var(--danger)";
-        statusText.style.color = "var(--danger)";
-      } else if (state === "warning") {
-        timeResult.style.color = "var(--warning)";
-        statusText.style.color = "var(--warning)";
-      } else if (state === "success") {
-        timeResult.style.color = "var(--success)";
-        statusText.style.color = "var(--success)";
-      } else {
-        timeResult.style.color = "var(--neutral)";
-        statusText.style.color = "var(--neutral)";
-      }
-    }
-
-    function getIdealWordRange(speed, targetMinutes) {
-      const targetWords = speed * targetMinutes;
-      const lower = Math.max(1, Math.round(targetWords * 0.92));
-      const upper = Math.max(lower, Math.round(targetWords * 1.08));
-      return { lower, upper, targetWords: Math.round(targetWords) };
-    }
-
-    function updateRangeUI(words, lower, upper) {
-      document.getElementById("idealRangeText").textContent = `${lower} to ${upper} words`;
-      document.getElementById("currentWordsText").textContent = `${words} words`;
-    }
-
-    function updateActionText(words, lower, upper) {
-      const actionEl = document.getElementById("wordsActionText");
-
-      if (words < lower) {
-        actionEl.textContent = `Add about ${lower - words} words`;
-      } else if (words > upper) {
-        actionEl.textContent = `Remove about ${words - upper} words`;
-      } else {
-        actionEl.textContent = "You are in the ideal range";
-      }
-    }
-
-    function updateProgress(words, lower, upper) {
-      const progressFill = document.getElementById("progressFill");
-      const progressLabel = document.getElementById("progressLabel");
-
-      if (words === 0) {
-        progressFill.style.width = "0%";
-        progressLabel.textContent = "Waiting for speech";
-        return;
-      }
-
-      const maxVisual = upper * 1.35;
-      const minVisual = Math.max(1, lower * 0.4);
-      let percentage = ((words - minVisual) / (maxVisual - minVisual)) * 100;
-      percentage = Math.max(4, Math.min(100, percentage));
-      progressFill.style.width = `${percentage}%`;
-
-      if (words < lower) {
-        progressLabel.textContent = "Too short";
-      } else if (words > upper) {
-        progressLabel.textContent = "Too long";
-      } else {
-        progressLabel.textContent = "On target";
-      }
-
-      if (words < lower * 0.8 || words > upper * 1.2) {
-        setResultState("danger");
-      } else if (words < lower || words > upper) {
-        setResultState("warning");
-      } else {
-        setResultState("success");
-      }
-    }
-
-    function calculateTime() {
-      const words = countWords(speechText.value);
-      const speed = getCurrentSpeed();
-      const targetMinutes = parseFloat(targetMinutesInput.value) || 2;
-
-      updateCounts();
-
-      if (!words) {
-        document.getElementById("timeResult").textContent = "Paste your speech first";
-        document.getElementById("statusText").textContent = "";
-        document.getElementById("adviceText").textContent = "";
-        document.getElementById("idealRangeText").textContent = "0 to 0 words";
-        document.getElementById("currentWordsText").textContent = "0 words";
-        document.getElementById("wordsActionText").textContent = "Paste your speech to begin";
-        updateProgress(0, 0, 0);
-        setResultState("neutral");
-        return;
-      }
-
-      const seconds = Math.round((words / speed) * 60);
-      const targetSeconds = Math.round(targetMinutes * 60);
-      const diff = seconds - targetSeconds;
-
-      const { lower, upper, targetWords } = getIdealWordRange(speed, targetMinutes);
-
-      let status = "";
-      let advice = "";
-
-      if (Math.abs(diff) <= 8) {
-        status = "Very close to target";
-        advice = `You are right where you want to be for about ${targetWords} words.`;
-      } else if (diff > 0) {
-        status = `Too long by ${diff} seconds`;
-        advice = `Try removing about ${Math.round((diff / 60) * speed)} words.`;
-      } else {
-        status = `Too short by ${Math.abs(diff)} seconds`;
-        advice = `Try adding about ${Math.round((Math.abs(diff) / 60) * speed)} words.`;
-      }
-
-      document.getElementById("timeResult").textContent = formatTime(seconds);
-      document.getElementById("statusText").textContent = status;
-      document.getElementById("adviceText").textContent = advice;
-
-      updateRangeUI(words, lower, upper);
-      updateActionText(words, lower, upper);
-      updateProgress(words, lower, upper);
-    }
-
-    function buildTrimResult(rawText, maxWords) {
-      const fillerWords = new Set([
-        "really", "very", "just", "quite", "actually", "basically", "literally",
-        "maybe", "perhaps", "somewhat", "that", "so"
-      ]);
-
-      const parts = rawText.split(/(\s+)/);
-      let keptMeaningfulWords = 0;
-      let plainText = "";
-      let html = "";
-
-      for (const part of parts) {
-        if (part === "") continue;
-
-        if (/^\s+$/.test(part)) {
-          html += part;
-          plainText += part;
-          continue;
-        }
-
-        const cleaned = part.toLowerCase().replace(/[^\w']/g, "");
-        const isFiller = cleaned && fillerWords.has(cleaned);
-        const isWord = cleaned.length > 0;
-
-        let removeThis = false;
-
-        if (isWord) {
-          if (isFiller) {
-            removeThis = true;
-          } else if (keptMeaningfulWords >= maxWords) {
-            removeThis = true;
-          } else {
-            keptMeaningfulWords++;
-          }
-        }
-
-        if (removeThis) {
-          html += `<span class="removed-word">${escapeHtml(part)}</span>`;
-        } else {
-          html += escapeHtml(part);
-          plainText += part;
-        }
-      }
-
-      plainText = plainText.replace(/\s+/g, " ").trim();
-      return { html, plainText };
-    }
-
-    function trimToTarget() {
-      const raw = speechText.value.trim();
-      if (!raw) return;
-
-      const speed = getCurrentSpeed();
-      const target = parseFloat(targetMinutesInput.value) || 2;
-      const { upper } = getIdealWordRange(speed, target);
-
-      const result = buildTrimResult(raw, upper);
-      setRefinedPreview(result.html, result.plainText);
-    }
-
-    async function rewriteWithAI() {
-      const speech = speechText.value.trim();
-
-      if (!speech) {
-        alert("Paste your speech first.");
-        return;
-      }
-
-      const button = document.querySelector(".purple-btn");
-      const originalText = button.textContent;
-
-      try {
-        button.disabled = true;
-        button.textContent = "Refining...";
-
-        const response = await fetch("/api/refine", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            speech,
-            targetMinutes: parseFloat(document.getElementById("targetMinutes").value) || 2,
-            speakingSpeed: getCurrentSpeed()
-          })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "AI refine failed.");
-        }
-
-        setRefinedPreview(
-          data.refinedText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
-          data.refinedText
-        );
-      } catch (error) {
-        alert(error.message || "AI refine failed.");
-      } finally {
-        button.disabled = false;
-        button.textContent = originalText;
-      }
-    }
-
-    function useRefinedText() {
-      if (!currentRefinedPlainText) return;
-      speechText.value = currentRefinedPlainText;
-      updateCounts();
-      calculateTime();
-    }
-
-    function clearSpeech() {
-      speechText.value = "";
-      setRefinedPreview("", "");
-      updateCounts();
-      calculateTime();
-    }
-
-    function saveSpeedToLocal() {
-      if (calibratedWPM) {
-        localStorage.setItem("timeMySpeechSpeed", String(calibratedWPM));
-      }
-    }
-
-    function loadSavedSpeed() {
-      const savedSpeed = localStorage.getItem("timeMySpeechSpeed");
-      if (!savedSpeed) return;
-
-      calibratedWPM = parseInt(savedSpeed, 10);
-      if (!Number.isNaN(calibratedWPM)) {
-        document.getElementById("calibratedSpeedDisplay").innerHTML = renderSpeedResult(calibratedWPM);
-      }
-    }
-
-    function ensureAudioContext() {
-      if (!audioContext) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (AudioContextClass) {
-          audioContext = new AudioContextClass();
-        }
-      }
-
-      if (audioContext && audioContext.state === "suspended") {
-        audioContext.resume().catch(() => {});
-      }
-    }
-
-    function startSpeedTest() {
-      if (speedTestRunning) return;
-
-      ensureAudioContext();
-
-      const countdownDisplay = document.getElementById("countdownDisplay");
-      const timerDisplay = document.getElementById("timerDisplay");
-      const startBtn = document.getElementById("startSpeedTestBtn");
-      const stopBtn = document.getElementById("stopSpeedTestBtn");
-
-      clearInterval(countdownInterval);
-      clearInterval(speedTestTimer);
-
-      speedTestRunning = false;
-      timerDisplay.textContent = "0.0s";
-      stopBtn.disabled = true;
-      startBtn.disabled = true;
-
-      let count = 3;
-      countdownDisplay.textContent = count;
-      speak(String(count));
-
-      countdownInterval = setInterval(() => {
-        count--;
-
-        if (count > 0) {
-          countdownDisplay.textContent = count;
-          speak(String(count));
-        } else if (count === 0) {
-          countdownDisplay.textContent = "GO";
-          speak("Go");
-        } else {
-          clearInterval(countdownInterval);
-
-          speedTestRunning = true;
-          speedTestStart = Date.now();
-          stopBtn.disabled = false;
-
-          speedTestTimer = setInterval(() => {
-            if (!speedTestRunning) return;
-            const elapsed = (Date.now() - speedTestStart) / 1000;
-            timerDisplay.textContent = elapsed.toFixed(1) + "s";
-          }, 100);
-        }
-      }, 1000);
-    }
-
-    function stopSpeedTest() {
-      if (!speedTestRunning) return;
-
-      const sentence = document.getElementById("calibrationSentence").textContent.trim();
-      const elapsed = (Date.now() - speedTestStart) / 1000;
-      const words = countWords(sentence);
-
-      speedTestRunning = false;
-      clearInterval(speedTestTimer);
-
-      calibratedWPM = Math.round((words / elapsed) * 60);
-      saveSpeedToLocal();
-
-      document.getElementById("countdownDisplay").textContent = "Done";
-      document.getElementById("stopSpeedTestBtn").disabled = true;
-      document.getElementById("startSpeedTestBtn").disabled = false;
-      document.getElementById("speed").value = "custom";
-
-      document.getElementById("calibratedSpeedDisplay").innerHTML = renderSpeedResult(calibratedWPM);
-
-      calculateTime();
-    }
-
-    function copyOriginalSpeech() {
-      const text = document.getElementById("speechText").value;
-      const btn = document.getElementById("copyOriginalBtn");
-
-      navigator.clipboard.writeText(text);
-
-      btn.innerText = "Copied";
-      btn.style.background = "#22c55e";
-      btn.style.color = "white";
-      btn.style.border = "none";
-
-      setTimeout(() => {
-        btn.innerText = "Copy";
-        btn.style.background = "#f9fafb";
-        btn.style.color = "#1f2937";
-        btn.style.border = "1px solid #d1d5db";
-      }, 1500);
-    }
-
-    function copyRefinedSpeech() {
-      const text = currentRefinedPlainText;
-      const btn = document.getElementById("copyRefinedBtn");
-
-      navigator.clipboard.writeText(text);
-
-      btn.innerText = "Copied";
-      btn.style.background = "#22c55e";
-      btn.style.color = "white";
-      btn.style.border = "none";
-
-      setTimeout(() => {
-        btn.innerText = "Copy";
-        btn.style.background = "#f9fafb";
-        btn.style.color = "#1f2937";
-        btn.style.border = "1px solid #d1d5db";
-      }, 1500);
-    }
-
-    speechText.addEventListener("input", calculateTime);
-    targetMinutesInput.addEventListener("input", calculateTime);
-    speedSelect.addEventListener("change", () => {
-      calculateTime();
-    });
-
-    presetButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        presetButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        targetMinutesInput.value = btn.dataset.minutes;
-        calculateTime();
-      });
-    });
-
-    loadSavedSpeed();
-    setRefinedPreview("", "");
-    updateCounts();
-    calculateTime();
-  </script>
+  </main>
 </body>
 </html>
