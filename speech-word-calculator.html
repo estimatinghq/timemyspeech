@@ -367,9 +367,10 @@
           </div>
         </div>
 
-        <div class="copy-row">
-          <button class="copy-btn" id="copyBtn" onclick="copyResults()">Copy Results</button>
-        </div>
+       <div class="copy-row">
+  <button class="copy-btn" id="copyBtn" onclick="copyResults()">Copy Results</button>
+  <button class="copy-btn" onclick="refreshCalculator()" style="margin-left:10px;">Refresh</button>
+</div>
 
         <div class="bottom-note">
           Most presentation speeches are usually strongest at a normal pace. Slow is useful for formal speaking, and fast may suit confident short speeches.
@@ -399,6 +400,10 @@
       if (wpm >= 180) return "Fast";
       return "Normal";
     }
+    function refreshCalculator(){
+  localStorage.removeItem("speechWPM");
+  location.reload();
+}
 
     function updateCalculator(minutes) {
       currentMinutes = minutes;
