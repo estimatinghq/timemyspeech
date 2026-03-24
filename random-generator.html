@@ -1,558 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generator Tools | Time My Speech</title>
-  <meta
-    name="description"
-    content="Generate passwords, random numbers and coin flips instantly with simple free online generator tools."
-  />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Tools | Time My Speech</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    :root {
-      --bg: #f6f8fc;
-      --card: #ffffff;
-      --border: #e5e7eb;
-      --text: #111827;
-      --muted: #6b7280;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --soft-blue: #eff6ff;
-    }
+*{box-sizing:border-box;}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-    }
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#f4f7fc,#f8fbff);
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+padding:20px;
+}
 
-    .home-button {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-      padding: 8px 16px;
-      background: #f3f4f6;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 14px;
-      color: #111827;
-      font-weight: 500;
-      z-index: 10;
-    }
+.container{
+width:100%;
+max-width:900px;
+background:white;
+border-radius:24px;
+padding:28px;
+box-shadow:0 20px 50px rgba(0,0,0,0.08);
+}
 
-    .home-button:hover {
-      background: #e5e7eb;
-    }
+h1{
+text-align:center;
+margin-bottom:20px;
+}
 
-    .container {
-      width: 100%;
-      max-width: 980px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
-      overflow: hidden;
-    }
+.home-button{
+position:absolute;
+top:20px;
+right:40px;
+padding:8px 16px;
+background:#f3f4f6;
+border:1px solid #d1d5db;
+border-radius:10px;
+text-decoration:none;
+font-size:14px;
+color:#111827;
+font-weight:500;
+}
 
-    .inner {
-      padding: 26px;
-    }
+.tabs{
+display:flex;
+gap:10px;
+justify-content:center;
+margin-bottom:20px;
+}
 
-    .hero {
-      text-align: center;
-      margin-bottom: 24px;
-    }
+.tab{
+padding:10px 16px;
+border-radius:20px;
+border:1px solid #d1d5db;
+background:white;
+cursor:pointer;
+font-weight:600;
+}
 
-    .logo {
-      display: inline-block;
-      margin-bottom: 12px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--primary);
-      background: var(--soft-blue);
-      border: 1px solid #bfdbfe;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
+.tab.active{
+background:#2563eb;
+color:white;
+}
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: 40px;
-      line-height: 1.1;
-      letter-spacing: -1px;
-    }
+.panel{display:none;}
+.panel.active{display:block;}
 
-    .subtext {
-      margin: 0 auto;
-      max-width: 700px;
-      font-size: 16px;
-      line-height: 1.5;
-      color: var(--muted);
-    }
+button{
+padding:12px 16px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
 
-    .tool-shell {
-      margin-top: 24px;
-      background: #f8fafc;
-      border: 1px solid #e5ebf3;
-      border-radius: 22px;
-      padding: 22px;
-    }
+.result{
+margin-top:20px;
+padding:20px;
+border:1px solid #ddd;
+border-radius:12px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
 
-    .tab-row {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
-    }
+/* COIN */
 
-    .tab-btn {
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: #111827;
-      padding: 12px 16px;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
+.coin{
+width:120px;
+height:120px;
+border-radius:50%;
+background:linear-gradient(145deg,#f6c453,#d4a017);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:36px;
+font-weight:bold;
+margin:20px auto;
+color:white;
+transform-style:preserve-3d;
+}
 
-    .tab-btn:hover {
-      background: #f3f4f6;
-    }
+.spin{
+animation:spinCoin 1.5s ease-out;
+}
 
-    .tab-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
+@keyframes spinCoin{
+0%{transform:rotateY(0deg);}
+100%{transform:rotateY(1440deg);}
+}
 
-    .panel {
-      display: none;
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    .panel-card {
-      background: #ffffff;
-      border: 1px solid #d1d5db;
-      border-radius: 18px;
-      padding: 20px;
-    }
-
-    .panel-title {
-      text-align: center;
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .control-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .field label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #374151;
-    }
-
-    .field input[type="number"] {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .field input[type="number"]:focus {
-      border-color: #93c5fd;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
-    }
-
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-size: 15px;
-    }
-
-    .checkbox-item input {
-      transform: scale(1.1);
-    }
-
-    .action-row {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 14px 18px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    .primary-btn {
-      background: var(--primary);
-      color: white;
-    }
-
-    .primary-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    .secondary-btn {
-      background: #f3f4f6;
-      color: #111827;
-      border: 1px solid #d1d5db;
-    }
-
-    .secondary-btn:hover {
-      background: #e5e7eb;
-    }
-
-    .result-box {
-      min-height: 120px;
-      border-radius: 16px;
-      border: 1px solid #d1d5db;
-      padding: 18px;
-      background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-size: 24px;
-      font-weight: 800;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .result-box.small {
-      font-size: 20px;
-    }
-
-    .helper {
-      margin-top: 12px;
-      text-align: center;
-      font-size: 14px;
-      color: var(--muted);
-      min-height: 20px;
-    }
-
-    @media (max-width: 860px) {
-      body {
-        align-items: flex-start;
-      }
-
-      .control-grid,
-      .checkbox-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .home-button {
-        top: 16px;
-        right: 16px;
-      }
-
-      h1 {
-        font-size: 32px;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .inner {
-        padding: 16px;
-      }
-
-      .tool-shell {
-        padding: 16px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .subtext {
-        font-size: 15px;
-      }
-
-      .result-box {
-        font-size: 20px;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <a href="https://timemyspeech.com/" class="home-button">Home</a>
 
-  <div class="container">
-    <div class="inner">
-      <div class="hero">
-        <div class="logo">Time My Speech</div>
-        <h1>Generator Tools</h1>
-        <p class="subtext">
-          Generate secure passwords, random numbers and quick coin flips in one simple place.
-        </p>
-      </div>
+<a href="https://timemyspeech.com/" class="home-button">Home</a>
 
-      <div class="tool-shell">
-        <div class="tab-row">
-          <button class="tab-btn active" onclick="showPanel('password', this)">Password Generator</button>
-          <button class="tab-btn" onclick="showPanel('number', this)">Random Number</button>
-          <button class="tab-btn" onclick="showPanel('coin', this)">Coin Flip</button>
-        </div>
+<div class="container">
 
-        <div class="panel active" id="passwordPanel">
-          <div class="panel-card">
-            <div class="panel-title">Password Generator</div>
+<h1>Generator Tools</h1>
 
-            <div class="control-grid">
-              <div class="field">
-                <label for="passwordLength">Password length</label>
-                <input type="number" id="passwordLength" min="4" max="64" value="12" />
-              </div>
-            </div>
+<div class="tabs">
+<div class="tab active" onclick="showTab('password',this)">Password</div>
+<div class="tab" onclick="showTab('number',this)">Random Number</div>
+<div class="tab" onclick="showTab('coin',this)">Coin Flip</div>
+</div>
 
-            <div class="checkbox-grid">
-              <label class="checkbox-item">
-                <input type="checkbox" id="includeUppercase" checked />
-                Include uppercase
-              </label>
+<!-- PASSWORD -->
 
-              <label class="checkbox-item">
-                <input type="checkbox" id="includeLowercase" checked />
-                Include lowercase
-              </label>
+<div class="panel active" id="password">
 
-              <label class="checkbox-item">
-                <input type="checkbox" id="includeNumbers" checked />
-                Include numbers
-              </label>
+<label>Password Length</label>
+<input type="number" id="passLength" value="12" min="4" max="50">
 
-              <label class="checkbox-item">
-                <input type="checkbox" id="includeSymbols" checked />
-                Include symbols
-              </label>
-            </div>
+<br><br>
 
-            <div class="action-row">
-              <button class="primary-btn" onclick="generatePassword()">Generate Password</button>
-              <button class="secondary-btn" id="copyPasswordBtn" onclick="copyResult('passwordResult', 'copyPasswordBtn', 'Copy Password')">Copy Password</button>
-            </div>
+<button onclick="generatePassword()">Generate Password</button>
 
-            <div class="result-box small" id="passwordResult">Your password will appear here</div>
-            <div class="helper" id="passwordHelper"></div>
-          </div>
-        </div>
+<div class="result" id="passwordResult"></div>
 
-        <div class="panel" id="numberPanel">
-          <div class="panel-card">
-            <div class="panel-title">Random Number Generator</div>
+</div>
 
-            <div class="control-grid">
-              <div class="field">
-                <label for="minNumber">Minimum number</label>
-                <input type="number" id="minNumber" value="1" />
-              </div>
+<!-- RANDOM NUMBER -->
 
-              <div class="field">
-                <label for="maxNumber">Maximum number</label>
-                <input type="number" id="maxNumber" value="100" />
-              </div>
-            </div>
+<div class="panel" id="number">
 
-            <div class="action-row">
-              <button class="primary-btn" onclick="generateRandomNumber()">Generate Number</button>
-              <button class="secondary-btn" id="copyNumberBtn" onclick="copyResult('numberResult', 'copyNumberBtn', 'Copy Number')">Copy Number</button>
-            </div>
+<label>Min</label>
+<input type="number" id="minNum" value="1">
 
-            <div class="result-box" id="numberResult">Your number will appear here</div>
-            <div class="helper" id="numberHelper"></div>
-          </div>
-        </div>
+<label>Max</label>
+<input type="number" id="maxNum" value="100">
 
-        <div class="panel" id="coinPanel">
-          <div class="panel-card">
-            <div class="panel-title">Coin Flip</div>
+<br><br>
 
-            <div class="action-row">
-              <button class="primary-btn" onclick="flipCoin()">Flip Coin</button>
-              <button class="secondary-btn" id="copyCoinBtn" onclick="copyResult('coinResult', 'copyCoinBtn', 'Copy Result')">Copy Result</button>
-            </div>
+<button onclick="generateNumber()">Generate</button>
 
-            <div class="result-box" id="coinResult">Heads or Tails?</div>
-            <div class="helper" id="coinHelper"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="result" id="numberResult"></div>
 
-  <script>
-    function showPanel(panelName, button) {
-      document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
-      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+</div>
 
-      if (panelName === "password") {
-        document.getElementById("passwordPanel").classList.add("active");
-      } else if (panelName === "number") {
-        document.getElementById("numberPanel").classList.add("active");
-      } else if (panelName === "coin") {
-        document.getElementById("coinPanel").classList.add("active");
-      }
+<!-- COIN -->
 
-      button.classList.add("active");
-    }
+<div class="panel" id="coin">
 
-    function generatePassword() {
-      const length = parseInt(document.getElementById("passwordLength").value, 10);
-      const includeUppercase = document.getElementById("includeUppercase").checked;
-      const includeLowercase = document.getElementById("includeLowercase").checked;
-      const includeNumbers = document.getElementById("includeNumbers").checked;
-      const includeSymbols = document.getElementById("includeSymbols").checked;
-      const result = document.getElementById("passwordResult");
-      const helper = document.getElementById("passwordHelper");
+<div class="coin" id="coinFace">?</div>
 
-      const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      const lowercase = "abcdefghijklmnopqrstuvwxyz";
-      const numbers = "0123456789";
-      const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+<button onclick="flipCoin()">Flip Coin</button>
 
-      let chars = "";
+<div class="result" id="coinResult"></div>
 
-      if (includeUppercase) chars += uppercase;
-      if (includeLowercase) chars += lowercase;
-      if (includeNumbers) chars += numbers;
-      if (includeSymbols) chars += symbols;
+</div>
 
-      if (!chars) {
-        result.textContent = "Select at least one option";
-        helper.textContent = "";
-        return;
-      }
+</div>
 
-      const safeLength = Math.max(4, Math.min(64, length || 12));
-      let password = "";
+<script>
 
-      for (let i = 0; i < safeLength; i++) {
-        const randomIndex = Math.floor(Math.random() * chars.length);
-        password += chars[randomIndex];
-      }
+/* TAB SWITCH */
 
-      result.textContent = password;
-      helper.textContent = `Generated ${safeLength} character password`;
-    }
+function showTab(id,btn){
 
-    function generateRandomNumber() {
-      const min = parseInt(document.getElementById("minNumber").value, 10);
-      const max = parseInt(document.getElementById("maxNumber").value, 10);
-      const result = document.getElementById("numberResult");
-      const helper = document.getElementById("numberHelper");
+document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 
-      if (isNaN(min) || isNaN(max)) {
-        result.textContent = "Enter valid numbers";
-        helper.textContent = "";
-        return;
-      }
+document.getElementById(id).classList.add("active");
+btn.classList.add("active");
 
-      if (min > max) {
-        result.textContent = "Minimum cannot be greater than maximum";
-        helper.textContent = "";
-        return;
-      }
+}
 
-      const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-      result.textContent = randomNumber;
-      helper.textContent = `Generated number between ${min} and ${max}`;
-    }
+/* PASSWORD */
 
-    function flipCoin() {
-      const result = document.getElementById("coinResult");
-      const helper = document.getElementById("coinHelper");
+function generatePassword(){
 
-      const coin = Math.random() < 0.5 ? "Heads" : "Tails";
-      result.textContent = coin;
-      helper.textContent = "Random coin flip complete";
-    }
+let length=document.getElementById("passLength").value;
 
-    function copyResult(resultId, buttonId, originalText) {
-      const resultText = document.getElementById(resultId).textContent;
-      const button = document.getElementById(buttonId);
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
-      if (
-        resultText === "Your password will appear here" ||
-        resultText === "Your number will appear here" ||
-        resultText === "Heads or Tails?" ||
-        resultText === "Select at least one option" ||
-        resultText === "Enter valid numbers" ||
-        resultText === "Minimum cannot be greater than maximum"
-      ) {
-        return;
-      }
+let password="";
 
-      navigator.clipboard.writeText(resultText);
+for(let i=0;i<length;i++){
 
-      button.textContent = "Copied";
-      button.style.background = "#22c55e";
-      button.style.color = "white";
-      button.style.border = "none";
+password+=chars[Math.floor(Math.random()*chars.length)];
 
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.style.background = "#f3f4f6";
-        button.style.color = "#111827";
-        button.style.border = "1px solid #d1d5db";
-      }, 1500);
-    }
+}
 
-    generatePassword();
-    generateRandomNumber();
-  </script>
+document.getElementById("passwordResult").innerText=password;
+
+}
+
+/* RANDOM NUMBER */
+
+function generateNumber(){
+
+let min=parseInt(document.getElementById("minNum").value);
+let max=parseInt(document.getElementById("maxNum").value);
+
+let num=Math.floor(Math.random()*(max-min+1))+min;
+
+document.getElementById("numberResult").innerText=num;
+
+}
+
+/* COIN */
+
+function flipCoin(){
+
+let coin=document.getElementById("coinFace");
+
+coin.classList.remove("spin");
+
+void coin.offsetWidth;
+
+coin.classList.add("spin");
+
+let result=Math.random()<0.5?"Heads":"Tails";
+
+setTimeout(()=>{
+
+coin.innerText=result==="Heads"?"H":"T";
+
+document.getElementById("coinResult").innerText=result;
+
+},1500);
+
+}
+
+</script>
+
 </body>
 </html>
