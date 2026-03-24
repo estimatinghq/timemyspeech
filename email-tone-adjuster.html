@@ -6,248 +6,298 @@
 <title>FixMyEmail | Rewrite Email Tone</title>
 
 <style>
-
 :root{
---bg:#f5f7fb;
---card:#ffffff;
---text:#1f2937;
---muted:#6b7280;
---border:#e5e7eb;
---primary:#4f46e5;
---red:#ef4444;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --primary:#4f46e5;
+  --red:#ef4444;
 }
 
 *{
-box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 html,body{
-margin:0;
-height:100%;
-overflow:hidden;
-font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-background:var(--bg);
-color:var(--text);
+  margin:0;
+  height:100%;
+  overflow:hidden;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
 .page{
-max-width:1200px;
-margin:auto;
-padding:0 20px;
+  max-width:1200px;
+  margin:auto;
+  padding:0 20px;
 }
 
 /* HEADER */
 
 .hero{
-position:relative;
-text-align:center;
-padding:20px 0 10px;
-border-bottom:1px solid var(--border);
-margin-bottom:5px;
+  position:relative;
+  text-align:center;
+  padding:30px 0 15px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:10px;
 }
 
 .title{
-font-size:42px;
-font-weight:700;
-letter-spacing:-0.02em;
-margin:0;
+  font-size:42px;
+  font-weight:700;
+  letter-spacing:-0.02em;
+  margin:0;
 }
 
 .title span{
-color:var(--red);
+  color:var(--red);
 }
 
 .subtitle{
-margin-top:8px;
-font-size:15px;
-color:var(--muted);
+  margin-top:8px;
+  font-size:15px;
+  color:var(--muted);
 }
 
 /* HOME BUTTON */
 
 .home{
-position:absolute;
-right:0;
-top:10px;
-text-decoration:none;
-background:#f3f4f6;
-border:1px solid var(--border);
-padding:8px 14px;
-border-radius:10px;
-font-size:14px;
-color:#111827;
-font-weight:600;
+  position:absolute;
+  right:0;
+  top:10px;
+  text-decoration:none;
+  background:#f3f4f6;
+  border:1px solid var(--border);
+  padding:8px 14px;
+  border-radius:10px;
+  font-size:14px;
+  color:#111827;
+  font-weight:600;
 }
 
 .home:hover{
-background:#e5e7eb;
+  background:#e5e7eb;
 }
 
 /* MAIN TOOL */
 
 .main{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:24px;
-margin-bottom:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:10px;
 }
 
 .panel{
-background:var(--card);
-border-radius:20px;
-padding:22px;
-border:1px solid var(--border);
-box-shadow:0 10px 30px rgba(0,0,0,0.05);
-display:flex;
-flex-direction:column;
+  background:var(--card);
+  border-radius:20px;
+  padding:22px;
+  border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+  display:flex;
+  flex-direction:column;
 }
 
 .panel-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
 }
 
 .panel-header h2{
-margin:0;
-font-size:22px;
+  margin:0;
+  font-size:22px;
 }
 
 .note{
-font-size:13px;
-color:var(--muted);
+  font-size:13px;
+  color:var(--muted);
 }
 
 textarea{
-width:100%;
-min-height:320px;
-border-radius:14px;
-border:1px solid var(--border);
-padding:16px;
-font-size:16px;
-line-height:1.6;
-resize:none;
-font-family:inherit;
+  width:100%;
+  min-height:320px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  padding:16px;
+  font-size:16px;
+  line-height:1.6;
+  resize:none;
+  font-family:inherit;
+  color:var(--text);
 }
 
-/* OUTPUT */
+textarea::placeholder{
+  color:#9ca3af;
+}
 
 .output{
-min-height:320px;
-border-radius:14px;
-border:1px solid var(--border);
-padding:16px;
-background:#f9fafb;
-font-size:16px;
-line-height:1.6;
+  min-height:320px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  padding:16px;
+  background:#f9fafb;
+  font-size:16px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+
+.placeholder-output{
+  color:#9ca3af;
 }
 
 /* TONE BUTTONS */
 
 .tones{
-margin-top:14px;
-display:flex;
-flex-wrap:wrap;
-gap:8px;
+  margin-top:14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
 }
 
 .tone{
-border-radius:999px;
-padding:8px 12px;
-font-size:14px;
-border:1px solid var(--border);
-background:#f9fafb;
-cursor:pointer;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:14px;
+  border:1px solid var(--border);
+  background:#f9fafb;
+  cursor:pointer;
+  transition:all 0.15s ease;
 }
 
 .tone:hover{
-background:#eef2ff;
+  background:#eef2ff;
+}
+
+.tone.active{
+  background:#e0e7ff;
+  border-color:#c7d2fe;
+  color:#312e81;
 }
 
 /* CUSTOM PROMPT */
 
 .custom{
-margin-top:14px;
+  margin-top:14px;
 }
 
 .custom label{
-font-size:13px;
-color:var(--muted);
-display:block;
-margin-bottom:6px;
+  font-size:13px;
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px;
 }
 
 .custom input{
-width:100%;
-height:46px;
-border-radius:12px;
-border:1px solid var(--border);
-padding:0 14px;
-font-size:15px;
+  width:100%;
+  height:46px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  padding:0 14px;
+  font-size:15px;
+  font-family:inherit;
 }
 
 /* BUTTONS */
 
 .buttons{
-margin-top:14px;
-display:flex;
-gap:10px;
+  margin-top:14px;
+  display:flex;
+  gap:10px;
 }
 
 button{
-border:none;
-border-radius:12px;
-padding:10px 14px;
-font-size:14px;
-cursor:pointer;
+  border:none;
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:14px;
+  cursor:pointer;
+  font-family:inherit;
 }
 
 .primary{
-background:var(--primary);
-color:white;
+  background:var(--primary);
+  color:white;
+}
+
+.primary:disabled{
+  opacity:0.7;
+  cursor:not-allowed;
 }
 
 .secondary{
-background:#f3f4f6;
+  background:#f3f4f6;
+  color:var(--text);
 }
 
 .copy{
-background:#10b981;
-color:white;
+  background:#10b981;
+  color:white;
+}
+
+.copy.copied{
+  background:#059669;
 }
 
 /* FEATURES */
 
 .features{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:16px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
 
 .feature{
-background:white;
-border-radius:18px;
-padding:18px;
-border:1px solid var(--border);
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  border:1px solid var(--border);
 }
 
 .feature h3{
-margin:6px 0;
-font-size:17px;
+  margin:6px 0;
+  font-size:17px;
 }
 
 .feature p{
-margin:0;
-color:var(--muted);
-font-size:14px;
-line-height:1.5;
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
 }
 
 .icon{
-font-size:22px;
+  font-size:22px;
 }
 
+@media(max-width:900px){
+  html,body{
+    height:auto;
+    overflow:auto;
+  }
+
+  .main{
+    grid-template-columns:1fr;
+  }
+
+  .features{
+    grid-template-columns:1fr;
+  }
+
+  .home{
+    position:static;
+    display:inline-block;
+    margin-bottom:12px;
+  }
+
+  .hero{
+    padding-top:20px;
+  }
+}
 </style>
 </head>
 
@@ -256,156 +306,177 @@ font-size:22px;
 <div class="page">
 
 <section class="hero">
-
 <a href="/" class="home">Home</a>
 
-<h1 class="title">
-FixMy<span>Email</span>
-</h1>
+<h1 class="title">FixMy<span>Email</span></h1>
 
 <p class="subtitle">
 Rewrite emails to sound more polite, firm, or professional.
 </p>
-
 </section>
 
 <section class="main">
 
 <div class="panel">
+  <div class="panel-header">
+    <h2>Your message</h2>
+    <span class="note">Paste email or text</span>
+  </div>
 
-<div class="panel-header">
-<h2>Your message</h2>
-<span class="note">Paste email or text</span>
-</div>
+  <textarea placeholder="Hi Fiona, just checking if you can send the contract today."></textarea>
 
-<textarea>Hi Fiona, just checking if you can send the contract today.</textarea>
+  <div class="tones">
+    <div class="tone" data-tone="More polite">🙏 More polite</div>
+    <div class="tone" data-tone="Professional">💼 Professional</div>
+    <div class="tone" data-tone="More direct">⚡ More direct</div>
+    <div class="tone" data-tone="More firm">🧱 More firm</div>
+    <div class="tone" data-tone="Friendlier">😊 Friendlier</div>
+    <div class="tone" data-tone="Shorter">✂️ Shorter</div>
+    <div class="tone" data-tone="Stronger">🔥 Stronger</div>
+    <div class="tone" data-tone="Softer">🕊️ Softer</div>
+  </div>
 
-<div class="tones">
-<div class="tone">🙏 More polite</div>
-<div class="tone">💼 Professional</div>
-<div class="tone">⚡ More direct</div>
-<div class="tone">🧱 More firm</div>
-<div class="tone">😊 Friendlier</div>
-<div class="tone">✂️ Shorter</div>
-<div class="tone">🔥 Stronger</div>
-<div class="tone">🕊️ Softer</div>
-</div>
+  <div class="custom">
+    <label>Custom instruction for AI</label>
+    <input type="text" placeholder="Example: Make it harsher, confident, and shorter">
+  </div>
 
-<div class="custom">
-<label>Custom instruction for AI</label>
-<input type="text" placeholder="Example: Make it harsher, confident, and shorter">
-</div>
-
-<div class="buttons">
-<button class="primary">Adjust tone</button>
-<button class="secondary">Clear</button>
-</div>
-
+  <div class="buttons">
+    <button class="primary">Make changes</button>
+    <button class="secondary">Clear</button>
+  </div>
 </div>
 
 <div class="panel">
+  <div class="panel-header">
+    <h2>Adjusted version</h2>
+    <button class="copy">Copy</button>
+  </div>
 
-<div class="panel-header">
-<h2>Adjusted version</h2>
-<button class="copy">Copy</button>
-</div>
-
-<div class="output">
-Hi Fiona, just checking in to see whether you might be able to send the contract through today when convenient. Thank you.
-</div>
-
+  <div class="output placeholder-output">
+    Your rewritten email will appear here.
+  </div>
 </div>
 
 </section>
 
 <section class="features">
+  <div class="feature">
+    <div class="icon">🎯</div>
+    <h3>Clear tone presets</h3>
+    <p>Choose tones like polite, firmer, friendlier, or shorter.</p>
+  </div>
 
-<div class="feature">
-<div class="icon">🎯</div>
-<h3>Clear tone presets</h3>
-<p>Choose tones like polite, firmer, friendlier, or shorter.</p>
-</div>
+  <div class="feature">
+    <div class="icon">⚖️</div>
+    <h3>Good for difficult messages</h3>
+    <p>Useful for work emails, negotiations, and sensitive conversations.</p>
+  </div>
 
-<div class="feature">
-<div class="icon">⚖️</div>
-<h3>Good for difficult messages</h3>
-<p>Useful for work emails, negotiations, and sensitive conversations.</p>
-</div>
+  <div class="feature">
+    <div class="icon">⚡</div>
+    <h3>Fast to use</h3>
+    <p>Paste your message, choose a tone, copy the result.</p>
+  </div>
 
-<div class="feature">
-<div class="icon">⚡</div>
-<h3>Fast to use</h3>
-<p>Paste your message, choose a tone, copy the result.</p>
-</div>
-
-<div class="feature">
-<div class="icon">💬</div>
-<h3>Built for everyday writing</h3>
-<p>Works for emails, texts, DMs and professional messages.</p>
-</div>
-
+  <div class="feature">
+    <div class="icon">💬</div>
+    <h3>Built for everyday writing</h3>
+    <p>Works for emails, texts, DMs and professional messages.</p>
+  </div>
 </section>
 
 </div>
+
 <script>
+let selectedTone = "neutral";
 
-let selectedTone = "neutral"
+async function rewriteEmail(tone, customInstruction = "") {
+  const message = document.querySelector("textarea").value;
+  const outputBox = document.querySelector(".output");
+  const button = document.querySelector(".primary");
 
-async function rewriteEmail(tone, customInstruction="") {
+  if (!message.trim()) {
+    outputBox.innerText = "Please enter a message first.";
+    outputBox.classList.remove("placeholder-output");
+    return;
+  }
 
-const message = document.querySelector("textarea").value
-const outputBox = document.querySelector(".output")
+  outputBox.innerText = "Rewriting...";
+  outputBox.classList.remove("placeholder-output");
+  button.disabled = true;
 
-outputBox.innerText = "Rewriting..."
+  try {
+    const res = await fetch("/api/rewrite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: message,
+        tone: tone,
+        customInstruction: customInstruction
+      })
+    });
 
-try {
+    const data = await res.json();
+    outputBox.innerText = data.result || data.error || "Something went wrong.";
+  } catch (err) {
+    outputBox.innerText = "Request failed.";
+  }
 
-const res = await fetch("/api/rewrite",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-message:message,
-tone:tone,
-customInstruction:customInstruction
-})
-})
-
-const data = await res.json()
-
-outputBox.innerText = data.result || data.error
-
-} catch(err){
-
-outputBox.innerText = "Request failed."
-
+  button.disabled = false;
 }
 
-}
+document.querySelectorAll(".tone").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".tone").forEach(t => t.classList.remove("active"));
+    this.classList.add("active");
+    selectedTone = this.dataset.tone || this.innerText;
+    rewriteEmail(selectedTone);
+  });
+});
 
-/* TONE BUTTONS */
+document.querySelector(".primary").addEventListener("click", function() {
+  const customInstruction = document.querySelector(".custom input").value;
+  rewriteEmail(selectedTone, customInstruction);
+});
 
-document.querySelectorAll(".tone").forEach(btn=>{
-btn.addEventListener("click",function(){
+document.querySelector(".secondary").addEventListener("click", function() {
+  document.querySelector("textarea").value = "";
+  document.querySelector(".custom input").value = "";
+  document.querySelector(".output").innerText = "Your rewritten email will appear here.";
+  document.querySelector(".output").classList.add("placeholder-output");
+  document.querySelectorAll(".tone").forEach(t => t.classList.remove("active"));
+  selectedTone = "neutral";
+});
 
-selectedTone = this.innerText
+document.querySelector(".copy").addEventListener("click", async function() {
+  const outputText = document.querySelector(".output").innerText.trim();
+  const copyBtn = this;
 
-rewriteEmail(selectedTone)
+  if (!outputText || outputText === "Your rewritten email will appear here." || outputText === "Rewriting...") {
+    return;
+  }
 
-})
-})
+  try {
+    await navigator.clipboard.writeText(outputText);
+    copyBtn.innerText = "Copied";
+    copyBtn.classList.add("copied");
 
-/* CUSTOM AI BUTTON */
+    setTimeout(() => {
+      copyBtn.innerText = "Copy";
+      copyBtn.classList.remove("copied");
+    }, 1500);
+  } catch (err) {
+    copyBtn.innerText = "Failed";
 
-document.querySelector(".primary").addEventListener("click",function(){
-
-const customInstruction = document.querySelector(".custom input").value
-
-rewriteEmail(selectedTone, customInstruction)
-
-})
-
+    setTimeout(() => {
+      copyBtn.innerText = "Copy";
+    }, 1500);
+  }
+});
 </script>
+
 </body>
 </html>
