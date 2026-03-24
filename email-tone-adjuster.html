@@ -203,6 +203,41 @@ textarea::placeholder{
   line-height:1.5;
 }
 
+/* WHAT CHANGED */
+
+.changes-card{
+  margin-top:12px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fafafa;
+}
+
+.changes-title{
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:10px;
+}
+
+.changes-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.change-chip{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#eef2ff;
+  border:1px solid #dbe4ff;
+  font-size:13px;
+  color:#3730a3;
+  font-weight:500;
+}
+
 /* TONE BUTTONS */
 
 .tones{
@@ -422,6 +457,15 @@ Rewrite emails to sound more polite, firm, or professional.
       Clarity, tone, and flow improvements will appear here.
     </div>
   </div>
+
+  <div class="changes-card">
+    <div class="changes-title">What changed</div>
+    <div class="changes-list" id="changesList">
+      <span class="change-chip">Tone improved</span>
+      <span class="change-chip">Clearer wording</span>
+      <span class="change-chip">Better flow</span>
+    </div>
+  </div>
 </div>
 
 </section>
@@ -499,9 +543,32 @@ function getImprovementData(tone, customInstruction, originalMessage, rewrittenM
 }
 
 function updateImprovement(score, note) {
-  document.getElementById("improvePercent").innerText = score + "%";
-  document.getElementById("improveFill").style.width = score + "%";
+  document.getElementById("improvePercent").innerText = score > 0 ? score + "%" : "—";
+  document.getElementById("improveFill").style.width = score > 0 ? score + "%" : "0%";
   document.getElementById("improveNote").innerText = note;
+}
+
+function updateChanges(tone, customInstruction, originalMessage, rewrittenMessage) {
+  const changes = ["Clearer wording"];
+
+  if (tone && tone !== "neutral") {
+    changes.push(tone);
+  }
+
+  if (rewrittenMessage.length < originalMessage.length) {
+    changes.push("More concise");
+  } else {
+    changes.push("Better flow");
+  }
+
+  if (customInstruction && customInstruction.trim()) {
+    changes.push("Custom edits applied");
+  }
+
+  document.getElementById("changesList").innerHTML = changes
+    .slice(0,4)
+    .map(item => `<span class="change-chip">${item}</span>`)
+    .join("");
 }
 
 async function rewriteEmail(tone, customInstruction = "") {
@@ -513,6 +580,9 @@ async function rewriteEmail(tone, customInstruction = "") {
     outputBox.innerText = "Please enter a message first.";
     outputBox.classList.remove("placeholder-output");
     updateImprovement(0, "Enter a message to see improvement analysis.");
+    document.getElementById("changesList").innerHTML = `
+      <span class="change-chip">Add a message first</span>
+    `;
     return;
   }
 
@@ -541,12 +611,19 @@ async function rewriteEmail(tone, customInstruction = "") {
     if (data.result) {
       const improvement = getImprovementData(tone, customInstruction, message, result);
       updateImprovement(improvement.score, improvement.note);
+      updateChanges(tone, customInstruction, message, result);
     } else {
       updateImprovement(0, "Unable to calculate improvement.");
+      document.getElementById("changesList").innerHTML = `
+        <span class="change-chip">No analysis available</span>
+      `;
     }
   } catch (err) {
     outputBox.innerText = "Request failed.";
     updateImprovement(0, "Unable to calculate improvement.");
+    document.getElementById("changesList").innerHTML = `
+      <span class="change-chip">Request failed</span>
+    `;
   }
 
   button.disabled = false;
@@ -574,8 +651,11 @@ document.querySelector(".secondary").addEventListener("click", function() {
   document.querySelectorAll(".tone").forEach(t => t.classList.remove("active"));
   selectedTone = "neutral";
   updateImprovement(0, "Clarity, tone, and flow improvements will appear here.");
-  document.getElementById("improvePercent").innerText = "—";
-  document.getElementById("improveFill").style.width = "0%";
+  document.getElementById("changesList").innerHTML = `
+    <span class="change-chip">Tone improved</span>
+    <span class="change-chip">Clearer wording</span>
+    <span class="change-chip">Better flow</span>
+  `;
 });
 
 document.querySelector(".copy").addEventListener("click", async function() {
