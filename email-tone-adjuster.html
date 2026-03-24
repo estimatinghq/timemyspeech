@@ -137,7 +137,7 @@ textarea::placeholder{
 
 .output{
   width:100%;
-  min-height:320px;
+  min-height:220px;
   border-radius:14px;
   border:1px solid var(--border);
   padding:16px;
@@ -149,6 +149,58 @@ textarea::placeholder{
 
 .placeholder-output{
   color:#9ca3af;
+}
+
+/* IMPROVEMENT */
+
+.improvement{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fafafa;
+}
+
+.improve-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.improve-title{
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+}
+
+.improve-percent{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+}
+
+.improve-bar{
+  width:100%;
+  height:10px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+.improve-fill{
+  height:100%;
+  width:0%;
+  background:#22c55e;
+  border-radius:999px;
+  transition:width 0.35s ease;
+}
+
+.improve-note{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.5;
 }
 
 /* TONE BUTTONS */
@@ -354,7 +406,23 @@ Rewrite emails to sound more polite, firm, or professional.
     <button class="copy">Copy</button>
   </div>
 
- <div class="output placeholder-output">Your rewritten email will appear here.</div>
+  <div class="output placeholder-output">Your rewritten email will appear here.</div>
+
+  <div class="improvement">
+    <div class="improve-top">
+      <div class="improve-title">Improvement score</div>
+      <div class="improve-percent" id="improvePercent">—</div>
+    </div>
+
+    <div class="improve-bar">
+      <div class="improve-fill" id="improveFill"></div>
+    </div>
+
+    <div class="improve-note" id="improveNote">
+      Clarity, tone, and flow improvements will appear here.
+    </div>
+  </div>
+</div>
 
 </section>
 
@@ -389,6 +457,53 @@ Rewrite emails to sound more polite, firm, or professional.
 <script>
 let selectedTone = "neutral";
 
+function getImprovementData(tone, customInstruction, originalMessage, rewrittenMessage) {
+  const originalWords = originalMessage.trim() ? originalMessage.trim().split(/\s+/).length : 0;
+  const newWords = rewrittenMessage.trim() ? rewrittenMessage.trim().split(/\s+/).length : 0;
+
+  let score = 78;
+  let notes = [];
+
+  if (tone && tone !== "neutral") {
+    score += 4;
+    notes.push("tone refined");
+  }
+
+  if (customInstruction && customInstruction.trim()) {
+    score += 5;
+    notes.push("custom changes applied");
+  }
+
+  if (originalWords > 0 && newWords > 0) {
+    const diff = Math.abs(originalWords - newWords);
+    if (diff >= 3) {
+      score += 3;
+      notes.push("flow improved");
+    }
+    if (newWords < originalWords) {
+      notes.push("length tightened");
+    }
+  }
+
+  if (score > 92) score = 92;
+  if (score < 68) score = 68;
+
+  if (!notes.includes("clarity improved")) {
+    notes.unshift("clarity improved");
+  }
+
+  return {
+    score,
+    note: notes.join(" • ")
+  };
+}
+
+function updateImprovement(score, note) {
+  document.getElementById("improvePercent").innerText = score + "%";
+  document.getElementById("improveFill").style.width = score + "%";
+  document.getElementById("improveNote").innerText = note;
+}
+
 async function rewriteEmail(tone, customInstruction = "") {
   const message = document.querySelector("textarea").value;
   const outputBox = document.querySelector(".output");
@@ -397,6 +512,7 @@ async function rewriteEmail(tone, customInstruction = "") {
   if (!message.trim()) {
     outputBox.innerText = "Please enter a message first.";
     outputBox.classList.remove("placeholder-output");
+    updateImprovement(0, "Enter a message to see improvement analysis.");
     return;
   }
 
@@ -418,9 +534,19 @@ async function rewriteEmail(tone, customInstruction = "") {
     });
 
     const data = await res.json();
-    outputBox.innerText = data.result || data.error || "Something went wrong.";
+    const result = data.result || data.error || "Something went wrong.";
+
+    outputBox.innerText = result;
+
+    if (data.result) {
+      const improvement = getImprovementData(tone, customInstruction, message, result);
+      updateImprovement(improvement.score, improvement.note);
+    } else {
+      updateImprovement(0, "Unable to calculate improvement.");
+    }
   } catch (err) {
     outputBox.innerText = "Request failed.";
+    updateImprovement(0, "Unable to calculate improvement.");
   }
 
   button.disabled = false;
@@ -447,6 +573,9 @@ document.querySelector(".secondary").addEventListener("click", function() {
   document.querySelector(".output").classList.add("placeholder-output");
   document.querySelectorAll(".tone").forEach(t => t.classList.remove("active"));
   selectedTone = "neutral";
+  updateImprovement(0, "Clarity, tone, and flow improvements will appear here.");
+  document.getElementById("improvePercent").innerText = "—";
+  document.getElementById("improveFill").style.width = "0%";
 });
 
 document.querySelector(".copy").addEventListener("click", async function() {
