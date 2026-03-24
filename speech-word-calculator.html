@@ -1,134 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Speech Word Calculator | Time My Speech</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speech Word Calculator | Time My Speech</title>
+  <meta name="description" content="Find out how many words you need for a 1, 2, 3, 5 or 10 minute speech based on different speaking speeds." />
 
-<style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-*{
-box-sizing:border-box;
-}
+    :root {
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --soft-blue: #eff6ff;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --orange-bg: #fff7ed;
+      --orange-border: #fed7aa;
+      --purple-bg: #faf5ff;
+      --purple-border: #e9d5ff;
+    }
 
-:root{
---bg:#f6f8fc;
---card:#ffffff;
---border:#e5e7eb;
---text:#111827;
---muted:#6b7280;
---primary:#2563eb;
---soft-blue:#eff6ff;
-}
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
 
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:linear-gradient(180deg,#f4f7fc 0%,#f8fbff 100%);
-color:var(--text);
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7fc 0%, #f8fbff 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
 
-display:flex;
-align-items:center;
-justify-content:center;
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 110px;
+      padding: 8px 16px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      color: #111827;
+      font-weight: 500;
+      transition: 0.15s ease;
+      z-index: 10;
+    }
 
-height:100vh;
-overflow:hidden;
-}
+    .home-button:hover {
+      background: #e5e7eb;
+    }
 
-.home-button{
-position:absolute;
-top:20px;
-right:40px;
-padding:8px 16px;
-background:#f3f4f6;
-border:1px solid #d1d5db;
-border-radius:10px;
-text-decoration:none;
-font-size:14px;
-color:#111827;
-font-weight:500;
-}
+    .container {
+      width: 100%;
+      max-width: 980px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
 
-.home-button:hover{
-background:#e5e7eb;
-}
+    .inner {
+      padding: 26px;
+    }
 
-.container{
-width:100%;
-max-width:980px;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:26px;
-box-shadow:0 18px 50px rgba(15,23,42,0.06);
-overflow:hidden;
-}
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
-.inner{
-padding:26px;
-}
+    .logo {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--soft-blue);
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
 
-.hero{
-text-align:center;
-margin-bottom:24px;
-}
+    h1 {
+      margin: 0 0 10px;
+      font-size: 40px;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
 
-.logo{
-display:inline-block;
-margin-bottom:12px;
-padding:8px 14px;
-font-size:13px;
-font-weight:700;
-color:var(--primary);
-background:var(--soft-blue);
-border:1px solid #bfdbfe;
-border-radius:999px;
-text-transform:uppercase;
-letter-spacing:0.4px;
-}
+    .subtext {
+      margin: 0 auto;
+      max-width: 700px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
 
-h1{
-margin:0 0 10px;
-font-size:40px;
-line-height:1.1;
-letter-spacing:-1px;
-}
+    .picker-card {
+      background: #f8fafc;
+      border: 1px solid #e5ebf3;
+      border-radius: 22px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
 
-.subtext{
-margin:0 auto;
-max-width:700px;
-font-size:16px;
-line-height:1.6;
-color:var(--muted);
-}
+    .picker-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      text-align: center;
+    }
 
-</style>
+    .minute-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .minute-btn {
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #1f2937;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+      min-width: 78px;
+    }
+
+    .minute-btn:hover {
+      border-color: #bfd2ff;
+      background: #f4f8ff;
+    }
+
+    .minute-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .selected-summary {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .result-card {
+      border-radius: 22px;
+      padding: 22px 18px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .result-card.normal {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+    }
+
+    .speed-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .wpm {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .word-total {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .word-caption {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .bottom-note {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .copy-row {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .copy-btn {
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      color: #111827;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: #eef2f7;
+    }
+
+    @media (max-width: 800px) {
+      html, body {
+        height: auto;
+        overflow: auto;
+      }
+
+      body {
+        padding: 16px;
+        align-items: flex-start;
+      }
+
+      .home-button {
+        top: 16px;
+        right: 16px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .word-total {
+        font-size: 36px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .inner {
+        padding: 16px;
+      }
+
+      .picker-card {
+        padding: 16px;
+      }
+
+      .minute-btn {
+        min-width: 70px;
+        padding: 11px 14px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .subtext {
+        font-size: 15px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<a href="https://timemyspeech.com/" class="home-button">Home</a>
+  <a href="https://timemyspeech.com/" class="home-button">Home</a>
 
-<div class="container">
-<div class="inner">
+  <div class="container">
+    <div class="inner">
+      <div class="hero">
+        <div class="logo">Time My Speech</div>
+        <h1>Speech Word Calculator</h1>
+        <p class="subtext">
+          Find out how many words you need for a speech based on your time limit and speaking speed.
+        </p>
+      </div>
 
-<div class="hero">
+      <div class="picker-card">
+        <div class="picker-title">Select your speech length</div>
 
-<div class="logo">
-Time My Speech
-</div>
+        <div style="text-align:center;margin-bottom:15px;font-weight:600;">
+          Enter speech length (minutes)
+        </div>
 
-<h1>Speech Word Calculator</h1>
+        <div style="display:flex;justify-content:center;margin-bottom:15px;">
+          <input
+            id="minutesInput"
+            type="number"
+            value="2"
+            min="0.5"
+            step="0.5"
+            style="
+              padding:12px;
+              font-size:16px;
+              border-radius:10px;
+              border:1px solid #d1d5db;
+              width:120px;
+              text-align:center;
+            "
+          />
+        </div>
 
-<p class="subtext">
-Find out how many words you need for a speech based on your speaking speed.
-</p>
+        <div class="minute-buttons">
+          <button class="minute-btn minute-option" data-minutes="1">1 min</button>
+          <button class="minute-btn minute-option active" data-minutes="2">2 min</button>
+          <button class="minute-btn minute-option" data-minutes="3">3 min</button>
+          <button class="minute-btn minute-option" data-minutes="5">5 min</button>
+          <button class="minute-btn minute-option" data-minutes="10">10 min</button>
+        </div>
 
-</div>
+        <div class="selected-summary" id="selectedSummary">
+          Recommended length for a 2 minute speech
+        </div>
 
-<!-- your existing calculator content stays here -->
+        <div class="selected-summary" id="wpmInfo" style="margin-top:8px;">
+          Using speaking speed: 165 WPM
+        </div>
 
-</div>
-</div>
+        <div style="text-align:center;margin-top:18px;margin-bottom:12px;font-weight:600;">
+          Select your speaking pace
+        </div>
 
+        <div class="minute-buttons" style="margin-bottom:18px;">
+          <button class="minute-btn pace-btn" data-wpm="140">Slow</button>
+          <button class="minute-btn pace-btn active" data-wpm="165">Normal</button>
+          <button class="minute-btn pace-btn" data-wpm="180">Fast</button>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-card normal">
+            <div class="speed-label">Recommended word count</div>
+            <div class="wpm" id="selectedPaceText">Normal pace • 165 words per minute</div>
+            <div class="word-total" id="recommendedWords">330</div>
+            <div class="word-caption">words</div>
+          </div>
+        </div>
+
+        <div class="copy-row">
+          <button class="copy-btn" id="copyBtn" onclick="copyResults()">Copy Results</button>
+        </div>
+
+        <div class="bottom-note">
+          Most presentation speeches are usually strongest at a normal pace. Slow is useful for formal speaking, and fast may suit confident short speeches.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const minuteButtons = document.querySelectorAll(".minute-option");
+    const paceButtons = document.querySelectorAll(".pace-btn");
+    const minutesInput = document.getElementById("minutesInput");
+
+    const selectedSummary = document.getElementById("selectedSummary");
+    const wpmInfo = document.getElementById("wpmInfo");
+    const selectedPaceText = document.getElementById("selectedPaceText");
+    const recommendedWords = document.getElementById("recommendedWords");
+    const copyBtn = document.getElementById("copyBtn");
+
+    let currentMinutes = 2;
+    let currentWPM = localStorage.getItem("speechWPM")
+      ? parseInt(localStorage.getItem("speechWPM"), 10)
+      : 165;
+
+    function getPaceLabel(wpm) {
+      if (wpm <= 140) return "Slow";
+      if (wpm >= 180) return "Fast";
+      return "Normal";
+    }
+
+    function updateCalculator(minutes) {
+      currentMinutes = minutes;
+
+      const words = Math.round(minutes * currentWPM);
+      const paceLabel = getPaceLabel(currentWPM);
+
+      recommendedWords.textContent = words;
+      selectedSummary.textContent = `Recommended length for a ${minutes} minute speech`;
+      wpmInfo.textContent = `Using speaking speed: ${currentWPM} WPM`;
+      selectedPaceText.textContent = `${paceLabel} pace • ${currentWPM} words per minute`;
+    }
+
+    minuteButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        minuteButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const minutes = parseFloat(button.dataset.minutes);
+        minutesInput.value = minutes;
+        updateCalculator(minutes);
+      });
+    });
+
+    minutesInput.addEventListener("input", () => {
+      const minutes = parseFloat(minutesInput.value);
+
+      if (!minutes || minutes <= 0) return;
+
+      minuteButtons.forEach(btn => btn.classList.remove("active"));
+      updateCalculator(minutes);
+    });
+
+    paceButtons.forEach(button => {
+      const buttonWPM = parseInt(button.dataset.wpm, 10);
+
+      if (buttonWPM === currentWPM) {
+        paceButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+      }
+
+      button.addEventListener("click", () => {
+        paceButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        currentWPM = buttonWPM;
+        localStorage.setItem("speechWPM", currentWPM);
+
+        updateCalculator(currentMinutes);
+      });
+    });
+
+    function copyResults() {
+      const paceLabel = getPaceLabel(currentWPM);
+      const words = Math.round(currentMinutes * currentWPM);
+
+      const text = `${currentMinutes} minute speech
+
+Speaking pace: ${paceLabel}
+Words per minute: ${currentWPM}
+Recommended word count: ${words} words`;
+
+      navigator.clipboard.writeText(text);
+
+      copyBtn.textContent = "Copied";
+      copyBtn.style.background = "#22c55e";
+      copyBtn.style.color = "white";
+      copyBtn.style.border = "none";
+
+      setTimeout(() => {
+        copyBtn.textContent = "Copy Results";
+        copyBtn.style.background = "#f9fafb";
+        copyBtn.style.color = "#111827";
+        copyBtn.style.border = "1px solid #d1d5db";
+      }, 1500);
+    }
+
+    updateCalculator(currentMinutes);
+  </script>
 </body>
 </html>
