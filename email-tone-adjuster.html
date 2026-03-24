@@ -203,9 +203,9 @@ textarea::placeholder{
   line-height:1.5;
 }
 
-/* WHAT CHANGED */
+/* SUB SCORES */
 
-.changes-card{
+.subscores{
   margin-top:12px;
   padding:14px;
   border:1px solid var(--border);
@@ -213,29 +213,46 @@ textarea::placeholder{
   background:#fafafa;
 }
 
-.changes-title{
-  font-size:14px;
+.subscore-row{
+  margin-bottom:12px;
+}
+
+.subscore-row:last-child{
+  margin-bottom:0;
+}
+
+.subscore-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+
+.subscore-label{
+  font-size:13px;
   font-weight:600;
   color:var(--text);
-  margin-bottom:10px;
 }
 
-.changes-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-
-.change-chip{
-  display:inline-flex;
-  align-items:center;
-  padding:7px 10px;
-  border-radius:999px;
-  background:#eef2ff;
-  border:1px solid #dbe4ff;
+.subscore-value{
   font-size:13px;
-  color:#3730a3;
-  font-weight:500;
+  color:var(--muted);
+}
+
+.subscore-bar{
+  width:100%;
+  height:8px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.subscore-fill{
+  height:100%;
+  width:0%;
+  background:#60a5fa;
+  border-radius:999px;
+  transition:width 0.35s ease;
 }
 
 /* TONE BUTTONS */
@@ -458,12 +475,35 @@ Rewrite emails to sound more polite, firm, or professional.
     </div>
   </div>
 
-  <div class="changes-card">
-    <div class="changes-title">What changed</div>
-    <div class="changes-list" id="changesList">
-      <span class="change-chip">Tone improved</span>
-      <span class="change-chip">Clearer wording</span>
-      <span class="change-chip">Better flow</span>
+  <div class="subscores">
+    <div class="subscore-row">
+      <div class="subscore-top">
+        <div class="subscore-label">Clarity</div>
+        <div class="subscore-value" id="clarityValue">—</div>
+      </div>
+      <div class="subscore-bar">
+        <div class="subscore-fill" id="clarityFill"></div>
+      </div>
+    </div>
+
+    <div class="subscore-row">
+      <div class="subscore-top">
+        <div class="subscore-label">Readability</div>
+        <div class="subscore-value" id="readabilityValue">—</div>
+      </div>
+      <div class="subscore-bar">
+        <div class="subscore-fill" id="readabilityFill"></div>
+      </div>
+    </div>
+
+    <div class="subscore-row">
+      <div class="subscore-top">
+        <div class="subscore-label">Flow</div>
+        <div class="subscore-value" id="flowValue">—</div>
+      </div>
+      <div class="subscore-bar">
+        <div class="subscore-fill" id="flowFill"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -536,9 +576,28 @@ function getImprovementData(tone, customInstruction, originalMessage, rewrittenM
     notes.unshift("clarity improved");
   }
 
+  let clarity = score - 4;
+  let readability = score - 2;
+  let flow = score - 6;
+
+  if (tone === "Shorter") readability += 4;
+  if (tone === "Professional" || tone === "More polite") clarity += 3;
+  if (tone === "Friendlier" || tone === "Softer") flow += 3;
+  if (customInstruction && customInstruction.trim()) {
+    clarity += 2;
+    flow += 2;
+  }
+
+  clarity = Math.max(65, Math.min(95, clarity));
+  readability = Math.max(65, Math.min(95, readability));
+  flow = Math.max(65, Math.min(95, flow));
+
   return {
     score,
-    note: notes.join(" • ")
+    note: notes.join(" • "),
+    clarity,
+    readability,
+    flow
   };
 }
 
@@ -548,27 +607,14 @@ function updateImprovement(score, note) {
   document.getElementById("improveNote").innerText = note;
 }
 
-function updateChanges(tone, customInstruction, originalMessage, rewrittenMessage) {
-  const changes = ["Clearer wording"];
+function updateSubscores(clarity, readability, flow) {
+  document.getElementById("clarityValue").innerText = clarity > 0 ? clarity + "%" : "—";
+  document.getElementById("readabilityValue").innerText = readability > 0 ? readability + "%" : "—";
+  document.getElementById("flowValue").innerText = flow > 0 ? flow + "%" : "—";
 
-  if (tone && tone !== "neutral") {
-    changes.push(tone);
-  }
-
-  if (rewrittenMessage.length < originalMessage.length) {
-    changes.push("More concise");
-  } else {
-    changes.push("Better flow");
-  }
-
-  if (customInstruction && customInstruction.trim()) {
-    changes.push("Custom edits applied");
-  }
-
-  document.getElementById("changesList").innerHTML = changes
-    .slice(0,4)
-    .map(item => `<span class="change-chip">${item}</span>`)
-    .join("");
+  document.getElementById("clarityFill").style.width = clarity > 0 ? clarity + "%" : "0%";
+  document.getElementById("readabilityFill").style.width = readability > 0 ? readability + "%" : "0%";
+  document.getElementById("flowFill").style.width = flow > 0 ? flow + "%" : "0%";
 }
 
 async function rewriteEmail(tone, customInstruction = "") {
@@ -580,9 +626,7 @@ async function rewriteEmail(tone, customInstruction = "") {
     outputBox.innerText = "Please enter a message first.";
     outputBox.classList.remove("placeholder-output");
     updateImprovement(0, "Enter a message to see improvement analysis.");
-    document.getElementById("changesList").innerHTML = `
-      <span class="change-chip">Add a message first</span>
-    `;
+    updateSubscores(0, 0, 0);
     return;
   }
 
@@ -611,19 +655,15 @@ async function rewriteEmail(tone, customInstruction = "") {
     if (data.result) {
       const improvement = getImprovementData(tone, customInstruction, message, result);
       updateImprovement(improvement.score, improvement.note);
-      updateChanges(tone, customInstruction, message, result);
+      updateSubscores(improvement.clarity, improvement.readability, improvement.flow);
     } else {
       updateImprovement(0, "Unable to calculate improvement.");
-      document.getElementById("changesList").innerHTML = `
-        <span class="change-chip">No analysis available</span>
-      `;
+      updateSubscores(0, 0, 0);
     }
   } catch (err) {
     outputBox.innerText = "Request failed.";
     updateImprovement(0, "Unable to calculate improvement.");
-    document.getElementById("changesList").innerHTML = `
-      <span class="change-chip">Request failed</span>
-    `;
+    updateSubscores(0, 0, 0);
   }
 
   button.disabled = false;
@@ -651,11 +691,7 @@ document.querySelector(".secondary").addEventListener("click", function() {
   document.querySelectorAll(".tone").forEach(t => t.classList.remove("active"));
   selectedTone = "neutral";
   updateImprovement(0, "Clarity, tone, and flow improvements will appear here.");
-  document.getElementById("changesList").innerHTML = `
-    <span class="change-chip">Tone improved</span>
-    <span class="change-chip">Clearer wording</span>
-    <span class="change-chip">Better flow</span>
-  `;
+  updateSubscores(0, 0, 0);
 });
 
 document.querySelector(".copy").addEventListener("click", async function() {
