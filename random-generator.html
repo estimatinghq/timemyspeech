@@ -126,6 +126,13 @@ text-align:center;
 min-height:60px;
 }
 
+.combo{
+margin-top:10px;
+text-align:center;
+color:#6b7280;
+font-size:14px;
+}
+
 .coin-wrap{
 display:flex;
 justify-content:center;
@@ -210,6 +217,8 @@ Generate passwords, random numbers, and flip a coin instantly.
 
 <div class="result" id="passwordResult"></div>
 
+<div class="combo" id="passwordCombos"></div>
+
 </div>
 
 <!-- RANDOM NUMBER -->
@@ -280,7 +289,7 @@ btn.classList.add("active");
 
 function generatePassword(){
 
-let length=document.getElementById("passLength").value;
+let length=parseInt(document.getElementById("passLength").value);
 
 let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
@@ -293,6 +302,24 @@ password+=chars[Math.floor(Math.random()*chars.length)];
 }
 
 document.getElementById("passwordResult").innerText=password;
+
+let combos=Math.pow(chars.length,length);
+
+let comboText="";
+
+if(combos>=1e21){
+comboText=(combos/1e21).toFixed(1)+" sextillion";
+}else if(combos>=1e18){
+comboText=(combos/1e18).toFixed(1)+" quintillion";
+}else if(combos>=1e15){
+comboText=(combos/1e15).toFixed(1)+" quadrillion";
+}else if(combos>=1e12){
+comboText=(combos/1e12).toFixed(1)+" trillion";
+}else{
+comboText=combos.toLocaleString();
+}
+
+document.getElementById("passwordCombos").innerText="Possible combinations: "+comboText;
 
 }
 
